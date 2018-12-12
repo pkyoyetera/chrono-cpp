@@ -23,7 +23,7 @@ std::vector<parse::ParsedResult> Parser::execute(std::string& text, parse::Parse
     std::string remainingText = text;
     std::smatch match;
     bool possible_match;
-    unsigned idx;
+    unsigned long idx;
 
     do {
         try {
@@ -43,7 +43,7 @@ std::vector<parse::ParsedResult> Parser::execute(std::string& text, parse::Parse
             remainingText = text.substr(match.position() + 1);
         }
             // set remaining text to string immediately following the matched string
-        remainingText = text.substr(idx, match[0].str().length());
+        remainingText = text.substr(idx + match[0].str().length());
     } while(possible_match);
         /*try {
             possible_match = std::regex_search(remainingText, match, getPattern());

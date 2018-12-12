@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
 
     ref.setMonth(brokenTime.tm_mon );
     ref.set_mDay(brokenTime.tm_mday);
-    // ref.set_wDay(brokenTime.tm_wday);
+    ref.set_wDay(brokenTime.tm_wday);
     ref.setHour( brokenTime.tm_hour);
     ref.setMinute(brokenTime.tm_min );
     ref.setSeconds(brokenTime.tm_sec );
