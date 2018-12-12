@@ -1,5 +1,6 @@
 
-# A C++ library for natural language relative date parsing based on chrono.js
+## Chrono-cpp
+A C++ library for natural language relative date parsing based on chrono.js
 
 This library is designed with rules to enable extracting absolute date information from text.
 
