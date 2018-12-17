@@ -7,7 +7,8 @@
 #include <string>
 // #include <optional>
 
-#include "../result.h"
+#include "src/result.h"
+#include "src/utils/utils.hpp"
 
 class Parser {
 protected:
@@ -19,11 +20,13 @@ public:
     Parser();
     Parser(bool, std::regex);       // strictMode, pattern
     std::regex getPattern();
-    virtual parse::ParsedResult extract(std::string, std::smatch, parse::ParsedComponents&) {
+
+    virtual parse::ParsedResult extract(std::string, std::smatch, posix_time::ptime&) {
         parse::ParsedResult tmp;
         return tmp;
     }
-    std::vector<parse::ParsedResult> execute(std::string&, parse::ParsedComponents&);
+
+    std::vector<parse::ParsedResult> execute(std::string&, posix_time::ptime&);
     ~Parser();
 };
 

@@ -5,12 +5,13 @@
 
 
 #include <iostream>
-#include <chrono>
 #include <ctime>
 #include <unordered_map>
 #include <string>
+#include "src/utils/utils.hpp"
 
 // #include "../external/date/include/date/date.h"
+
 
 /*
 struct time_components {
@@ -86,26 +87,25 @@ public:
 
 class parse::ParsedResult {
 protected:
-    ParsedComponents anchor;
+    posix_time::ptime anchor;
     unsigned index;
     std::string text;
-    // default_tags tags;
-
+    utils::Tags tags;
 
 public:
 
     ParsedResult();
-    ParsedResult(ParsedComponents, unsigned, std::string /*default_tags, ParsedComponents*/);
+    ParsedResult(posix_time::ptime, unsigned, std::string /*default_tags, ParsedComponents*/);
     ParsedResult(const ParsedResult& pr);
     ~ParsedResult();
 
     ParsedComponents startDate;
-    ParsedComponents endDate;       // make protected & make accessors and mutators
+    ParsedComponents endDate;       // todo: make protected & make accessors and mutators
 
-    // overloaded assignment operator
+    // todo: overloaded assignment operator
+    void setTag(utils::Modifiers);
     bool hasPossibleDates();
     std::string toDate();
 };
-
 
 #endif

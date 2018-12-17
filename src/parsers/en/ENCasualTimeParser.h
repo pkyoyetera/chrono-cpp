@@ -2,10 +2,13 @@
  *
  *
  */
+#ifndef ENCASUALTIMEPARSER_H
+#define ENCASUALTIMEPARSER_H
 
 #include <chrono>
 
 #include "src/parsers/parsers.h"
+
 // #include "../../../external/date/include/date/date.h"
 
 #define PATTERN "(\\W|^)((this)?\\s*(morning|afternoon|evening|noon|night))"
@@ -17,10 +20,10 @@ public:
     ENCasualTimeParser(): Parser(false, std::regex(PATTERN)) { }
     //  ENCasualTimeParser() {    }
 
-    parse::ParsedResult extract(std::string tx, std::smatch match, parse::ParsedComponents& ref) {
+    parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime& ref) {
         std::string text = match[0].str().substr(match[1].length());
         int idx = match.position() + match[1].length();  /// match.position does not give the required index of the foirst match, review
-        //struct tm* local;
+        struct tm local;
 
         /*
          if ref date is a valid date, then use it to create the correct date
@@ -54,22 +57,20 @@ public:
             // std::cerr << "invalid match" << std::endl; // this should be a loggable error
         }
 
-        /*
-        time_t tmp;
-        time(&tmp);
-        local = localtime(&tmp);
-        */
+        local = posix_time::to_tm(ref);
 
-        result.startDate.implyComponent("year",  ref.getYear());
-        result.startDate.implyComponent("month", ref.getMonth());
-        result.startDate.implyComponent("mday",  ref.get_mDay());
-        result.startDate.implyComponent("wday",  ref.get_wDay());
+        result.startDate.implyComponent("year",  local.tm_year);
+        result.startDate.implyComponent("month", local.tm_mon);
+        result.startDate.implyComponent("mday",  local.tm_mday);
+        result.startDate.implyComponent("wday",  local.tm_wday);
+        // result.startDate.implyComponent( "min",  local.tm_min);
 
         // result.tags indicate that this parser was used
+        result.setTag(utils::ENCasualTimeParser);
+
         return result;
     }
 };
 
 
-
-
+#endif

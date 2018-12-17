@@ -328,7 +328,7 @@ ParsedResult::ParsedResult() {
     */
 }
 
-ParsedResult::ParsedResult(ParsedComponents an, unsigned idx, std::string tx) { /*default_tags tg,, ParsedComponents st*/
+ParsedResult::ParsedResult(posix_time::ptime an, unsigned idx, std::string tx) { /*default_tags tg,, ParsedComponents st*/
     anchor = an;
     index = idx;
     text = tx;
@@ -362,10 +362,13 @@ std::string ParsedResult::toDate() {
     date.tm_wday = startDate.get_wDay();
     date.tm_hour = startDate.getHour();
     date.tm_min  = startDate.getMinute();
-    date.tm_isdst = 1;
-    date.tm_gmtoff = -5*60*60;      // default for Eastern Standard Time
-
-    std::cout << asctime(&date);
+    // date.tm_isdst = 1;
+    // date.tm_gmtoff = -5*60*60;      // default for Eastern Standard Time
+    // std::cout << asctime(&date);
     // time_t t = mktime(&date);
-    return asctime(&date);
+    return posix_time::to_simple_string(posix_time::ptime_from_tm(date));
+}
+
+void ParsedResult::setTag(utils::Modifiers tag_name) {
+    this->tags.insert({tag_name, true});
 }

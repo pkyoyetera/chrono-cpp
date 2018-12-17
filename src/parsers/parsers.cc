@@ -18,7 +18,7 @@ std::regex Parser::getPattern() {
 }
 // virtual parse::ParsedResult extract();
 
-std::vector<parse::ParsedResult> Parser::execute(std::string& text, parse::ParsedComponents& ref) {
+std::vector<parse::ParsedResult> Parser::execute(std::string& text, posix_time::ptime& ref) {
     std::vector<parse::ParsedResult> results;
     std::string remainingText = text;
     std::smatch match;

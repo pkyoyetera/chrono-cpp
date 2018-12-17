@@ -7,9 +7,11 @@ cc_test(
     ],
     args = [
         "--test_verbose_timeout_warnings",
+        "--verbose_failures",
     ],
     copts = [
         "-std=c++14",
+        "-lboost_date_time",
     ],
     deps = [
         "//src:result",
@@ -21,10 +23,11 @@ cc_test(
 cc_test(
     name = "ENCasualTest",
     srcs = [
-        "ENCasualTest.cpp",
+        "test__ENCasualTimeParser.cpp",
         "gtest_main.cc",
     ],
     args = [
+        "--verbose_failures",
         "--test_verbose_timeout_warnings",
     ],
     copts = [
@@ -32,11 +35,14 @@ cc_test(
     ],
     linkopts = [
         "-lstdc++",
+        "-lboost_date_time",
     ],
     deps = [
         "//src:result",
         "//src/parsers/en:ENCasualTimeParser",
+        "//src/utils:utilities",
         "@googletest//:gtest_main",
+        #"@boost//:date_time"
     ],
 )
 
@@ -47,10 +53,12 @@ cc_test(
         "test_MainEntryPointFile.cpp",
     ],
     args = [
+        "--verbose_failures",
         "--test_verbose_timeout_warnings",
     ],
     copts = [
         "-std=c++14",
+        "-lboost_date_time",
     ],
     deps = [
         "//src/parsers/en:ENCasualTimeParser",
