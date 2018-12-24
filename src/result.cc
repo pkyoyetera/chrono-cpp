@@ -35,14 +35,14 @@ ParsedComponents::ParsedComponents() {
     knownValues.insert({"month", {false, 0}});
     knownValues.insert({"mday",  {false, 0}});      // day of the month
     knownValues.insert({"wday",  {false, 0}});      // day of the week
-    // knownValues.insert({"dls",   {false, 0}});      // daylight savings
+    knownValues.insert({"isdst", {false, 0x0}});      // daylight savings
     knownValues.insert({"hour",  {false, 0}});
     knownValues.insert({"min",   {false, 0}});
     knownValues.insert({"sec",   {false, 0}});
 
 }
 
-ParsedComponents::ParsedComponents(Components& comp) {
+ParsedComponents::ParsedComponents(const Components& comp) {
     knownValues = comp;
 }
 
@@ -64,6 +64,13 @@ ParsedComponents::~ParsedComponents() = default;
 ParsedComponents::ParsedComponents(const ParsedComponents& pc) {
     knownValues   = pc.knownValues;
     impliedValues = pc.impliedValues;
+}
+
+ParsedComponents& ParsedComponents::operator=(const ParsedComponents& obj) {
+    knownValues   = obj.knownValues;
+    impliedValues = obj.impliedValues;
+
+    return *this;
 }
 
 int ParsedComponents::getYear() {
@@ -301,9 +308,9 @@ ParsedResult::ParsedResult() {
     index = 0;
     text = "";
 
-    ParsedComponents tmp;
-    startDate = tmp;
-    endDate = tmp;
+    ParsedComponents tmp1{}, tmp2{};
+    startDate = tmp1;
+    endDate = tmp2;
 
     /*
     for(auto val: startDate.knownValues) {
@@ -328,24 +335,26 @@ ParsedResult::ParsedResult() {
     */
 }
 
-ParsedResult::ParsedResult(posix_time::ptime an, unsigned idx, std::string tx) { /*default_tags tg,, ParsedComponents st*/
+ParsedResult::ParsedResult(posix_time::ptime an, unsigned idx, std::string tx) {
     anchor = an;
     index = idx;
     text = tx;
 
-    ParsedComponents tmp;
-    startDate = tmp;
+    ParsedComponents _tmp{}, tmp{};
+    startDate = _tmp;
     endDate = tmp;
 }
 
 // need to implement use of endDate
 ParsedResult::ParsedResult(const ParsedResult& pr) {
-    anchor = pr.anchor;
-    index = pr.index;
-    text = pr.text;
+    anchor    = pr.anchor;
+    index     = pr.index;
+    text      = pr.text;
+    tags      = pr.tags;
     startDate = pr.startDate;
-    endDate = pr.endDate;
+    endDate   = pr.endDate;
 }
+
 
 bool ParsedResult::hasPossibleDates() {
     return startDate.isPossibleDate() or endDate.isPossibleDate();
@@ -371,4 +380,16 @@ std::string ParsedResult::toDate() {
 
 void ParsedResult::setTag(utils::Modifiers tag_name) {
     this->tags.insert({tag_name, true});
+}
+
+ParsedResult& ParsedResult::operator=(const ParsedResult& pr) {
+    this->anchor = pr.anchor;
+    this->endDate = pr.endDate;
+    this->startDate = pr.startDate;
+    this->text = pr.text;
+    this->index = pr.index;
+    this->tags = pr.tags;
+
+    return *(this);
+
 }

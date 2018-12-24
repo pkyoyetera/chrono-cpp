@@ -22,13 +22,12 @@ public:
     std::regex getPattern();
 
     virtual parse::ParsedResult extract(std::string, std::smatch, posix_time::ptime&) {
-        parse::ParsedResult tmp;
+        parse::ParsedResult tmp{ };
         return tmp;
     }
 
     std::vector<parse::ParsedResult> execute(std::string&, posix_time::ptime&);
     ~Parser();
 };
-
 
 #endif

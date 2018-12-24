@@ -29,7 +29,7 @@ public:
          if ref date is a valid date, then use it to create the correct date
         */
 
-        parse::ParsedResult result = parse::ParsedResult(ref, idx, text/*, tc*/);
+        parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
 
         int time_match = 4;
         if(match[time_match] == "") time_match = 3;

@@ -54,10 +54,11 @@ private:
 
 public:
     ParsedComponents();
-    explicit ParsedComponents(Components& );
-    ParsedComponents(Components&, Components&);   // we could use std::ctime to convert time_point to time objects
+    explicit ParsedComponents(const Components& );
+    ParsedComponents(Components&, Components&);
     ParsedComponents(const ParsedComponents&);
     ~ParsedComponents();
+    ParsedComponents& operator=(const ParsedComponents& );
 
     void implyComponent(std::string, int);
     bool isCertain(std::string);
@@ -81,6 +82,7 @@ public:
     void setSeconds(int);
     // void setTimeZone(int);
 
+
 };
 
 
@@ -89,23 +91,22 @@ class parse::ParsedResult {
 protected:
     posix_time::ptime anchor;
     unsigned index;
-    std::string text;
+    std::string text; /// todo: add accessor for text to aid testing
     utils::Tags tags;
 
 public:
 
     ParsedResult();
-    ParsedResult(posix_time::ptime, unsigned, std::string /*default_tags, ParsedComponents*/);
+    ParsedResult(posix_time::ptime, unsigned, std::string);
     ParsedResult(const ParsedResult& pr);
     ~ParsedResult();
 
-    ParsedComponents startDate;
-    ParsedComponents endDate;       // todo: make protected & make accessors and mutators
+    ParsedComponents startDate, endDate;    // todo: make protected & make accessors and mutators
 
-    // todo: overloaded assignment operator
     void setTag(utils::Modifiers);
     bool hasPossibleDates();
     std::string toDate();
+    parse::ParsedResult& operator=(const parse::ParsedResult&);
 };
 
 #endif

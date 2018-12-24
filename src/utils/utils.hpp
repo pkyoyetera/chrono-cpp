@@ -29,12 +29,4 @@ namespace utils {
 }
 
 
-
-
-/*
-struct tm ptimeToStructTM(posix_time::ptime _ptime) {
-
-}
-*/
-
 #endif

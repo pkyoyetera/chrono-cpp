@@ -47,6 +47,32 @@ cc_test(
 )
 
 cc_test(
+    name = "ENCasualDate__test",
+    srcs = [
+        "gtest_main.cc",
+        "test__ENCasualDateParser.cpp",
+    ],
+    args = [
+        "--verbose_failures",
+        "--test_verbose_timeout_warnings",
+    ],
+    copts = [
+        "-std=c++14",
+    ],
+    linkopts = [
+        "-lstdc++",
+        "-lboost_date_time",
+    ],
+    deps = [
+        "//src:result",
+        "//src/parsers/en:ENCasualDateParser",
+        "//src/utils:utilities",
+        "@googletest//:gtest_main",
+        #"@boost//:date_time"
+    ],
+)
+
+cc_test(
     name = "entryPointTest",
     srcs = [
         "gtest_main.cc",
