@@ -1,8 +1,5 @@
-
-
 #ifndef RESULT_H
 #define RESULT_H
-
 
 #include <iostream>
 #include <ctime>
@@ -10,36 +7,7 @@
 #include <string>
 #include "src/utils/utils.hpp"
 
-// #include "../external/date/include/date/date.h"
-
-
-/*
-struct time_components {
-    int timezone;
-    unsigned month;
-    unsigned year;
-    unsigned day;
-    int      hour;
-    int      minute;
-    int      second;
-
-    time_components& operator= (const time_components& tc);
-};
-*/
-
 typedef std::unordered_map<std::string, std::pair<bool, int> > Components;
-/* ={
-        {"year",  {false, 0}},
-        {"month", {false, 0}},
-        {"mday",  {false, 0}},      // day of the month
-        {"wday",  {false, 0}},      // day of the week
-        // {"dls",   {false, 0}},      // daylight savings
-        {"hour",  {false, 0}},
-        {"min",   {false, 0}},
-        {"sec",   {false, 0}}
-};
-*/
-
 
 namespace parse {
     class ParsedComponents;
@@ -50,7 +18,6 @@ class parse::ParsedComponents {
 private:
     Components knownValues;
     Components impliedValues;
-
 
 public:
     ParsedComponents();
@@ -81,10 +48,7 @@ public:
     void setMinute(int);
     void setSeconds(int);
     // void setTimeZone(int);
-
-
 };
-
 
 
 class parse::ParsedResult {
@@ -95,7 +59,6 @@ protected:
     utils::Tags tags;
 
 public:
-
     ParsedResult();
     ParsedResult(posix_time::ptime, unsigned, std::string);
     ParsedResult(const ParsedResult& pr);

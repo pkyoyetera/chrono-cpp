@@ -23,8 +23,8 @@ cc_test(
 cc_test(
     name = "ENCasualTest",
     srcs = [
-        "test__ENCasualTimeParser.cpp",
         "gtest_main.cc",
+        "test__ENCasualTimeParser.cpp",
     ],
     args = [
         "--verbose_failures",
@@ -66,6 +66,32 @@ cc_test(
     deps = [
         "//src:result",
         "//src/parsers/en:ENCasualDateParser",
+        "//src/utils:utilities",
+        "@googletest//:gtest_main",
+        #"@boost//:date_time"
+    ],
+)
+
+cc_test(
+    name = "ENDeadlineFormat__test",
+    srcs = [
+        "gtest_main.cc",
+        "test__ENDeadlineFormatParser.cpp",
+    ],
+    args = [
+        "--verbose_failures",
+        "--test_verbose_timeout_warnings",
+    ],
+    copts = [
+        "-std=c++14",
+    ],
+    linkopts = [
+        "-lstdc++",
+        "-lboost_date_time",
+    ],
+    deps = [
+        "//src:result",
+        "//src/parsers/en:ENDeadlineFormatParser",
         "//src/utils:utilities",
         "@googletest//:gtest_main",
         #"@boost//:date_time"

@@ -25,10 +25,6 @@ public:
         int idx = match.position() + match[1].length();  /// match.position does not give the required index of the foirst match, review
         struct tm local;
 
-        /*
-         if ref date is a valid date, then use it to create the correct date
-        */
-
         parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
 
         int time_match = 4;
@@ -59,13 +55,13 @@ public:
 
         local = posix_time::to_tm(ref);
 
-        result.startDate.implyComponent("year",  local.tm_year);
-        result.startDate.implyComponent("month", local.tm_mon);
-        result.startDate.implyComponent("mday",  local.tm_mday);
+        result.startDate.implyComponent("year",  ref.date().year());
+        result.startDate.implyComponent("month", ref.date().month());
+        result.startDate.implyComponent("mday",  ref.date().day());
         result.startDate.implyComponent("wday",  local.tm_wday);
         // result.startDate.implyComponent( "min",  local.tm_min);
 
-        // result.tags indicate that this parser was used
+        // indicate parser used
         result.setTag(utils::ENCasualTimeParser);
 
         return result;

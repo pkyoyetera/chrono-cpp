@@ -1,6 +1,5 @@
 
 #include <iostream>
-#include <chrono>
 #include "gtest/gtest.h"
 #include "src/parsers/en/ENCasualTimeParser.h"
 
@@ -11,13 +10,11 @@ using std::atoi;
 class ENCasualTimeTest : public ::testing::Test {
 public:
     ENCasualTimeParser ps;
-    parse::ParsedComponents _cp;
     tm anchor;
     string text1, text2, text3, text4, text5;
     std::vector<parse::ParsedResult> results;
 
     ENCasualTimeTest() {
-
         text1 = "What about this morning!";
         text2 = "This afternoon was unusually cold";
         text3 = "the evening sunset is noice";
@@ -25,8 +22,7 @@ public:
         text5 = "Eventually the night is calm";
     }
 
-    ~ENCasualTimeTest() {}
-
+    ~ENCasualTimeTest() { }
 };
 
 
@@ -36,7 +32,7 @@ TEST_F(ENCasualTimeTest, test1) {
 
     results = ps.execute(text1, t);
 
-    EXPECT_EQ(results[0].startDate.getYear(), anchor.tm_year);
+    EXPECT_EQ(results[0].startDate.getYear(), t.date().year());
     EXPECT_EQ(results[0].startDate.getMonth(), anchor.tm_mon);
     EXPECT_EQ(results[0].startDate.get_mDay(), anchor.tm_mday);
     EXPECT_EQ(results[0].startDate.get_wDay(), anchor.tm_wday);

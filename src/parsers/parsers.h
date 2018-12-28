@@ -1,7 +1,6 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-
 #include <iostream>
 #include <regex>
 #include <string>
@@ -14,7 +13,6 @@ class Parser {
 protected:
     bool strictMode;
     std::regex pattern;
-
 
 public:
     Parser();

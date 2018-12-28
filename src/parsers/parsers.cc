@@ -16,7 +16,6 @@ Parser::Parser(bool strict, std::regex _pattern) {
 std::regex Parser::getPattern() {
     return pattern;
 }
-// virtual parse::ParsedResult extract();
 
 std::vector<parse::ParsedResult> Parser::execute(std::string& text, posix_time::ptime& ref) {
     std::vector<parse::ParsedResult> results;
@@ -48,13 +47,6 @@ std::vector<parse::ParsedResult> Parser::execute(std::string& text, posix_time::
         // set remaining text to string immediately following the matched string
         remainingText = text.substr(idx + match[0].str().length());
     } while(possible_match);
-        /*try {
-            possible_match = std::regex_search(remainingText, match, getPattern());
-
-        } catch (std::regex_error& err) {
-            std::cerr << err.what() << std::endl;
-        }
-         */
 
     return results;
 }

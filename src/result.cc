@@ -1,4 +1,3 @@
-
 #include "result.h"
 #include <ctime>
 
@@ -6,31 +5,8 @@ using namespace parse;
 using namespace std;
 
 
-/*
-components& time_components::operator=(const time_components& tc) {
-    timezone     = tc.timezone;
-    year         = tc.year;
-    month        = tc.month;
-    day          = tc.day;
-    hour         = tc.hour;
-    minute       = tc.minute;
-    second       = tc.second;
-}
-*/
-
 ParsedComponents::ParsedComponents() {
-    /*
-    for(auto val: knownValues) {
-        val->second().first() = false;
-        val->second().second() = 0;
-    }
-
-    for(auto val: impliedValues) {
-        val->second().first() = false;
-        val->second().second() = 0;
-    }
-
-    */
+// todo: turn eday to correspond to gregorian_day_of_week in boost::gregorian
     knownValues.insert({"year",  {false, 0}});
     knownValues.insert({"month", {false, 0}});
     knownValues.insert({"mday",  {false, 0}});      // day of the month
@@ -39,7 +15,6 @@ ParsedComponents::ParsedComponents() {
     knownValues.insert({"hour",  {false, 0}});
     knownValues.insert({"min",   {false, 0}});
     knownValues.insert({"sec",   {false, 0}});
-
 }
 
 ParsedComponents::ParsedComponents(const Components& comp) {
@@ -354,7 +329,6 @@ ParsedResult::ParsedResult(const ParsedResult& pr) {
     startDate = pr.startDate;
     endDate   = pr.endDate;
 }
-
 
 bool ParsedResult::hasPossibleDates() {
     return startDate.isPossibleDate() or endDate.isPossibleDate();

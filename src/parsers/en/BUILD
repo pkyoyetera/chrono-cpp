@@ -25,5 +25,14 @@ cc_library(
 )
 
 cc_library(
-    name = "ENCAs",
+    name = "ENDeadlineFormatParser",
+    hdrs = [
+        "ENDeadlineFormatParser.hpp",
+    ],
+    visibility = [
+        "//visibility:public",
+    ],
+    deps = [
+        "//src/parsers",
+    ],
 )

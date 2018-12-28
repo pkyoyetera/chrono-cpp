@@ -5,11 +5,10 @@
 #include <unordered_map>
 #include <map>
 #include <iostream>
-// #include "boost/date_time/gregorian/gregorian.hpp"
+#include "boost/date_time/gregorian/gregorian.hpp"
 #include "boost/date_time/posix_time/posix_time.hpp"
 
 using namespace boost;
-
 
 namespace utils {
     typedef enum modifiers {
@@ -18,18 +17,9 @@ namespace utils {
         ENDeadlineFormatParser,
     } Modifiers;
 
-
     typedef std::unordered_map<Modifiers, bool > Tags;
 
-
-//     ptime to date
-//     date to ptime
-//     struct tm tp ptime
-//     ptime to struct tm
-//     gregorian to struct tm
-//     struct tm to gregorian
-
-    typedef std::map<std::string, int> {
+    static std::map<std::string, int> INTEGER_WORDS {
         {"one",    1},
         {"two",    2},
         {"three",  3},
@@ -42,10 +32,9 @@ namespace utils {
         {"ten",    10},
         {"eleven", 11},
         {"twelve", 12}
-    }INTEGER_WORDS;
-    // std::map<std::string, int> ;
+    };
+
 
 }
-
 
 #endif

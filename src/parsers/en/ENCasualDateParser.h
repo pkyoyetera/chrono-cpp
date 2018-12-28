@@ -37,21 +37,18 @@ public:
         else if(!text.compare("yesterday")) {
             result.startDate.set_mDay(local.tm_mday - 1);
         }
-
         else if(std::regex_search(text, ln)) {
             result.startDate.implyComponent("hour", 0);
             if(local.tm_hour > 6)
                 result.startDate.set_mDay(local.tm_mday - 1);
         }
-
         else if(!text.compare("now")) {
             result.startDate.setHour(local.tm_hour);
             result.startDate.setMinute(local.tm_min);
             result.startDate.setSeconds(local.tm_sec);
             result.startDate.set_wDay(local.tm_wday);
         }
-
-        else  {  } // this is not a good idea, dummy
+        //else  {  } // this is not a good idea, dummy
 
         result.startDate.implyComponent("year", local.tm_year);
         result.startDate.implyComponent("month", local.tm_mon);
