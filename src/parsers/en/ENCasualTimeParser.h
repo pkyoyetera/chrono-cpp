@@ -9,8 +9,6 @@
 
 #include "src/parsers/parsers.h"
 
-// #include "../../../external/date/include/date/date.h"
-
 #define PATTERN "(\\W|^)((this)?\\s*(morning|afternoon|evening|noon|night))"
 
 
@@ -18,11 +16,10 @@ class ENCasualTimeParser : public Parser {
 
 public:
     ENCasualTimeParser(): Parser(false, std::regex(PATTERN)) { }
-    //  ENCasualTimeParser() {    }
 
     parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime& ref) {
         std::string text = match[0].str().substr(match[1].length());
-        int idx = match.position() + match[1].length();  /// match.position does not give the required index of the foirst match, review
+        int idx = match.position() + match[1].length();
         struct tm local;
 
         parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
@@ -35,7 +32,6 @@ public:
 
         if(!subs.compare("afternoon")) {
             result.startDate.implyComponent("hour", 15);
-            // also imply pm or am for each and everyone of them
         }
         else if(!subs.compare("evening") or !subs.compare("night")) {
             result.startDate.implyComponent("hour", 20);
@@ -43,11 +39,9 @@ public:
         }
         else if(!subs.compare("morning")) {
             result.startDate.implyComponent("hour", 6);
-            // pm or am
         }
         else if (!subs.compare("noon")) {
             result.startDate.implyComponent("hour", 12);
-            // pm or am
         }
         else {
             // std::cerr << "invalid match" << std::endl; // this should be a loggable error
@@ -58,8 +52,8 @@ public:
         result.startDate.implyComponent("year",  ref.date().year());
         result.startDate.implyComponent("month", ref.date().month());
         result.startDate.implyComponent("mday",  ref.date().day());
-        result.startDate.implyComponent("wday",  local.tm_wday);
-        // result.startDate.implyComponent( "min",  local.tm_min);
+        result.startDate.implyComponent("wday",  local.tm_wday);        // todo: mappping from gregorian_day_of_the_week to ints to represent wday
+        result.startDate.implyComponent( "min",  ref.time_of_day().minutes());
 
         // indicate parser used
         result.setTag(utils::ENCasualTimeParser);

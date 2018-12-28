@@ -33,7 +33,7 @@ TEST_F(ENCasualTimeTest, test1) {
     results = ps.execute(text1, t);
 
     EXPECT_EQ(results[0].startDate.getYear(), t.date().year());
-    EXPECT_EQ(results[0].startDate.getMonth(), anchor.tm_mon);
+    EXPECT_EQ(results[0].startDate.getMonth(), anchor.tm_mon + 1);
     EXPECT_EQ(results[0].startDate.get_mDay(), anchor.tm_mday);
     EXPECT_EQ(results[0].startDate.get_wDay(), anchor.tm_wday);
     ASSERT_EQ(results[0].startDate.getHour(), 06);
@@ -53,15 +53,15 @@ TEST_F(ENCasualTimeTest, test1) {
 
 
 TEST_F(ENCasualTimeTest, test2) {
-    string testRefDate("2018-02-13 18:16:27"); //, format("%Y-%m-%d %T");
+    string testRefDate("2018-02-13 18:16:27");
     posix_time::ptime t (posix_time::time_from_string(testRefDate));
     anchor = posix_time::to_tm(t);
 
     results = ps.execute(text1, t);
 
-    EXPECT_EQ(results[0].startDate.getYear(), anchor.tm_year);
-    EXPECT_EQ(results[0].startDate.getMonth(), anchor.tm_mon);
-    EXPECT_EQ(results[0].startDate.get_mDay(), anchor.tm_mday);
+    EXPECT_EQ(results[0].startDate.getYear(), t.date().year());
+    EXPECT_EQ(results[0].startDate.getMonth(), t.date().month());
+    EXPECT_EQ(results[0].startDate.get_mDay(), t.date().day());
     EXPECT_EQ(results[0].startDate.get_wDay(), anchor.tm_wday);
     ASSERT_EQ(results[0].startDate.getHour(), 06);
 
