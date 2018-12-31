@@ -72,4 +72,6 @@ public:
     parse::ParsedResult& operator=(const parse::ParsedResult&);
 };
 
+typedef std::vector<parse::ParsedResult> Result;
+
 #endif

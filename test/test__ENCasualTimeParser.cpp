@@ -12,7 +12,7 @@ public:
     ENCasualTimeParser ps;
     tm anchor;
     string text1, text2, text3, text4, text5;
-    std::vector<parse::ParsedResult> results;
+    Result results;
 
     ENCasualTimeTest() {
         text1 = "What about this morning!";

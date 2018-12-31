@@ -52,7 +52,7 @@ public:
         result.startDate.implyComponent("year",  ref.date().year());
         result.startDate.implyComponent("month", ref.date().month());
         result.startDate.implyComponent("mday",  ref.date().day());
-        result.startDate.implyComponent("wday",  local.tm_wday);        // todo: mappping from gregorian_day_of_the_week to ints to represent wday
+        result.startDate.implyComponent("wday",  ref.date().day_of_week());     /// todo: mappping between tm_wday and gregorian_day_of_the_week
         result.startDate.implyComponent( "min",  ref.time_of_day().minutes());
 
         // indicate parser used

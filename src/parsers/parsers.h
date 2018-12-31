@@ -24,7 +24,7 @@ public:
         return tmp;
     }
 
-    std::vector<parse::ParsedResult> execute(std::string&, posix_time::ptime&);
+    Result execute(std::string&, posix_time::ptime&);
     ~Parser();
 };
 

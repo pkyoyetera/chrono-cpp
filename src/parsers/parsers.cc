@@ -17,8 +17,8 @@ std::regex Parser::getPattern() {
     return pattern;
 }
 
-std::vector<parse::ParsedResult> Parser::execute(std::string& text, posix_time::ptime& ref) {
-    std::vector<parse::ParsedResult> results;
+Result Parser::execute(std::string& text, posix_time::ptime& ref) {
+    Result results;
     std::smatch match;
     bool possible_match;
     unsigned long idx;
@@ -50,5 +50,3 @@ std::vector<parse::ParsedResult> Parser::execute(std::string& text, posix_time::
 
     return results;
 }
-
-

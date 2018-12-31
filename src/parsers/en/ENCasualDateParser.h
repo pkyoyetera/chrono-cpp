@@ -16,49 +16,51 @@ public:
 
         std::string text = match[0].str().substr(match[1].length());
         int idx = match.position(0) + match[1].length();
-        struct tm local = posix_time::to_tm(ref);
+        posix_time::ptime tmp{ref};
 
         parse::ParsedResult result = parse::ParsedResult(ref, idx, text/*, tc*/);
 
         if(!text.compare("tonight")) {
             // implies coming midnight, normally
             result.startDate.implyComponent("hour", 22);
-            result.startDate.set_wDay(local.tm_wday);
+            result.startDate.set_wDay(ref.date().day_of_week());
             // also make the meridian = 1/post-meridian
         }
         else if (!text.compare("tomorrow") or !text.compare("tmr")) {
             // checks not tomorrow on a late night
-            if(local.tm_hour > 1) {
-                result.startDate.set_mDay(local.tm_mday + 1);
-                result.startDate.set_wDay(local.tm_wday + 1);
+            if(ref.time_of_day().hours() > 1) {
+                tmp += gregorian::days(1);
+                result.startDate.set_mDay(tmp.date().day());
+                result.startDate.set_wDay(tmp.date().day_of_week());
             }
         }
 
         else if(!text.compare("yesterday")) {
-            result.startDate.set_mDay(local.tm_mday - 1);
+            tmp -= gregorian::days(1);
+            result.startDate.set_mDay(tmp.date().day());
         }
         else if(std::regex_search(text, ln)) {
             result.startDate.implyComponent("hour", 0);
-            if(local.tm_hour > 6)
-                result.startDate.set_mDay(local.tm_mday - 1);
+            if(ref.time_of_day().hours() > 6)
+                tmp -= gregorian::days(1);
+                result.startDate.set_mDay(tmp.date().day());
         }
         else if(!text.compare("now")) {
-            result.startDate.setHour(local.tm_hour);
-            result.startDate.setMinute(local.tm_min);
-            result.startDate.setSeconds(local.tm_sec);
-            result.startDate.set_wDay(local.tm_wday);
+            result.startDate.setHour(ref.time_of_day().hours());
+            result.startDate.setMinute(ref.time_of_day().minutes());
+            result.startDate.setSeconds(ref.time_of_day().seconds());
+            result.startDate.set_wDay(ref.date().day_of_week());
         }
         //else  {  } // this is not a good idea, dummy
 
-        result.startDate.implyComponent("year", local.tm_year);
-        result.startDate.implyComponent("month", local.tm_mon);
-        result.startDate.implyComponent("mday", local.tm_mday);
+        result.startDate.implyComponent("year", ref.date().year());
+        result.startDate.implyComponent("month", ref.date().month());
+        result.startDate.implyComponent("mday", ref.date().day());
 
         result.setTag(utils::ENCasualDateParser);
 
         return result;
     }
 };
-
 
 #endif
