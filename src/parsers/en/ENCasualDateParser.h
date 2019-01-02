@@ -41,9 +41,10 @@ public:
         }
         else if(std::regex_search(text, ln)) {
             result.startDate.implyComponent("hour", 0);
-            if(ref.time_of_day().hours() > 6)
+            if(ref.time_of_day().hours() > 6) {
                 tmp -= gregorian::days(1);
                 result.startDate.set_mDay(tmp.date().day());
+            }
         }
         else if(!text.compare("now")) {
             result.startDate.setHour(ref.time_of_day().hours());

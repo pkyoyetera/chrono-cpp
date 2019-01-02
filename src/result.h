@@ -69,6 +69,8 @@ public:
     void setTag(utils::Modifiers);
     bool hasPossibleDates();
     std::string toDate();
+    unsigned getIndex() const;
+    size_t textLength() const;
     parse::ParsedResult& operator=(const parse::ParsedResult&);
 };
 

@@ -33,9 +33,9 @@ TEST_F(ENCasualTimeTest, test1) {
     results = ps.execute(text1, t);
 
     EXPECT_EQ(results[0].startDate.getYear(), t.date().year());
-    EXPECT_EQ(results[0].startDate.getMonth(), anchor.tm_mon + 1);
-    EXPECT_EQ(results[0].startDate.get_mDay(), anchor.tm_mday);
-    EXPECT_EQ(results[0].startDate.get_wDay(), anchor.tm_wday);
+    EXPECT_EQ(results[0].startDate.getMonth(), t.date().month());
+    EXPECT_EQ(results[0].startDate.get_mDay(), t.date().day());
+    EXPECT_EQ(results[0].startDate.get_wDay(), t.date().day_of_week());
     ASSERT_EQ(results[0].startDate.getHour(), 06);
 
     results = ps.execute(text2, t);

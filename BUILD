@@ -6,14 +6,15 @@ cc_binary(
     copts = [
         "-std=c++11",
         "-g",
-        "-O2",
-        #"-I/usr/include/boost",
-        #"-L/usr/include/boost",
+        "-O0",
     ],
     linkopts = [
         "-lboost_date_time",
     ],
     deps = [
         "//src/parsers/en:ENCasualTimeParser",
+        "//src/parsers/en:ENCasualDateParser",
+        "//src/parsers/en:ENDeadlineFormatParser",
+        # "//src/refiners:refiner",
     ],
 )

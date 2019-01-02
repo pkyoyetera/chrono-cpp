@@ -339,17 +339,26 @@ ParsedResult::~ParsedResult() { }
 std::string ParsedResult::toDate() {
     struct tm date;
 
-    date.tm_year = startDate.getYear();
+    date.tm_year = startDate.getYear() - 1900 ;
     date.tm_mon  = startDate.getMonth();
     date.tm_mday = startDate.get_mDay();
-    date.tm_wday = startDate.get_wDay();
+    // date.tm_wday = startDate.get_wDay();
     date.tm_hour = startDate.getHour();
     date.tm_min  = startDate.getMinute();
+    date.tm_sec  = startDate.getSeconds();
     // date.tm_isdst = 1;
     // date.tm_gmtoff = -5*60*60;      // default for Eastern Standard Time
     // std::cout << asctime(&date);
     // time_t t = mktime(&date);
     return posix_time::to_simple_string(posix_time::ptime_from_tm(date));
+}
+
+unsigned ParsedResult::getIndex() const {
+    return index;
+}
+
+size_t ParsedResult::textLength() const {
+    return text.length();
 }
 
 void ParsedResult::setTag(utils::Modifiers tag_name) {

@@ -47,7 +47,7 @@ public:
             // std::cerr << "invalid match" << std::endl; // this should be a loggable error
         }
 
-        local = posix_time::to_tm(ref);
+        // local = posix_time::to_tm(ref);
 
         result.startDate.implyComponent("year",  ref.date().year());
         result.startDate.implyComponent("month", ref.date().month());

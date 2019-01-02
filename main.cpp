@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include "src/parsers/en/ENCasualTimeParser.h"
+#include "src/parsers/en/ENCasualDateParser.h"
+#include "src/parsers/en/ENDeadlineFormatParser.hpp"
 
 
 using namespace std;
@@ -19,8 +21,13 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
-    ENCasualTimeParser pt;
-    std::vector<parse::ParsedResult> results;
+    Parser* tp = new ENCasualTimeParser();
+    Parser* dp = new ENCasualDateParser();
+    Parser* dfp = new ENDeadlineFormatParser();
+
+    std::list<Parser*> parsers {tp, dp, dfp};
+
+    Result results;
     posix_time::ptime t;
     string str;
 
@@ -35,8 +42,14 @@ int main(int argc, char* argv[]) {
 
     str = argv[1];
 
-    results = pt.execute(str, t);
-    cout << results[0].toDate() << endl;
+    for(std::list<Parser*>::iterator it = parsers.begin(); it != parsers.end(); ++it) {
+        Result p_result = (*it)->execute(str, t);
+        results.insert(results.end(), p_result.begin(), p_result.end());
+    }
+
+    for(int i=0; i<results.size(); i++)
+        cout << results[i].toDate() << endl;
+
 
     return 0;
 }
