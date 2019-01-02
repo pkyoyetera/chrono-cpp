@@ -20,7 +20,6 @@ public:
     parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime& ref) {
         std::string text = match[0].str().substr(match[1].length());
         int idx = match.position() + match[1].length();
-        struct tm local;
 
         parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
 

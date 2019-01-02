@@ -4,6 +4,8 @@
 #include "src/parsers/en/ENCasualDateParser.h"
 #include "src/parsers/en/ENDeadlineFormatParser.hpp"
 
+#include "src/refiners/OverlapRemovalRefiner.hpp"
+
 
 using namespace std;
 using std::atoi;
@@ -24,6 +26,7 @@ int main(int argc, char* argv[]) {
     Parser* tp = new ENCasualTimeParser();
     Parser* dp = new ENCasualDateParser();
     Parser* dfp = new ENDeadlineFormatParser();
+
 
     std::list<Parser*> parsers {tp, dp, dfp};
 
@@ -50,6 +53,13 @@ int main(int argc, char* argv[]) {
     for(int i=0; i<results.size(); i++)
         cout << results[i].toDate() << endl;
 
+    Refiner* ov = new OverlapRemover();
+    Result final = ov->refine(results, str);
+
+    cout << endl;
+    cout << "Refiner result" << endl;
+    for(int i=0; i<results.size(); i++)
+        cout << results[i].toDate() << endl;
 
     return 0;
 }

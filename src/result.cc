@@ -339,7 +339,7 @@ ParsedResult::~ParsedResult() { }
 std::string ParsedResult::toDate() {
     struct tm date;
 
-    date.tm_year = startDate.getYear() - 1900 ;
+    date.tm_year = startDate.getYear() - 1900;
     date.tm_mon  = startDate.getMonth();
     date.tm_mday = startDate.get_mDay();
     // date.tm_wday = startDate.get_wDay();
@@ -364,6 +364,13 @@ size_t ParsedResult::textLength() const {
 void ParsedResult::setTag(utils::Modifiers tag_name) {
     this->tags.insert({tag_name, true});
 }
+
+bool ParsedResult::isEmpty() const {
+    if(index == 0 and text.empty())
+        return true;
+    return false;
+} // better way to check for empty result
+
 
 ParsedResult& ParsedResult::operator=(const ParsedResult& pr) {
     this->anchor = pr.anchor;

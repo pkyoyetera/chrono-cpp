@@ -66,6 +66,7 @@ public:
 
     ParsedComponents startDate, endDate;    // todo: make protected & make accessors and mutators
 
+    bool isEmpty() const;
     void setTag(utils::Modifiers);
     bool hasPossibleDates();
     std::string toDate();

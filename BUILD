@@ -12,9 +12,9 @@ cc_binary(
         "-lboost_date_time",
     ],
     deps = [
-        "//src/parsers/en:ENCasualTimeParser",
         "//src/parsers/en:ENCasualDateParser",
+        "//src/parsers/en:ENCasualTimeParser",
         "//src/parsers/en:ENDeadlineFormatParser",
-        # "//src/refiners:refiner",
+        "//src/refiners:overlapRemoval",
     ],
 )
