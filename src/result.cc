@@ -48,6 +48,19 @@ ParsedComponents& ParsedComponents::operator=(const ParsedComponents& obj) {
     return *this;
 }
 
+posix_time::ptime ParsedComponents::date() {
+    tm temp;
+    temp.tm_year = getYear();
+    temp.tm_mon  = getMonth();
+    temp.tm_mday = get_mDay();
+    temp.tm_wday = get_wDay();
+    temp.tm_hour = getHour();
+    temp.tm_min  = getMinute();
+    temp.tm_sec  = getSeconds();
+
+    return posix_time::ptime_from_tm(temp);
+}
+
 int ParsedComponents::getYear() {
      if (knownValues["year"].first)
          return knownValues["year"].second;
@@ -235,7 +248,7 @@ bool ParsedComponents::isCertain(std::string comp) {
         return knownValues["year"].first;
 
     else if(!comp.compare("month") )
-            return knownValues["month"].first;
+        return knownValues["month"].first;
 
     else if(!comp.compare("mday"))
         return knownValues["mday"].first;
@@ -283,9 +296,10 @@ ParsedResult::ParsedResult() {
     index = 0;
     text = "";
 
-    ParsedComponents tmp1{}, tmp2{};
+    ParsedComponents tmp1; //, tmp2{};
     startDate = tmp1;
-    endDate = tmp2;
+    __end = false;
+    // endDate = tmp2;
 
     /*
     for(auto val: startDate.knownValues) {
@@ -315,9 +329,10 @@ ParsedResult::ParsedResult(posix_time::ptime an, unsigned idx, std::string tx) {
     index = idx;
     text = tx;
 
-    ParsedComponents _tmp{}, tmp{};
-    startDate = _tmp;
-    endDate = tmp;
+    ParsedComponents tmp; //, _tmp{};
+    startDate = tmp;
+    __end = false;
+    // endDate = tmp;
 }
 
 // need to implement use of endDate
@@ -327,7 +342,11 @@ ParsedResult::ParsedResult(const ParsedResult& pr) {
     text      = pr.text;
     tags      = pr.tags;
     startDate = pr.startDate;
-    endDate   = pr.endDate;
+
+    if(pr.end()) {
+        endDate = pr.endDate;
+        __end = true;
+    }
 }
 
 bool ParsedResult::hasPossibleDates() {
@@ -357,6 +376,16 @@ unsigned ParsedResult::getIndex() const {
     return index;
 }
 
+void ParsedResult::setIndex(int idx) {
+    index = idx;
+    return;
+}
+
+void ParsedResult::setText(std::string tx) {
+    text = tx;
+    return;
+}
+
 size_t ParsedResult::textLength() const {
     return text.length();
 }
@@ -370,6 +399,10 @@ bool ParsedResult::isEmpty() const {
         return true;
     return false;
 } // better way to check for empty result
+
+bool ParsedResult::end() const {
+    return __end;
+}
 
 
 ParsedResult& ParsedResult::operator=(const ParsedResult& pr) {

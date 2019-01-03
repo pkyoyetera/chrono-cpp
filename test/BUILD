@@ -99,6 +99,30 @@ cc_test(
 )
 
 cc_test(
+    name = "overlapRemovalTest",
+    srcs = [
+        "gtest_main.cc",
+        "test__OverlapRemovalRefiner.cpp",
+    ],
+    args = [
+        "--verbose_failures",
+        "--test_verbose_timeout_warnings",
+    ],
+    copts = [
+        "-std=c++14",
+    ],
+    linkopts = [
+        "-lstdc++",
+        "-lboost_date_time",
+    ],
+    deps = [
+        "//src:result",
+        "//src/refiners:overlapRemoval",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
     name = "entryPointTest",
     srcs = [
         "gtest_main.cc",

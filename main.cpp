@@ -13,20 +13,18 @@ using std::atoi;
 
 void printUsage() {
     cout << "Usage: ./main [test string] [reference date] (last argument is optional) " << endl;
-    cout << "If reference date is provided, format should be YYY-MM-DD HH:MM:SS" << endl;
+    cout << "If reference date is provided, format should be YYYY-MM-DD HH:MM:SS" << endl;
 }
 
 int main(int argc, char* argv[]) {
-
     if(argc < 2 or argc > 3) {
         printUsage();
         return 0;
     }
 
-    Parser* tp = new ENCasualTimeParser();
-    Parser* dp = new ENCasualDateParser();
+    Parser* tp  = new ENCasualTimeParser();
+    Parser* dp  = new ENCasualDateParser();
     Parser* dfp = new ENDeadlineFormatParser();
-
 
     std::list<Parser*> parsers {tp, dp, dfp};
 
@@ -50,16 +48,20 @@ int main(int argc, char* argv[]) {
         results.insert(results.end(), p_result.begin(), p_result.end());
     }
 
-    for(int i=0; i<results.size(); i++)
-        cout << results[i].toDate() << endl;
+    cout << "Before sorting: \t" << results[0].toDate() << endl;
+
+    std::sort(results.begin(), results.end(),
+            [&](parse::ParsedResult p1, parse::ParsedResult p2) {
+                return p1.getIndex() < p2.getIndex();
+    });
+
+    cout << "After sorting:  \t" << results[0].toDate() << endl;
 
     Refiner* ov = new OverlapRemover();
     Result final = ov->refine(results, str);
 
     cout << endl;
-    cout << "Refiner result" << endl;
-    for(int i=0; i<results.size(); i++)
-        cout << results[i].toDate() << endl;
+    cout << "After refinement: \t"  << results[0].toDate() << endl;
 
     return 0;
 }

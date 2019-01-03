@@ -12,6 +12,7 @@ typedef std::unordered_map<std::string, std::pair<bool, int> > Components;
 namespace parse {
     class ParsedComponents;
     class ParsedResult;
+    ParsedComponents isAfter(ParsedComponents& );
 }
 
 class parse::ParsedComponents {
@@ -30,6 +31,7 @@ public:
     void implyComponent(std::string, int);
     bool isCertain(std::string);
     bool isPossibleDate();
+    posix_time::ptime date();
 
     int getYear();
     int getMonth();
@@ -52,6 +54,8 @@ public:
 
 
 class parse::ParsedResult {
+private:
+    bool __end;
 protected:
     posix_time::ptime anchor;
     unsigned index;
@@ -71,10 +75,14 @@ public:
     bool hasPossibleDates();
     std::string toDate();
     unsigned getIndex() const;
+    void setIndex(int idx);
+    void setText(std::string);
     size_t textLength() const;
+    bool end() const;
     parse::ParsedResult& operator=(const parse::ParsedResult&);
 };
 
 typedef std::vector<parse::ParsedResult> Result;
+
 
 #endif
