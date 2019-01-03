@@ -16,8 +16,8 @@ public:
 };
 
 TEST_F (ENDeadlineFormatTest, test1) {
-    string text{"I'll be home within six days!"};
-    posix_time::ptime testTime{t + gregorian::days(6)};
+    string text{"I'll be home within six weeks!"};
+    posix_time::ptime testTime{t + gregorian::weeks(6)};
     results = dp.execute(text, t);
 
     EXPECT_EQ(results[0].startDate.getYear(), testTime.date().year());
@@ -50,8 +50,8 @@ TEST_F(ENDeadlineFormatTest, test3) {
 }
 
 TEST_F(ENDeadlineFormatTest, test4) {
-    string text{"It shall be built in a month, be patient"};
-    posix_time::ptime testTime{t + gregorian::months(1)};
+    string text{"It shall be built in 3 months, be patient"};
+    posix_time::ptime testTime{t + gregorian::months(3)};
     results = dp.execute(text, t);
 
     EXPECT_EQ(results[0].startDate.getYear(), testTime.date().year());
@@ -59,9 +59,9 @@ TEST_F(ENDeadlineFormatTest, test4) {
     EXPECT_EQ(results[0].startDate.get_mDay(), testTime.date().day());
 }
 
-/*
+
 TEST_F(ENDeadlineFormatTest, test5) {
-    string text{"I can finish it in half an hour"};
+    string text{"finish up in half an hour"};
     posix_time::ptime testTime{t + posix_time::minutes(30)};
     results = dp.execute(text, t);
 
@@ -74,5 +74,15 @@ TEST_F(ENDeadlineFormatTest, test5) {
     EXPECT_EQ(results[0].startDate.getSeconds(), testTime.time_of_day().seconds());
 }
 
-// something tricky with this test come back and finish
-*/
+TEST_F(ENDeadlineFormatTest, test6) {
+    string text{"be back in half a day"};
+    posix_time::ptime testTime{t + posix_time::hours(12)};
+    results = dp.execute(text, t);
+
+    EXPECT_EQ(results[0].startDate.getYear(), testTime.date().year());
+    EXPECT_EQ(results[0].startDate.getMonth(), testTime.date().month());
+    EXPECT_EQ(results[0].startDate.get_mDay(), testTime.date().day());
+
+    EXPECT_EQ(results[0].startDate.getHour(), testTime.time_of_day().hours());
+    EXPECT_EQ(results[0].startDate.getMinute(), testTime.time_of_day().minutes());
+}

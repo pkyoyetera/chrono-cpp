@@ -24,3 +24,16 @@ cc_library(
         "//src/refiners:refiner",
     ],
 )
+
+cc_library(
+    name = "mergeDateRange",
+    hdrs = [
+        "en/ENMergeDateRangeRefiner.hpp",
+    ],
+    visibility = [
+        "//visibility:public",
+    ],
+    deps = [
+        "//src/refiners:refiner",
+    ],
+)

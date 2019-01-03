@@ -1,3 +1,6 @@
+#ifndef REFINER_HPP
+#define REFINER_HPP
+
 #include <iostream>
 
 #include "src/utils/utils.hpp"
@@ -22,3 +25,6 @@ public:
     }
 
 };
+
+
+#endif

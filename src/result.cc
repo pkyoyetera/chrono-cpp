@@ -6,12 +6,12 @@ using namespace std;
 
 
 ParsedComponents::ParsedComponents() {
-// todo: turn eday to correspond to gregorian_day_of_week in boost::gregorian
+// todo: turn wday to correspond to gregorian_day_of_week in boost::gregorian
     knownValues.insert({"year",  {false, 0}});
     knownValues.insert({"month", {false, 0}});
     knownValues.insert({"mday",  {false, 0}});      // day of the month
     knownValues.insert({"wday",  {false, 0}});      // day of the week
-    knownValues.insert({"isdst", {false, 0x0}});      // daylight savings
+    // knownValues.insert({"isdst", {false, 0x0}});      // daylight savings
     knownValues.insert({"hour",  {false, 0}});
     knownValues.insert({"min",   {false, 0}});
     knownValues.insert({"sec",   {false, 0}});
@@ -391,7 +391,8 @@ size_t ParsedResult::textLength() const {
 }
 
 void ParsedResult::setTag(utils::Modifiers tag_name) {
-    this->tags.insert({tag_name, true});
+    if(tags.count(tag_name) < 1)
+        this->tags.insert({tag_name, true});
 }
 
 bool ParsedResult::isEmpty() const {
@@ -404,6 +405,9 @@ bool ParsedResult::end() const {
     return __end;
 }
 
+utils::Tags ParsedResult::getTags() const {
+    return tags;
+}
 
 ParsedResult& ParsedResult::operator=(const ParsedResult& pr) {
     this->anchor = pr.anchor;

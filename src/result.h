@@ -75,6 +75,7 @@ public:
     bool hasPossibleDates();
     std::string toDate();
     unsigned getIndex() const;
+    utils::Tags getTags() const;
     void setIndex(int idx);
     void setText(std::string);
     size_t textLength() const;

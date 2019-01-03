@@ -15,6 +15,10 @@ namespace utils {
         ENCasualTimeParser,
         ENCasualDateParser,
         ENDeadlineFormatParser,
+
+        ENMergeDateRangeRefiner,
+
+        OverlapRemovalRefiner,
     } Modifiers;
 
     typedef std::unordered_map<Modifiers, bool > Tags;

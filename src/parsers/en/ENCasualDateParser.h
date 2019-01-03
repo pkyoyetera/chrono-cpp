@@ -64,4 +64,5 @@ public:
     }
 };
 
+#undef PATTERN
 #endif

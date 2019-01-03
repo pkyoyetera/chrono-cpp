@@ -1,4 +1,5 @@
-
+#ifndef OVERLAPREMOVALREFINER_HPP
+#define OVERLAPREMOVALREFINER_HPP
 
 #include "refiner.hpp"
 
@@ -20,7 +21,7 @@ public:
         if (r.size() < 2)
             return r;
 
-        for(int i=1; i<r.size(); i++) {
+        for(unsigned i=1; i<r.size(); i++) {
             parse::ParsedResult tmpRes = r[i];
             if (tmpRes.getIndex() < prevResult.getIndex() + prevResult.textLength()) {
                 if(tmpRes.textLength() > prevResult.textLength()) {
@@ -39,3 +40,5 @@ public:
     }
 
 };
+
+#endif
