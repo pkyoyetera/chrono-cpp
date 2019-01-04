@@ -7,7 +7,7 @@ cc_library(
         "//visibility:public",
     ],
     deps = [
-        #"//src/parsers",
+        "//src/parsers",
         "//src/utils:utilities",
     ],
 )

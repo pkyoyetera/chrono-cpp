@@ -342,6 +342,7 @@ ParsedResult::ParsedResult(const ParsedResult& pr) {
     text      = pr.text;
     tags      = pr.tags;
     startDate = pr.startDate;
+    __end     = false;
 
     if(pr.end()) {
         endDate = pr.endDate;

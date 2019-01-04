@@ -5,7 +5,6 @@
 
 #define PATTERN "(\\W|^)(now|today|tonight|last\\s*night|(?:tomorrow|tmr|yesterday)\\s*|tomorrow|tmr|yesterday)(?=\\W|$)"
 
-
 class ENCasualDateParser : public Parser {
 
 public:
@@ -57,6 +56,7 @@ public:
         result.startDate.implyComponent("year", ref.date().year());
         result.startDate.implyComponent("month", ref.date().month());
         result.startDate.implyComponent("mday", ref.date().day());
+        result.startDate.implyComponent("hour", ref.time_of_day().hours());
 
         result.setTag(utils::ENCasualDateParser);
 

@@ -15,14 +15,14 @@ public:
     ~OverlapRemover() {}
 
     Result refine(Result r, std::string t) {
-        Result filteredResults;
-        parse::ParsedResult prevResult = r[0];
-
         if (r.size() < 2)
             return r;
 
+        Result filteredResults;
+        parse::ParsedResult prevResult{r[0]};
+
         for(unsigned i=1; i<r.size(); i++) {
-            parse::ParsedResult tmpRes = r[i];
+            parse::ParsedResult tmpRes{r[i]};
             if (tmpRes.getIndex() < prevResult.getIndex() + prevResult.textLength()) {
                 if(tmpRes.textLength() > prevResult.textLength()) {
                     prevResult = tmpRes;
@@ -38,7 +38,6 @@ public:
 
         return filteredResults;
     }
-
 };
 
 #endif

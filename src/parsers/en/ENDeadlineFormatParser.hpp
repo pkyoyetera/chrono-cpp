@@ -56,7 +56,6 @@ public:
                     tmpDate += gregorian::days(num);
                 else {
                     tmpTime += posix_time::hours(12);
-
                     // can't add hours(12) to date object, so use tmptime,
                     // set everything here and return
                     result.startDate.implyComponent("year", tmpTime.date().year());

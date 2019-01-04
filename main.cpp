@@ -20,6 +20,9 @@ int main(int argc, char* argv[]) {
         printUsage();
         return 0;
     }
+    Result results_pre, results_final;
+    posix_time::ptime t;
+    string str;
 
     Parser* tp  = new ENCasualTimeParser();
     Parser* dp  = new ENCasualDateParser();
@@ -28,12 +31,10 @@ int main(int argc, char* argv[]) {
     Refiner* ov  = new OverlapRemover();
     Refiner* mdr = new ENMergeDateRange();
 
-    list<Parser*>  parsers  {dfp, tp, dp};
+    list<Parser*>  parsers  {tp, dfp, dp};
     list<Refiner*> refiners {ov, mdr};
 
-    Result results;
-    posix_time::ptime t;
-    string str;
+    str = argv[1];
 
     if (argc == 2){
         t = posix_time::second_clock::local_time();
@@ -44,37 +45,22 @@ int main(int argc, char* argv[]) {
         t = posix_time::time_from_string(refDate);
     }
 
-    str = argv[1];
-
     for(list<Parser*>::iterator it = parsers.begin(); it != parsers.end(); ++it) {
         Result p_result = (*it)->execute(str, t);
-        results.insert(results.end(), p_result.begin(), p_result.end());
+        results_pre.insert(results_pre.end(), p_result.begin(), p_result.end());
     }
 
-    cout << "Before sorting: \t" << results[0].toDate() << endl;
-
-    for(auto res: results) {
-        cout << res.toDate() << endl;
-    }
-
-    std::sort(results.begin(), results.end(),
+    std::sort(results_pre.begin(), results_pre.end(),
             [&](parse::ParsedResult p1, parse::ParsedResult p2) {
                 return p1.getIndex() < p2.getIndex();
     });
 
-    cout << "After sorting:  \t" << results[0].toDate() << endl;
-    for(auto res: results) {
-        cout << res.toDate() << endl;
-    }
-
-/*
-    for(list<Refiner*>::iterator it = refiners.begin(); it != refiners.end(); ++it) {
+    /*for(list<Refiner*>::iterator it = refiners.begin(); it != refiners.end(); ++it) {
         results = (*it)->refine(results, str);
-    }
-    // Result final = ov->refine(results, str);
+    }*/
+    results_final = ov->refine(mdr->refine(results_pre, str), str);
 
-    cout << endl;
-    cout << "After refinement: \t"  << results[0].toDate() << endl;
-*/
+    cout << "After refinement: \t"  << results_final[0].toDate() << endl;
+
     return 0;
 }
