@@ -123,6 +123,27 @@ cc_test(
 )
 
 cc_test(
+    name = "ENDayoftheweek",
+    srcs = [
+        "gtest_main.cc",
+        "parsers.test/ENDayOfTheWeekParser.test.cpp",
+    ],
+    args = [
+        "--verbose_failures",
+        "--compilation_mode=dbg -s",
+    ],
+    linkopts = [
+        "-lstdc++",
+        "-lboost_date_time",
+    ],
+    deps = [
+        "//src:result",
+        "//src/parsers/en:ENDayOfTheWeekParser",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
     name = "entryPointTest",
     srcs = [
         "gtest_main.cc",

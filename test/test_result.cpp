@@ -70,5 +70,5 @@ TEST_F(Result__Test, PR__Test) {
     EXPECT_EQ(pr1.startDate.getHour(), 0);
     EXPECT_EQ(pr1.startDate.getYear(), 0);
     // ASSERT_EQ(pr.anchor.getYear, today["year"].second);
-
+    // todo: tests for operator=...IMPORTANT
 }

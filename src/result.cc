@@ -411,13 +411,13 @@ utils::Tags ParsedResult::getTags() const {
 }
 
 ParsedResult& ParsedResult::operator=(const ParsedResult& pr) {
-    this->anchor = pr.anchor;
-    this->endDate = pr.endDate;
-    this->startDate = pr.startDate;
-    this->text = pr.text;
-    this->index = pr.index;
-    this->tags = pr.tags;
+    anchor    = pr.anchor;
+    endDate   = pr.endDate;
+    startDate = pr.startDate;
+    text      = pr.text;
+    index     = pr.index;
+    tags      = pr.tags;
+    __end     = pr.end();
 
     return *(this);
-
 }
