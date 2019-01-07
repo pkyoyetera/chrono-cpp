@@ -8,7 +8,7 @@
 class ENCasualDateParser : public Parser {
 
 public:
-    ENCasualDateParser() : Parser(false, std::regex(PATTERN)) { }
+    ENCasualDateParser() : Parser(false, std::regex(PATTERN, std::regex::icase)) { }
 
     parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime& ref) {
         std::regex ln(("last\\s*night"));

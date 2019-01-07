@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
     }*/
     results_final = ov->refine(mdr->refine(results_pre, str), str);
 
-    cout << "After refinement: \t"  << results_final[0].toDate() << endl;
+    cout << "Date:\t"  << results_final[0].toDate() << endl;
 
     return 0;
 }

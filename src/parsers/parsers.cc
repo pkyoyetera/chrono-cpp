@@ -50,3 +50,4 @@ Result Parser::execute(std::string& text, posix_time::ptime& ref) {
 
     return results;
 }
+

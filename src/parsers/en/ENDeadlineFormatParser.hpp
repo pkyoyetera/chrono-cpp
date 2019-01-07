@@ -8,7 +8,7 @@
 
 class ENDeadlineFormatParser : public Parser {
 public:
-    ENDeadlineFormatParser() : Parser(false, std::regex(PATTERN)) { }
+    ENDeadlineFormatParser() : Parser(false, std::regex(PATTERN, std::regex::icase)) { }
 
     parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime& ref) {
         std::string text = match[0].str().substr(match[1].length());

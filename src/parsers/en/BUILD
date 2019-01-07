@@ -36,3 +36,16 @@ cc_library(
         "//src/parsers",
     ],
 )
+
+cc_library(
+    name = "ENDayOfTheWeekParser",
+    hdrs = [
+        "ENDayOfTheWeekParser.cpp",
+    ],
+    visibility = [
+        "//visibility:public",
+    ],
+    deps = [
+        "//src/parsers",
+    ],
+)
