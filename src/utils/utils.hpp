@@ -15,6 +15,7 @@ namespace utils {
         ENCasualTimeParser,
         ENCasualDateParser,
         ENDeadlineFormatParser,
+        ENDayOfTheWeekParser,
 
         ENMergeDateRangeRefiner,
 

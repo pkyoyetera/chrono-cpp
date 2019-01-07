@@ -36,7 +36,7 @@ TEST_F(ENDeadlineFormatTest, test2) {
 }
 
 TEST_F(ENDeadlineFormatTest, test3) {
-    string text{"Depot closes in 5 minutes"};
+    string text{"closes in 5 minutes"};
     posix_time::ptime testTime{t + posix_time::minutes(5)};
     results = dp.execute(text, t);
 
