@@ -1,6 +1,6 @@
 #include <iostream>
 #include "gtest/gtest.h"
-#include "src/parsers/en/ENDayOfTheWeekParser.cpp"
+#include "src/parsers/en/ENDayOfTheWeekParser.hpp"
 
 using namespace std;
 

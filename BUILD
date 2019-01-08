@@ -14,6 +14,7 @@ cc_binary(
     deps = [
         "//src/parsers/en:ENCasualDateParser",
         "//src/parsers/en:ENCasualTimeParser",
+        "//src/parsers/en:ENDayOfTheWeekParser",
         "//src/parsers/en:ENDeadlineFormatParser",
         "//src/refiners:mergeDateRange",
         "//src/refiners:overlapRemoval",

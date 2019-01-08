@@ -3,6 +3,7 @@
 #include "src/parsers/en/ENCasualTimeParser.h"
 #include "src/parsers/en/ENCasualDateParser.h"
 #include "src/parsers/en/ENDeadlineFormatParser.hpp"
+#include "src/parsers/en/ENDayOfTheWeekParser.hpp"
 
 #include "src/refiners/OverlapRemovalRefiner.hpp"
 #include "src/refiners/en/ENMergeDateRangeRefiner.hpp"
@@ -27,12 +28,13 @@ int main(int argc, char* argv[]) {
     Parser* tp  = new ENCasualTimeParser();
     Parser* dp  = new ENCasualDateParser();
     Parser* dfp = new ENDeadlineFormatParser();
+    Parser* dow = new ENDayOfWeekParser();
 
     Refiner* ov  = new OverlapRemover();
     Refiner* mdr = new ENMergeDateRange();
 
-    list<Parser*>  parsers  {tp, dfp, dp};
-    list<Refiner*> refiners {ov, mdr};
+    list<Parser*>  parsers  {tp, dfp, dp, dow};
+    // list<Refiner*> refiners {ov, mdr};
 
     str = argv[1];
 

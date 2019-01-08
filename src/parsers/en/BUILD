@@ -40,7 +40,7 @@ cc_library(
 cc_library(
     name = "ENDayOfTheWeekParser",
     hdrs = [
-        "ENDayOfTheWeekParser.cpp",
+        "ENDayOfTheWeekParser.hpp",
     ],
     visibility = [
         "//visibility:public",

@@ -30,22 +30,22 @@ public:
             posix_time::ptime& ref, int offset, std::string modifier) {
 
         gregorian::date resOffset, start{ref.date()};
-        // bool start_fixed{false};
-        int count=0;
+        bool start_fixed{false};
+        // int count = 0;
+        gregorian::first_day_of_the_week_before fdbf{offset};
+        gregorian::first_day_of_the_week_after fdaf{offset};
 
         if(!modifier.compare("last") or !modifier.compare("past")) {
             gregorian::date tmp = start - gregorian::weeks(1);
             if(offset < start.day_of_week().as_number()) {
-                gregorian::first_day_of_the_week_before fdbf{offset};
                 resOffset = fdbf.get_date(tmp);
             }
             else if(offset > start.day_of_week().as_number()) {
-                gregorian::first_day_of_the_week_after fdaf{offset};
                 resOffset = fdaf.get_date(tmp);
             }
             else
                 resOffset = tmp;
-
+            start_fixed = true;
             /*resOffset = previous_weekday(start, gregorian::greg_weekday(offset));
             while(resOffset.week_number() >= start.week_number()) {
                 // avoid returning current day or offset from current week.
@@ -58,15 +58,14 @@ public:
         else if(!modifier.compare("next")) {
             gregorian::date tmp = start + gregorian::weeks(1);
             if(offset < start.day_of_week().as_number()) {
-                gregorian::first_day_of_the_week_before fdbf{offset};
                 resOffset = fdbf.get_date(tmp);
             }
             else if(offset > start.day_of_week().as_number()) {
-                gregorian::first_day_of_the_week_after fdaf{offset};
                 resOffset = fdaf.get_date(tmp);
             }
             else
                 resOffset = tmp;
+            start_fixed = true;
             /*resOffset = date_time::next_weekday(start, gregorian::greg_weekday(offset));
             while(resOffset.week_number() <= start.week_number()) {
                 // avoid returning current day or offset from current week.
@@ -80,12 +79,10 @@ public:
                 resOffset = start;
             }
             else if(offset < ref.date().day_of_week().as_number() ) {
-                gregorian::first_day_of_the_week_before fdb{offset};
-                resOffset = fdb.get_date(ref.date());
+                resOffset = fdbf.get_date(ref.date());
             }
             else {
-                gregorian::first_day_of_the_week_after fda{offset};
-                resOffset = fda.get_date(ref.date());
+                resOffset = fdaf.get_date(ref.date());
             }
         }
         else {
@@ -110,6 +107,11 @@ public:
 
         if(resOffset.is_special()) {
             return res;
+        }
+        else if(start_fixed){
+            res.startDate.set_mDay(resOffset.day());
+            res.startDate.setMonth(resOffset.month());
+            res.startDate.setYear(resOffset.year());
         }
         else {
             res.startDate.implyComponent("mday", resOffset.day());
