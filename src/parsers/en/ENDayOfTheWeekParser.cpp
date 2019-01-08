@@ -3,7 +3,8 @@
 
 #include "src/parsers/parsers.h"
 
-#define PATTERN "(\\W|^)(on\\s*)?(?:(this|last|next)\\s*)?(Sunday|Sun|Monday|Mon|Tuesday|Tues|Tue|Wednesday|Wed|Thursday|Thu(?:rs|r)?|Friday|Fri|Saturday|Sat)(?=\\W|$)"
+#define PATTERN "(\\W|^)(?:(this|last|next)\\s*)?(Sunday|Sun|Monday|Mon|Tuesday|Tues|Tue|Wednesday|Wed|Thursday|Thu(?:rs|r)?|Friday|Fri|Saturday|Sat)(?=\\W|$)"
+/* part of pattern (on\s*)?*/
 
 const int PREFIX_GROUP  = 2;
 const int WEEKDAY_GROUP = 3;
@@ -16,7 +17,10 @@ static std::map<std::string, int> DAYS_OFFSET{{"sunday",    0}, {"sun",  0},
                                               {"friday",    5}, {"fri",  5},
                                               {"saturday",  6}, {"sat",  6}
 };
-
+/**
+ * @brief: relative day_of_week pattern parser
+ * Works with first day of the week being Monday
+ * */
 class ENDayOfWeekParser : public Parser {
 
 public:
@@ -30,22 +34,46 @@ public:
         int count=0;
 
         if(!modifier.compare("last") or !modifier.compare("past")) {
-            resOffset = previous_weekday(start, gregorian::greg_weekday(offset));
-            while( resOffset.week_number() == start.week_number() ) {
+            gregorian::date tmp = start - gregorian::weeks(1);
+            if(offset < start.day_of_week().as_number()) {
+                gregorian::first_day_of_the_week_before fdbf{offset};
+                resOffset = fdbf.get_date(tmp);
+            }
+            else if(offset > start.day_of_week().as_number()) {
+                gregorian::first_day_of_the_week_after fdaf{offset};
+                resOffset = fdaf.get_date(tmp);
+            }
+            else
+                resOffset = tmp;
+
+            /*resOffset = previous_weekday(start, gregorian::greg_weekday(offset));
+            while(resOffset.week_number() >= start.week_number()) {
                 // avoid returning current day or offset from current week.
                 // See: https://stackoverflow.com/a/30470686
                 resOffset = date_time::next_weekday(start - gregorian::days(count), gregorian::greg_weekday(offset));
                 count++;
-            }
+                gregorian::gregorian_calendar::from_day_number()
+            }*/
         }
         else if(!modifier.compare("next")) {
-            resOffset = date_time::next_weekday(start, gregorian::greg_weekday(offset));
-            while( resOffset.week_number() == start.week_number() ) {
+            gregorian::date tmp = start + gregorian::weeks(1);
+            if(offset < start.day_of_week().as_number()) {
+                gregorian::first_day_of_the_week_before fdbf{offset};
+                resOffset = fdbf.get_date(tmp);
+            }
+            else if(offset > start.day_of_week().as_number()) {
+                gregorian::first_day_of_the_week_after fdaf{offset};
+                resOffset = fdaf.get_date(tmp);
+            }
+            else
+                resOffset = tmp;
+            /*resOffset = date_time::next_weekday(start, gregorian::greg_weekday(offset));
+            while(resOffset.week_number() <= start.week_number()) {
                 // avoid returning current day or offset from current week.
                 // See: https://stackoverflow.com/a/30470686
                 resOffset = date_time::next_weekday(start + gregorian::days(count), gregorian::greg_weekday(offset));
                 count++;
-            }
+            }*/
         }
         else if(!modifier.compare("this") or modifier.empty()) {
             if(offset == ref.date().day_of_week().as_number()){
@@ -62,19 +90,21 @@ public:
         }
         else {
             // modifier is probably a day_of_week
-            // create date with day of week: modifier within ref.week_number
+            // create date with day_of_week = modifier within ref.week_number()
             int daySpace = start.day_of_week() - DAYS_OFFSET[modifier];
             if(daySpace == 0)
                 resOffset = start;
             else {
-                gregorian::first_day_of_the_week_before fdb{DAYS_OFFSET[modifier]};
-                gregorian::first_day_of_the_week_after  fda{DAYS_OFFSET[modifier]};
                 if(daySpace < 0) {
+                    // day is after ref day
+                    gregorian::first_day_of_the_week_after fda{DAYS_OFFSET[modifier]};
                     resOffset = fda.get_date(start);
                 }
-                else
+                else {
+                    // day is before ref day
+                    gregorian::first_day_of_the_week_before fdb{DAYS_OFFSET[modifier]};
                     resOffset = fdb.get_date(start);
-                // std::cout <<
+                }
             }
         }
 
@@ -115,7 +145,6 @@ public:
         else
             norm = "";
 
-        // updateParsedComponent
         return updateParsedComponent(result, ref, offset, norm);
     }
 };
