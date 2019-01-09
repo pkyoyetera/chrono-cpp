@@ -49,3 +49,16 @@ cc_library(
         "//src/parsers",
     ],
 )
+
+cc_library(
+    name = "ENMonthNameMiddleEndianParser",
+    hdrs = [
+        "ENMonthNameMiddleEndianParser.hpp",
+    ],
+    visibility = [
+        "//visibility:public",
+    ],
+    deps = [
+        "//src/parsers",
+    ],
+)

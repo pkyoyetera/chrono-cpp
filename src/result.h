@@ -80,6 +80,7 @@ public:
     void setText(std::string);
     size_t textLength() const;
     bool end() const;
+    void makeEndDateValid();
     parse::ParsedResult& operator=(const parse::ParsedResult&);
 };
 

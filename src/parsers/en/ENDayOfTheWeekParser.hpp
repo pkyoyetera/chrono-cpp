@@ -33,7 +33,7 @@ public:
         bool start_fixed{false};
         // int count = 0;
         gregorian::first_day_of_the_week_before fdbf{offset};
-        gregorian::first_day_of_the_week_after fdaf{offset};
+        gregorian::first_day_of_the_week_after  fdaf{offset};
 
         if(!modifier.compare("last") or !modifier.compare("past")) {
             gregorian::date tmp = start - gregorian::weeks(1);
@@ -52,7 +52,6 @@ public:
                 // See: https://stackoverflow.com/a/30470686
                 resOffset = date_time::next_weekday(start - gregorian::days(count), gregorian::greg_weekday(offset));
                 count++;
-                gregorian::gregorian_calendar::from_day_number()
             }*/
         }
         else if(!modifier.compare("next")) {
@@ -124,21 +123,19 @@ public:
     }
 
     parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime& ref) {
-        std::string text = match[0].str().substr(match[1].length());
+        std::string text      = match[0].str().substr(match[1].length());
+        std::string prefix    = match[PREFIX_GROUP];
+        std::string postfix   = match[POSTFIX_GROUP];
+        std::string dayOfWeek = match[WEEKDAY_GROUP];
+        std::string norm;
         int idx = match.position(0) + match[1].length();
 
         parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
-
-        std::string dayOfWeek = match[WEEKDAY_GROUP];
 
         int offset = DAYS_OFFSET[dayOfWeek];
         if(offset < 0 or offset > 6) {
             return result;
         }
-
-        std::string prefix  = match[PREFIX_GROUP];
-        std::string postfix = match[POSTFIX_GROUP];
-        std::string norm;
 
         if(prefix.empty())
             norm = postfix;

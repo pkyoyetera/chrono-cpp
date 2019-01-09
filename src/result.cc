@@ -406,6 +406,10 @@ bool ParsedResult::end() const {
     return __end;
 }
 
+void ParsedResult::makeEndDateValid() {
+    __end = true;
+}
+
 utils::Tags ParsedResult::getTags() const {
     return tags;
 }
