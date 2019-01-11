@@ -7,16 +7,16 @@
 
 #define PATTERN "(\\W|^)(?:(?:on\\s*?)?(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sun\\.?|Mon\\.?|Tue\\.?|Wed\\.?|Thu\\.?|Fri\\.?|Sat\\.?)\\s*,?\\s*)?(Jan\\.?|January|Feb\\.?|February|Mar\\.?|March|Apr\\.?|April|May\\.?|Jun\\.?|June|Jul\\.?|July|Aug\\.?|August|Sep\\.?|Sept\\.?|September|Oct\\.?|October|Nov\\.?|November|Dec\\.?|December)(?:-|\\/|\\s*,?\\s*)(([0-9]{1,2})(?:st|nd|rd|th)?|eighteenth|eighth|eleventh|fifteenth|fifth|first|fourteenth|fourth|nineteenth|ninth|second|seventeenth|seventh|sixteenth|sixth|tenth|third|thirteenth|thirtieth|thirty[ -]first|twelfth|twentieth|twenty[ -]eighth|twenty[ -]fifth|twenty[ -]first|twenty[ -]fourth|twenty[ -]ninth|twenty[ -]second|twenty[ -]seventh|twenty[ -]sixth|twenty[ -]third)(?!\\s*(?:am|pm))\\s*(?:(?:to|\\-)\\s*(([0-9]{1,2})(?:st|nd|rd|th)?| eighteenth|eighth|eleventh|fifteenth|fifth|first|fourteenth|fourth|nineteenth|ninth|second|seventeenth|seventh|sixteenth|sixth|tenth|third|thirteenth|thirtieth|thirty[ -]first|twelfth|twentieth|twenty[ -]eighth|twenty[ -]fifth|twenty[ -]first|twenty[ -]fourth|twenty[ -]ninth|twenty[ -]second|twenty[ -]seventh|twenty[ -]sixth|twenty[ -]third)\\s*)?(?:(?:-|\\/|\\s*,?\\s*)(?:([0-9]{4})\\s*(BE|AD|BC)?|([0-9]{1,4})\\s*(AD|BC))\\s*)?(?=\\W|$)(?!\\:\\d)"
 
-const int WEEKDAY_GROUP = 2;
-const int MONTH_NAME_GROUP = 3;
-const int DATE_GROUP = 4;
-const int DATE_NUM_GROUP = 5;
-const int DATE_TO_GROUP = 6;
+const int WEEKDAY_GROUP     = 2;
+const int MONTH_NAME_GROUP  = 3;
+const int DATE_GROUP        = 4;
+const int DATE_NUM_GROUP    = 5;
+const int DATE_TO_GROUP     = 6;
 const int DATE_TO_NUM_GROUP = 7;
-const int YEAR_GROUP = 8;
-const int YEAR_BE_GROUP = 9;
-const int YEAR_GROUP2 = 10;
-const int YEAR_BE_GROUP2 = 11;
+const int YEAR_GROUP        = 8;
+const int YEAR_BE_GROUP     = 9;
+const int YEAR_GROUP2       = 10;
+const int YEAR_BE_GROUP2    = 11;
 
 class ENMonthNameMiddleEndianParser : public Parser {
 public:
@@ -28,18 +28,18 @@ public:
         // gregorian::date d;
 
         std::string month_s = match[MONTH_NAME_GROUP];
-        int month = utils::MONTH_CONSTANTS[month_s];
+        short unsigned month = utils::MONTH_CONSTANTS[month_s];
 
-        auto check = [&](std::string& arg) -> int {
-            std::string value{std::regex_replace(arg, std::regex("-"), " ")};
-            value = std::regex_replace(value, std::regex("^ +| +$|( ) +"), "$1");
-            std::transform(value.begin(), value.end(), value.begin(), ::tolower);
-            return utils::ORDINAL_WORDS[value];
-        }
-        int day = match[DATE_NUM_GROUP].str().empty() ? check(match[DATE_GROUP]) : std::stoi(match[DATE_NUM_GROUP]);
+        short unsigned day;
+        match[DATE_NUM_GROUP].str().empty() ? day = argToOrdinalValue(match[DATE_GROUP].str()) :
+                                              day = std::stoi(match[DATE_NUM_GROUP].str());
+
+        // sanity check
+        if (month==0 or day==0)
+            return result;
 
         std::string year_s{"-1"};
-        int year;
+        int year{-1};
         if (!match[YEAR_GROUP].str().empty() or !match[YEAR_GROUP2].str().empty()) {
             if (!match[YEAR_GROUP].str().empty())
                 year_s = match[YEAR_GROUP];
@@ -76,11 +76,11 @@ public:
             gregorian::date prevY{dRef - gregorian::years(1)},
                             nextY{dRef + gregorian::years(1)};
 
-            if(nextY - ref.date() < prevY - ref.date()) {
+            if(std::abs((nextY - ref.date()).days()) < std::abs((dRef - ref.date()).days())) {
                 // compare the durations returned
                 dRef = nextY;
             }
-            else if(prevY - ref.date() < nextY - ref.date()) {
+            else if(std::abs((prevY - ref.date()).days()) < std::abs((dRef - ref.date()).days())) {
                 dRef = prevY;
             }
             else {
@@ -89,22 +89,22 @@ public:
 
             result.startDate.set_mDay(day);
             result.startDate.setMonth(month);
-            result.startDate.setYear(year);
+            result.startDate.setYear(dRef.year());
         }
 
         // Weekday component
-        if (match[WEEKDAY_GROUP]) {
-            std::string weekday = match[WEEKDAY_GROUP];
+        if (!match[WEEKDAY_GROUP].str().empty()) {
+            std::string weekday = match[WEEKDAY_GROUP].str();
             std::transform(weekday.begin(), weekday.end(), weekday.begin(), ::tolower);
-            weekday = utils::WEEKDAY_OFFSET[weekday]
-            result.startDate.set_wDay(weekday);
+            int weekday_int = utils::WEEKDAY_OFFSET[weekday];
+            result.startDate.set_wDay(weekday_int);
         }
 
         // if text was a range value like 'Dec 25 - 26, 2025'
         if(!match[DATE_TO_GROUP].str().empty()) {
             int endDate;
             match[DATE_TO_NUM_GROUP].str().empty() ?
-                endDate = check(match[DATE_TO_NUM_GROUP].str()) :
+                endDate = argToOrdinalValue(match[DATE_TO_NUM_GROUP].str()) :
                 endDate = std::stoi(match[DATE_TO_NUM_GROUP].str());
 
             parse::ParsedComponents tmp{result.startDate};

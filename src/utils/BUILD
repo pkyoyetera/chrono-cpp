@@ -1,13 +1,16 @@
 cc_library(
     name = "utilities",
+    srcs = [
+        "utils.cpp",
+    ],
     hdrs = [
         "utils.hpp",
     ],
     copts = [
         "-std=c++14",
     ],
-    deps = [
-#	"@boost//:date_time",
-    ],
     visibility = ["//visibility:public"],
+    deps = [
+        #	"@boost//:date_time",
+    ],
 )

@@ -113,34 +113,37 @@ namespace utils {
             {"dec.",      12},
     };
 
-    static std::map<std::string, int> WEEKDAY_OFFSET {
-            {"sunday",   0},
-            {"sun",      0},
-            {"monday",   1},
-            {"mon",      1},
-            {"tuesday",  2},
-            {"tue",      2},
-            {"wednesday",3},
-            {"wed",      3},
-            {"thursday", 4},
-            {"thur",     4},
-            {"thu",      4},
-            {"friday",   5},
-            {"fri",      5},
-            {"saturday", 6},
-            {"sat":      6}
+    static std::map<std::string, int> WEEKDAY_OFFSET{
+            {"sunday",    0},
+            {"sun",       0},
+            {"monday",    1},
+            {"mon",       1},
+            {"tuesday",   2},
+            {"tue",       2},
+            {"wednesday", 3},
+            {"wed",       3},
+            {"thursday",  4},
+            {"thur",      4},
+            {"thu",       4},
+            {"friday",    5},
+            {"fri",       5},
+            {"saturday",  6},
+            {"sat",       6}
     };
 
-    static std::string ordinalWords = [&](std::map<std::string, int>&) -> std::string {
+    static std::string ordinalWords = [&](std::map<std::string, int> &) -> std::string {
         std::string retVal, t;
-        //std::regex re{"\\s"};
-        for(auto a : ORDINAL_WORDS) {
+        // std::regex re{"\\s"};
+        for (auto a : ORDINAL_WORDS) {
             t = std::regex_replace(a.first, std::regex("\\s"), "[ -]");
             retVal.append(t + "|");
         }
-        if(retVal.back() == '|')
+        if (retVal.back() == '|')
             retVal.pop_back();
         return retVal;
     }(ORDINAL_WORDS);
 }
+
+int argToOrdinalValue(const std::string&);
+
 #endif
