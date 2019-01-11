@@ -27,5 +27,14 @@ TEST_F(ENMiddleEndianTest, t1) {
     EXPECT_EQ(results[0].startDate.getMonth(), 01);
     EXPECT_EQ(results[0].startDate.get_mDay(), 12);
 
+    text = "July 24 - 27";
+    results = middleEndianParser.execute(text, t);
 
+    EXPECT_EQ(results[0].startDate.getYear(), 2018);
+    EXPECT_EQ(results[0].startDate.getMonth(), 7);
+    EXPECT_EQ(results[0].startDate.get_mDay(), 24);
+    EXPECT_TRUE(results[0].end());
+    EXPECT_EQ(results[0].endDate.getYear(), 2018);
+    EXPECT_EQ(results[0].endDate.getMonth(), 7);
+    EXPECT_EQ(results[0].endDate.get_mDay(), 27);
 }
