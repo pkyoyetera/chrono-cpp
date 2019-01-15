@@ -277,15 +277,35 @@ bool ParsedComponents::isCertain(std::string comp) {
 
 bool ParsedComponents::isPossibleDate() {
     // needs implementation
-    std::time_t tmp = std::time(nullptr);
-    std::tm* tmp1 = std::gmtime(&tmp);
+    // std::time_t tmp = std::time(nullptr);
+    std::tm tmp, tmp1; // = std::gmtime(&tmp);
 
-    if(tmp1->tm_year != getYear())    return false;
-    if(tmp1->tm_mon  != getMonth()-1) return false;
-    if(tmp1->tm_mday != get_mDay())   return false;
-    if(tmp1->tm_wday != get_wDay())   return false;
-    if(tmp1->tm_hour != getHour())    return false;
-    if(tmp1->tm_min  != getMinute())  return false;
+    tmp1.tm_year = getYear();
+    tmp1.tm_mon  = getMonth()-1;
+    tmp1.tm_mday = get_mDay();
+    tmp1.tm_hour = getHour();
+    tmp1.tm_min  = getMinute();
+    tmp1.tm_sec  = getSeconds();
+
+    posix_time::ptime tmp2 = posix_time::ptime_from_tm(tmp1);
+    tmp = posix_time::to_tm(tmp2);
+
+    if(tmp.tm_year != getYear())    return false;
+    if(tmp.tm_mon  != getMonth()-1) return false;
+    if(tmp.tm_mday != get_mDay())   return false;
+    if(tmp.tm_wday != get_wDay())   return false;
+    if(tmp.tm_hour != getHour())    return false;
+    if(tmp.tm_min  != getMinute())  return false;
+
+    /*
+    if(knownValues["year"].first  == false and
+       knownValues["month"].first == false and
+       knownValues["mday"].first  == false and
+       knownValues["wday"].first  == false and
+       knownValues["hour"].first  == false and
+       knownValues["min"].first   == false and
+       knownValues["sec"].first   == false)
+        return false;*/
 
     return true;
 }
@@ -351,7 +371,14 @@ ParsedResult::ParsedResult(const ParsedResult& pr) {
 }
 
 bool ParsedResult::hasPossibleDates() {
-    return startDate.isPossibleDate() or endDate.isPossibleDate();
+    if(startDate.getYear()    == 0 and startDate.getMonth()   == 0 and
+       startDate.get_mDay()   == 0 and// startDate.get_wDay()   == 0 and
+       startDate.getHour()    == 0 and startDate.getMinute()  == 0 and
+       startDate.getSeconds() == 0 and end() == false)
+        return false;
+
+    //return startDate.isPossibleDate() and (!end() or endDate.isPossibleDate());
+    return true;
 }
 
 ParsedResult::~ParsedResult() { }
@@ -360,7 +387,7 @@ std::string ParsedResult::toDate() {
     struct tm date;
 
     date.tm_year = startDate.getYear() - 1900;
-    date.tm_mon  = startDate.getMonth();
+    date.tm_mon  = startDate.getMonth() - 1;
     date.tm_mday = startDate.get_mDay();
     // date.tm_wday = startDate.get_wDay();
     date.tm_hour = startDate.getHour();

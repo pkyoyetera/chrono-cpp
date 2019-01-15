@@ -7,7 +7,7 @@
 
 #define PATTERN "(\\W|^)(?:(?:on\\s*?)?(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sun\\.?|Mon\\.?|Tue\\.?|Wed\\.?|Thu\\.?|Fri\\.?|Sat\\.?)\\s*,?\\s*)?(Jan\\.?|January|Feb\\.?|February|Mar\\.?|March|Apr\\.?|April|May\\.?|Jun\\.?|June|Jul\\.?|July|Aug\\.?|August|Sep\\.?|Sept\\.?|September|Oct\\.?|October|Nov\\.?|November|Dec\\.?|December)(?:-|\\/|\\s*,?\\s*)(([0-9]{1,2})(?:st|nd|rd|th)?|eighteenth|eighth|eleventh|fifteenth|fifth|first|fourteenth|fourth|nineteenth|ninth|second|seventeenth|seventh|sixteenth|sixth|tenth|third|thirteenth|thirtieth|thirty[ -]first|twelfth|twentieth|twenty[ -]eighth|twenty[ -]fifth|twenty[ -]first|twenty[ -]fourth|twenty[ -]ninth|twenty[ -]second|twenty[ -]seventh|twenty[ -]sixth|twenty[ -]third)(?!\\s*(?:am|pm))\\s*(?:(?:to|\\-)\\s*(([0-9]{1,2})(?:st|nd|rd|th)?| eighteenth|eighth|eleventh|fifteenth|fifth|first|fourteenth|fourth|nineteenth|ninth|second|seventeenth|seventh|sixteenth|sixth|tenth|third|thirteenth|thirtieth|thirty[ -]first|twelfth|twentieth|twenty[ -]eighth|twenty[ -]fifth|twenty[ -]first|twenty[ -]fourth|twenty[ -]ninth|twenty[ -]second|twenty[ -]seventh|twenty[ -]sixth|twenty[ -]third)\\s*)?(?:(?:-|\\/|\\s*,?\\s*)(?:([0-9]{4})\\s*(BE|AD|BC)?|([0-9]{1,4})\\s*(AD|BC))\\s*)?(?=\\W|$)(?!\\:\\d)"
 
-const int WEEKDAY_GROUP     = 2;
+const int WEEKDAY__GROUP    = 2;
 const int MONTH_NAME_GROUP  = 3;
 const int DATE_GROUP        = 4;
 const int DATE_NUM_GROUP    = 5;
@@ -93,8 +93,8 @@ public:
         }
 
         // Weekday component
-        if (!match[WEEKDAY_GROUP].str().empty()) {
-            std::string weekday = match[WEEKDAY_GROUP].str();
+        if (!match[WEEKDAY__GROUP].str().empty()) {
+            std::string weekday = match[WEEKDAY__GROUP].str();
             std::transform(weekday.begin(), weekday.end(), weekday.begin(), ::tolower);
             int weekday_int = utils::WEEKDAY_OFFSET[weekday];
             result.startDate.set_wDay(weekday_int);
@@ -104,7 +104,7 @@ public:
         if(!match[DATE_TO_GROUP].str().empty()) {
             int endDate;
             match[DATE_TO_NUM_GROUP].str().empty() ?
-                endDate = argToOrdinalValue(match[DATE_TO_NUM_GROUP].str()) :
+                endDate = utils::argToOrdinalValue(match[DATE_TO_NUM_GROUP].str()) :
                 endDate = std::stoi(match[DATE_TO_NUM_GROUP].str());
 
             parse::ParsedComponents tmp{result.startDate};

@@ -109,3 +109,4 @@ TEST_F(ENMiddleEndianTest, t5_range_date) {
     EXPECT_EQ(r.endDate.getMonth(), 2);
     EXPECT_EQ(r.endDate.get_mDay(), 22);
 }
+

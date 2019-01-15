@@ -4,6 +4,7 @@
 #include "src/parsers/en/ENCasualDateParser.h"
 #include "src/parsers/en/ENDeadlineFormatParser.hpp"
 #include "src/parsers/en/ENDayOfTheWeekParser.hpp"
+#include "src/parsers/en/ENMonthNameMiddleEndianParser.hpp"
 
 #include "src/refiners/OverlapRemovalRefiner.hpp"
 #include "src/refiners/en/ENMergeDateRangeRefiner.hpp"
@@ -29,11 +30,12 @@ int main(int argc, char* argv[]) {
     Parser* dp  = new ENCasualDateParser();
     Parser* dfp = new ENDeadlineFormatParser();
     Parser* dow = new ENDayOfWeekParser();
+    Parser* mme = new ENMonthNameMiddleEndianParser();
 
-    Refiner* ov  = new OverlapRemover();
-    Refiner* mdr = new ENMergeDateRange();
+    // Refiner* ov  = new OverlapRemover();
+    // Refiner* mdr = new ENMergeDateRange();
 
-    list<Parser*>  parsers  {tp, dfp, dp, dow};
+    list<Parser*>  parsers  {tp, dfp, dp, dow, mme};
     // list<Refiner*> refiners {ov, mdr};
 
     str = argv[1];
@@ -60,9 +62,12 @@ int main(int argc, char* argv[]) {
     /*for(list<Refiner*>::iterator it = refiners.begin(); it != refiners.end(); ++it) {
         results = (*it)->refine(results, str);
     }*/
-    results_final = ov->refine(mdr->refine(results_pre, str), str);
+    // results_final = ov->refine(mdr->refine(results_pre, str), str);
 
-    cout << "Date:\t"  << results_final[0].toDate() << endl;
+    if(results_pre.size() > 0)
+        cout << "Date:\t"  << results_pre[0].toDate() << endl;
+    else
+        cout << "[???] -- Invalid date" << endl;
 
     return 0;
 }

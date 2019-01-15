@@ -18,10 +18,10 @@ namespace utils {
         ENDeadlineFormatParser,
         ENDayOfTheWeekParser,
         ENMonthNameMiddleEndianParser,
+        ENTimeLaterParser,
 
         ENMergeDateRangeRefiner,
 
-        OverlapRemovalRefiner,
     } Modifiers;
 
     typedef std::unordered_map<Modifiers, bool> Tags;
@@ -142,8 +142,25 @@ namespace utils {
             retVal.pop_back();
         return retVal;
     }(ORDINAL_WORDS);
-}
 
-int argToOrdinalValue(const std::string&);
+    std::string toLowerCase(std::string);
+
+
+    int argToOrdinalValue(const std::string &);
+
+    std::string keysToString(std::map<std::string, int>);
+
+    static std::string INTEGER_WORDS_PATTERN{"(?:" + utils::keysToString(utils::INTEGER_WORDS) + ")"};
+
+    static std::string TIME_UNIT{"(" + INTEGER_WORDS_PATTERN + "|[0-9]+|an?(?:\\s*few)?|half(?:\\s*an?)?)\\s*" +
+                                 "(sec(?:onds?)?|min(?:ute)?s?|hours?|weeks?|days?|months?|years?)\\s*"};
+
+    static std::regex PATTERN_TIME_UNIT(TIME_UNIT, std::regex::icase);
+
+    std::map<std::string, float> extractDateTimeUnitFragments(std::string);
+
+    std::map<std::string, float> collectDateTimeFragment(std::smatch , std::map<std::string, float>& );
+
+}
 
 #endif
