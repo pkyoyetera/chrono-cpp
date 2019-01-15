@@ -62,3 +62,16 @@ cc_library(
         "//src/parsers",
     ],
 )
+
+cc_library(
+    name = "ENTimeLaterParser",
+    hdrs = [
+        "ENTimeLaterParser.hpp",
+    ],
+    visibility = [
+        "//visibility:public",
+    ],
+    deps = [
+        "//src/parsers",
+    ],
+)
