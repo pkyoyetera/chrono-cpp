@@ -5,6 +5,7 @@
 #include "src/parsers/en/ENDeadlineFormatParser.hpp"
 #include "src/parsers/en/ENDayOfTheWeekParser.hpp"
 #include "src/parsers/en/ENMonthNameMiddleEndianParser.hpp"
+#include "src/parsers/en/ENTimeLaterParser.hpp"
 
 #include "src/refiners/OverlapRemovalRefiner.hpp"
 #include "src/refiners/en/ENMergeDateRangeRefiner.hpp"
@@ -31,11 +32,12 @@ int main(int argc, char* argv[]) {
     Parser* dfp = new ENDeadlineFormatParser();
     Parser* dow = new ENDayOfWeekParser();
     Parser* mme = new ENMonthNameMiddleEndianParser();
+    Parser* tl  = new ENTimeLaterParser();
 
     // Refiner* ov  = new OverlapRemover();
     // Refiner* mdr = new ENMergeDateRange();
 
-    list<Parser*>  parsers  {tp, dfp, dp, dow, mme};
+    list<Parser*>  parsers  {tp, dfp, dp, dow, mme, tl};
     // list<Refiner*> refiners {ov, mdr};
 
     str = argv[1];

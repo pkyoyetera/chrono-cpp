@@ -17,6 +17,7 @@ cc_binary(
         "//src/parsers/en:ENDayOfTheWeekParser",
         "//src/parsers/en:ENDeadlineFormatParser",
         "//src/parsers/en:ENMonthNameMiddleEndianParser",
+        "//src/parsers/en:ENTimeLaterParser",
         "//src/refiners:mergeDateRange",
         "//src/refiners:overlapRemoval",
     ],

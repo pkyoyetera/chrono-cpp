@@ -31,7 +31,7 @@ public:
         short unsigned month = utils::MONTH_CONSTANTS[month_s];
 
         short unsigned day;
-        match[DATE_NUM_GROUP].str().empty() ? day = argToOrdinalValue(match[DATE_GROUP].str()) :
+        match[DATE_NUM_GROUP].str().empty() ? day = utils::argToOrdinalValue(match[DATE_GROUP].str()) :
                                               day = std::stoi(match[DATE_NUM_GROUP].str());
 
         // sanity check

@@ -33,8 +33,8 @@ public:
                 date += gregorian::years(static_cast<int> (a.second));
             else if(a.first == "month")
                 date += gregorian::months(static_cast<int> (a.second));
-            //else if(a.first == "week")            // this did not mean a literal week but rather a weekday
-            //    date += gregorian::weeks(a.second);
+            else if(a.first == "week")            // this did not mean a literal week but rather a weekday
+                date += gregorian::weeks(a.second);
             else if(a.first == "day")
                 date += gregorian::days(static_cast<int> (a.second)); // you sure you wanna cast these bad boys?
             else if(a.first == "hour")
@@ -45,19 +45,20 @@ public:
                 date_t += posix_time::seconds(static_cast<int> (a.second));
         }
 
-        if (fragments["hour"] > 0 or fragments["minute"] > 0 or fragments["second"] > 0) {
+        if (fragments["hour"] > 0 or fragments["minute"] > 0 or fragments["second"] > 0 ) {
             result.startDate.setHour(date_t.time_of_day().hours());
             result.startDate.setMinute(date_t.time_of_day().minutes());
             result.startDate.setSeconds(date_t.time_of_day().seconds());
         }
-        if (fragments["day"] > 0  or fragments["month"] > 0  or fragments["year"] > 0) {
+        if (fragments["day"]  > 0 or fragments["month"] > 0 or
+            fragments["year"] > 0 or fragments["week"] > 0 ) {
             result.startDate.set_mDay(date.day());
             result.startDate.setMonth(date.month());
             result.startDate.setYear(date.year());
         } else {
-            if (fragments["week"] > 0) {
+            /*if (fragments["week"] > 0) {
                 result.startDate.implyComponent("wday", date.day_of_week());
-            }
+            }*/
             result.startDate.implyComponent("mday",  date_t.date().day());
             result.startDate.implyComponent("month", date_t.date().month());
             result.startDate.implyComponent("year",  date_t.date().year());
