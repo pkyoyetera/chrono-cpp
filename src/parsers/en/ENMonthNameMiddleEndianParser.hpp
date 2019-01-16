@@ -9,20 +9,19 @@
 
 #include "src/parsers/parsers.h"
 
-// #define PATTERN "(?<=\\W|^)(?:(?:Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sun|Mon|Tue|Wed|Thu|Fri|Sat)\\s*,?\\s*)?(Jan(?:uary\\.)?|Feb(?:ruary|\\.)?|Mar(?:ch|\\.)?|Apr(?:il|\\.)?|May|Jun(?:e|\\.)?|Jul(?:y|\\.)?|Aug(?:ust|\\.)?|Sep(?:tember|\\.)?|Oct(?:ober|\\.)?|Nov(?:ember|\\.)?|Dec(?:ember|\\.)?)\\s*(?:([0-9]{1,2})(?:st|nd|rd|th)?\\s*(?:to|\\-|~)\\s*)?([0-9]{1,2})(?:st|nd|rd|th)?(?:,?(\\s*[0-9]{4})(\\s*BE)?)?(?=\\W|$)"
+#define WEEKDAY__GROUP    2
+#define MONTH_NAME_GROUP  3
+#define DATE_GROUP        4
+#define DATE_NUM_GROUP    5
+#define DATE_TO_GROUP     6
+#define DATE_TO_NUM_GROUP 7
+#define YEAR_GROUP        8
+#define YEAR_BE_GROUP     9
+#define YEAR_GROUP2       10
+#define YEAR_BE_GROUP2    11
 
 #define PATTERN "(\\W|^)(?:(?:on\\s*?)?(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sun\\.?|Mon\\.?|Tue\\.?|Wed\\.?|Thu\\.?|Fri\\.?|Sat\\.?)\\s*,?\\s*)?(Jan\\.?|January|Feb\\.?|February|Mar\\.?|March|Apr\\.?|April|May\\.?|Jun\\.?|June|Jul\\.?|July|Aug\\.?|August|Sep\\.?|Sept\\.?|September|Oct\\.?|October|Nov\\.?|November|Dec\\.?|December)(?:-|\\/|\\s*,?\\s*)(([0-9]{1,2})(?:st|nd|rd|th)?|eighteenth|eighth|eleventh|fifteenth|fifth|first|fourteenth|fourth|nineteenth|ninth|second|seventeenth|seventh|sixteenth|sixth|tenth|third|thirteenth|thirtieth|thirty[ -]first|twelfth|twentieth|twenty[ -]eighth|twenty[ -]fifth|twenty[ -]first|twenty[ -]fourth|twenty[ -]ninth|twenty[ -]second|twenty[ -]seventh|twenty[ -]sixth|twenty[ -]third)(?!\\s*(?:am|pm))\\s*(?:(?:to|\\-)\\s*(([0-9]{1,2})(?:st|nd|rd|th)?| eighteenth|eighth|eleventh|fifteenth|fifth|first|fourteenth|fourth|nineteenth|ninth|second|seventeenth|seventh|sixteenth|sixth|tenth|third|thirteenth|thirtieth|thirty[ -]first|twelfth|twentieth|twenty[ -]eighth|twenty[ -]fifth|twenty[ -]first|twenty[ -]fourth|twenty[ -]ninth|twenty[ -]second|twenty[ -]seventh|twenty[ -]sixth|twenty[ -]third)\\s*)?(?:(?:-|\\/|\\s*,?\\s*)(?:([0-9]{4})\\s*(BE|AD|BC)?|([0-9]{1,4})\\s*(AD|BC))\\s*)?(?=\\W|$)(?!\\:\\d)"
-
-const int WEEKDAY__GROUP    = 2;
-const int MONTH_NAME_GROUP  = 3;
-const int DATE_GROUP        = 4;
-const int DATE_NUM_GROUP    = 5;
-const int DATE_TO_GROUP     = 6;
-const int DATE_TO_NUM_GROUP = 7;
-const int YEAR_GROUP        = 8;
-const int YEAR_BE_GROUP     = 9;
-const int YEAR_GROUP2       = 10;
-const int YEAR_BE_GROUP2    = 11;
+// #define PATTERN "(?<=\\W|^)(?:(?:Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sun|Mon|Tue|Wed|Thu|Fri|Sat)\\s*,?\\s*)?(Jan(?:uary\\.)?|Feb(?:ruary|\\.)?|Mar(?:ch|\\.)?|Apr(?:il|\\.)?|May|Jun(?:e|\\.)?|Jul(?:y|\\.)?|Aug(?:ust|\\.)?|Sep(?:tember|\\.)?|Oct(?:ober|\\.)?|Nov(?:ember|\\.)?|Dec(?:ember|\\.)?)\\s*(?:([0-9]{1,2})(?:st|nd|rd|th)?\\s*(?:to|\\-|~)\\s*)?([0-9]{1,2})(?:st|nd|rd|th)?(?:,?(\\s*[0-9]{4})(\\s*BE)?)?(?=\\W|$)"
 
 class ENMonthNameMiddleEndianParser : public Parser {
 public:
@@ -125,6 +124,18 @@ public:
         return result;
     }
 };
+
+
+#undef WEEKDAY__GROUP
+#undef MONTH_NAME_GROUP
+#undef DATE_GROUP
+#undef DATE_NUM_GROUP
+#undef DATE_TO_GROUP
+#undef DATE_TO_NUM_GROUP
+#undef YEAR_GROUP
+#undef YEAR_BE_GROUP
+#undef YEAR_GROUP2
+#undef YEAR_BE_GROUP2
 
 #undef PATTERN
 

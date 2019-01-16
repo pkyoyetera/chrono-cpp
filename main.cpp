@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
     Parser* mn  = new ENMonthNameParser();
     Parser* ta  = new ENTimeAgoFormatParser();
 
-    // Refiner* ov  = new OverlapRemover();
+    Refiner* ov  = new OverlapRemover();
     // Refiner* mdr = new ENMergeDateRange();
 
     list<Parser*>  parsers  {tp, dfp, dp, dow, mme, tl, mn, ta};
@@ -71,10 +71,10 @@ int main(int argc, char* argv[]) {
     /*for(list<Refiner*>::iterator it = refiners.begin(); it != refiners.end(); ++it) {
         results = (*it)->refine(results, str);
     }*/
-    // results_final = ov->refine(mdr->refine(results_pre, str), str);
+    results_final = ov->refine(results_pre, str);
 
-    if(results_pre.size() > 0)
-        cout << "Date:\t"  << results_pre[0].toDate() << endl;
+    if(results_final.size() > 0)
+        cout << "Date:\t"  << results_final[0].toDate() << endl;
     else
         cout << "[???] -- Invalid date" << endl;
 

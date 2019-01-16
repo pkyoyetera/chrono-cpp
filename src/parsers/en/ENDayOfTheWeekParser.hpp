@@ -3,20 +3,13 @@
 
 #include "src/parsers/parsers.h"
 
+#define PREFIX_GROUP  2
+#define WEEKDAY_GROUP 3
+#define POSTFIX_GROUP 4
+
 #define PATTERN "(\\W|^)(?:(this|last|next)\\s*)?(Sunday|Sun|Monday|Mon|Tuesday|Tues|Tue|Wednesday|Wed|Thursday|Thu(?:rs|r)?|Friday|Fri|Saturday|Sat)(?=\\W|$)"
 /* part of pattern (on\s*)?*/
 
-const int PREFIX_GROUP  = 2;
-const int WEEKDAY_GROUP = 3;
-const int POSTFIX_GROUP = 4;
-static std::map<std::string, int> DAYS_OFFSET{{"sunday",    0}, {"sun",  0},
-                                              {"monday",    1}, {"mon",  1},
-                                              {"tuesday",   2}, {"tues", 2}, {"tue",  2},
-                                              {"wednesday", 3}, {"wed",  3},
-                                              {"thursday",  4}, {"thurs",4}, {"thur", 4}, {"thu", 4},
-                                              {"friday",    5}, {"fri",  5},
-                                              {"saturday",  6}, {"sat",  6}
-};
 /**
  * @brief: relative day_of_week pattern parser
  * Works with first day of the week being Monday
@@ -87,18 +80,18 @@ public:
         else {
             // modifier is probably a day_of_week
             // create date with day_of_week = modifier within ref.week_number()
-            int daySpace = start.day_of_week() - DAYS_OFFSET[modifier];
+            int daySpace = start.day_of_week() - utils::WEEKDAY_OFFSET[modifier];
             if(daySpace == 0)
                 resOffset = start;
             else {
                 if(daySpace < 0) {
                     // day is after ref day
-                    gregorian::first_day_of_the_week_after fda{DAYS_OFFSET[modifier]};
+                    gregorian::first_day_of_the_week_after fda{utils::WEEKDAY_OFFSET[modifier]};
                     resOffset = fda.get_date(start);
                 }
                 else {
                     // day is before ref day
-                    gregorian::first_day_of_the_week_before fdb{DAYS_OFFSET[modifier]};
+                    gregorian::first_day_of_the_week_before fdb{utils::WEEKDAY_OFFSET[modifier]};
                     resOffset = fdb.get_date(start);
                 }
             }
@@ -132,7 +125,7 @@ public:
 
         parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
 
-        int offset = DAYS_OFFSET[dayOfWeek];
+        int offset = utils::WEEKDAY_OFFSET[dayOfWeek];
         if(offset < 0 or offset > 6) {
             return result;
         }
@@ -149,5 +142,8 @@ public:
 };
 
 #undef PATTERN
+#undef PREFIX_GROUP
+#undef WEEKDAY_GROUP
+#undef POSTFIX_GROUP
 
 #endif
