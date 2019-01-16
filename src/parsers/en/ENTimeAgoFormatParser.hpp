@@ -1,16 +1,16 @@
 
-#ifndef ENTIMELATERPARSER_HPP
-#define ENTIMELATERPARSER_HPP
+
+#ifndef ENTIMEAGOFORMATPARSER_HPP
+#define ENTIMEAGOFORMATPARSER_HPP
 
 #include "src/parsers/parsers.h"
 
-#define PATTERN "(\\W|^)((?:((?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)|[0-9]+|an?(?:\\s*few)?|half(?:\\s*an?)?)\\s*(sec(?:onds?)?|min(?:ute)?s?|hours?|weeks?|days?|months?|years?)\\s*)+)(?:later|after|from now|henceforth|forward|out)(?=(?:\\W|$))"
+#define PATTERN "(\\W|^)(?:within\\s*)?((?:((?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)|[0-9]+|an?(?:\\s*few)?|half(?:\\s*an?)?)\\s*(sec(?:onds?)?|min(?:ute)?s?|hours?|weeks?|days?|months?|years?)\\s*)+)(?:ago|before|earlier)(?=(?:\\W|$))"
 
 
-class ENTimeLaterParser : public Parser {
-
+class ENTimeAgoFormatParser : public Parser {
 public:
-    ENTimeLaterParser() : Parser(false, std::regex(PATTERN, std::regex::icase)) {}
+    ENTimeAgoFormatParser() : Parser(false, std::regex(PATTERN, std::regex::icase)) { }
 
     parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime &ref) override {
         int idx = match.position() + match[1].length();
@@ -22,27 +22,25 @@ public:
 
         std::map<std::string, float> fragments = utils::extractDateTimeUnitFragments(match[2].str());
 
-        // tricky here turning the floats to ints
-
         gregorian::date date{ref.date()};
         posix_time::ptime date_t{ref};
 
-        // add each of the elements in fragments to the date/ptinme object
+        // subtract each of the elements in fragments to the date/ptinme object
         for(auto a : fragments) {
             if(a.first == "year")
-                date += gregorian::years(static_cast<int> (a.second));
+                date -= gregorian::years(static_cast<int> (a.second));
             else if(a.first == "month")
-                date += gregorian::months(static_cast<int> (a.second));
+                date -= gregorian::months(static_cast<int> (a.second));
             else if(a.first == "week")            // this did not mean a literal week but rather a weekday
-                date += gregorian::weeks(a.second);
+                date -= gregorian::weeks(a.second);
             else if(a.first == "day")
-                date += gregorian::days(static_cast<int> (a.second)); // you sure you wanna cast these bad boys?
+                date -= gregorian::days(static_cast<int> (a.second)); // you sure you wanna cast these bad boys?
             else if(a.first == "hour")
-                date_t += posix_time::hours(static_cast<int> (a.second));
+                date_t -= posix_time::hours(static_cast<int> (a.second));
             else if(a.first == "minute")
-                date_t += posix_time::minutes(static_cast<int> (a.second));
+                date_t -= posix_time::minutes(static_cast<int> (a.second));
             else if(a.first == "second")
-                date_t += posix_time::seconds(static_cast<int> (a.second));
+                date_t -= posix_time::seconds(static_cast<int> (a.second));
         }
 
         if (fragments["hour"] > 0 or fragments["minute"] > 0 or fragments["second"] > 0 ) {
@@ -64,7 +62,7 @@ public:
             result.startDate.implyComponent("year",  date_t.date().year());
         }
 
-        result.setTag(utils::ENTimeLaterParser);
+        result.setTag(utils::ENTimeAgoFormatParser);
         return result;
     }
 };

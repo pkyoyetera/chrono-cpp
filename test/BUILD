@@ -219,6 +219,31 @@ cc_test(
 )
 
 cc_test(
+    name = "ENTimeAgo",
+    srcs = [
+        "gtest_main.cc",
+        "parsers.test/ENTimeAgoFormat.test.cpp",
+    ],
+    args = [
+        "--verbose_failures",
+        "--compilation_mode=dbg -s",
+    ],
+    copts = [
+        "-std=c++14",
+        "-O0",
+    ],
+    linkopts = [
+        "-lstdc++",
+        "-lboost_date_time",
+    ],
+    deps = [
+        "//src:result",
+        "//src/parsers/en:ENTimeAgoParser",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
     name = "entryPointTest",
     srcs = [
         "gtest_main.cc",
