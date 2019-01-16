@@ -384,20 +384,33 @@ bool ParsedResult::hasPossibleDates() {
 ParsedResult::~ParsedResult() { }
 
 std::string ParsedResult::toDate() {
-    struct tm date;
+    struct tm date_start, date_end;
+    std::string res;
 
-    date.tm_year = startDate.getYear() - 1900;
-    date.tm_mon  = startDate.getMonth() - 1;
-    date.tm_mday = startDate.get_mDay();
+    date_start.tm_year = startDate.getYear() - 1900;
+    date_start.tm_mon  = startDate.getMonth() - 1;
+    date_start.tm_mday = startDate.get_mDay();
     // date.tm_wday = startDate.get_wDay();
-    date.tm_hour = startDate.getHour();
-    date.tm_min  = startDate.getMinute();
-    date.tm_sec  = startDate.getSeconds();
-    // date.tm_isdst = 1;
+    date_start.tm_hour = startDate.getHour();
+    date_start.tm_min  = startDate.getMinute();
+    date_start.tm_sec  = startDate.getSeconds();
+    /*/ date.tm_isdst = 1;
     // date.tm_gmtoff = -5*60*60;      // default for Eastern Standard Time
     // std::cout << asctime(&date);
-    // time_t t = mktime(&date);
-    return posix_time::to_simple_string(posix_time::ptime_from_tm(date));
+    // time_t t = mktime(&date);*/
+    res = posix_time::to_simple_string(posix_time::ptime_from_tm(date_start));
+
+    if(end()) {
+        date_end.tm_year = endDate.getYear() - 1900;
+        date_end.tm_mon  = endDate.getMonth() - 1;
+        date_end.tm_mday = endDate.get_mDay();
+        date_end.tm_hour = endDate.getHour();
+        date_end.tm_min  = endDate.getMinute();
+        date_end.tm_sec  = endDate.getSeconds();
+        res += " - " + posix_time::to_simple_string(posix_time::ptime_from_tm(date_end));
+    }
+
+    return res;
 }
 
 unsigned ParsedResult::getIndex() const {

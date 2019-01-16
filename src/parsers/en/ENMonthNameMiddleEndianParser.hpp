@@ -1,3 +1,9 @@
+/*
+ *          Author: Patrick Kyoyetera
+ *                  2019
+ */
+
+
 #ifndef ENMONTHNAMEMIDDLEENDIAN_PARSER
 #define ENMONTHNAMEMIDDLEENDIAN_PARSER
 
@@ -22,7 +28,7 @@ class ENMonthNameMiddleEndianParser : public Parser {
 public:
     ENMonthNameMiddleEndianParser() : Parser(false, std::regex(PATTERN, std::regex::icase)) {}
 
-    parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime &ref) {
+    parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime &ref) override {
 
         parse::ParsedResult result;
         // gregorian::date d;
@@ -109,6 +115,8 @@ public:
 
             parse::ParsedComponents tmp{result.startDate};
             tmp.set_mDay(endDate);
+            tmp.setHour(23);
+            tmp.setMinute(59);
             result.endDate = tmp;
             result.makeEndDateValid();
         }

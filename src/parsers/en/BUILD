@@ -64,6 +64,19 @@ cc_library(
 )
 
 cc_library(
+    name = "ENMonthNameParser",
+    hdrs = [
+        "ENMonthNameParser.hpp",
+    ],
+    visibility = [
+        "//visibility:public",
+    ],
+    deps = [
+        "//src/parsers",
+    ],
+)
+
+cc_library(
     name = "ENTimeLaterParser",
     hdrs = [
         "ENTimeLaterParser.hpp",

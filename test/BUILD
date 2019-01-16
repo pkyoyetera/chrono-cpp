@@ -169,6 +169,31 @@ cc_test(
 )
 
 cc_test(
+    name = "ENMonthName",
+    srcs = [
+        "gtest_main.cc",
+        "parsers.test/ENMonthNameParser.test.cpp",
+    ],
+    args = [
+        "--verbose_failures",
+        "--compilation_mode=dbg -s",
+    ],
+    copts = [
+        "-std=c++14",
+        "-O0",
+    ],
+    linkopts = [
+        "-lstdc++",
+        "-lboost_date_time",
+    ],
+    deps = [
+        "//src:result",
+        "//src/parsers/en:ENMonthNameParser",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_test(
     name = "ENTimeLater",
     srcs = [
         "gtest_main.cc",

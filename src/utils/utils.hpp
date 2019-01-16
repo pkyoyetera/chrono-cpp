@@ -19,6 +19,7 @@ namespace utils {
         ENDayOfTheWeekParser,
         ENMonthNameMiddleEndianParser,
         ENTimeLaterParser,
+        ENMonthNameParser,
 
         ENMergeDateRangeRefiner,
 
@@ -102,6 +103,8 @@ namespace utils {
             {"september", 9},
             {"sep",       9},
             {"sep.",      9},
+            {"sept",      9},
+            {"sept.",     9},
             {"october",   10},
             {"oct",       10},
             {"oct.",      10},
