@@ -11,9 +11,9 @@
 
 #define PATTERN "(^|\\D\\s+|[^\\w\\s])(Jan\\.?|January|Feb\\.?|February|Mar\\.?|March|Apr\\.?|April|May\\.?|Jun\\.?|June|Jul\\.?|July|Aug\\.?|August|Sep\\.?|Sept\\.?|September|Oct\\.?|October|Nov\\.?|November|Dec\\.?|December)\\s*(?:[,-]?\\s*([0-9]{4})(\\s*BE|AD|BC)?)?(?=[^\\s\\w]|\\s+[^0-9]|\\s+$|$)"
 
-const unsigned short MONTH_NAME_GROUP = 2;
-const unsigned short YEAR_GROUP       = 3;
-const unsigned short YEAR_BE_GROUP    = 4;
+const unsigned short MONTH__NAME_GROUP = 2;
+const unsigned short YEAR__GROUP       = 3;
+const unsigned short YEAR_BE_GROUP_    = 4;
 
 class ENMonthNameParser : public Parser {
 public:
@@ -25,19 +25,19 @@ public:
 
         parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
 
-        std::string month_s = match[MONTH_NAME_GROUP];
+        std::string month_s = match[MONTH__NAME_GROUP];
         int month = utils::MONTH_CONSTANTS[month_s];
 
         short unsigned day = 1;
 
         int year{-1};
-        if(!match[YEAR_GROUP].str().empty()) {
-            year = std::stoi(match[YEAR_GROUP].str());
-            if(!match[YEAR_BE_GROUP].str().empty()) {
-                if (std::regex_search(match[YEAR_BE_GROUP].str(), std::regex("BE", std::regex::icase))) {
+        if(!match[YEAR__GROUP].str().empty()) {
+            year = std::stoi(match[YEAR__GROUP].str());
+            if(!match[YEAR_BE_GROUP_].str().empty()) {
+                if (std::regex_search(match[YEAR_BE_GROUP_].str(), std::regex("BE", std::regex::icase))) {
                     // Buddhist era
                     year -= 543;
-                } else if (std::regex_search(match[YEAR_BE_GROUP].str(), std::regex("BC", std::regex::icase))) {
+                } else if (std::regex_search(match[YEAR_BE_GROUP_].str(), std::regex("BC", std::regex::icase))) {
                     // Before Christ
                     year = -year;
                 }
