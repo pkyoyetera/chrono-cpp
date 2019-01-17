@@ -267,6 +267,31 @@ cc_test(
     ],
 )
 
+cc_test(
+    name = "ENTimeExpression",
+    srcs = [
+        "gtest_main.cc",
+        "parsers.test/ENTimeExpressionParser.test.cpp",
+    ],
+    args = [
+        "--verbose_failures",
+        "--compilation_mode=dbg -s",
+    ],
+    copts = [
+        "-std=c++14",
+        "-O0",
+    ],
+    linkopts = [
+        "-lstdc++",
+        "-lboost_date_time",
+    ],
+    deps = [
+        "//src:result",
+        "//src/parsers/en:ENTimeExpression",
+        "@googletest//:gtest_main",
+    ],
+)
+
 #cc_test(
 #    name = "entryPointTest",
 #    srcs = [

@@ -22,6 +22,7 @@ namespace utils {
         ENMonthNameParser,
         ENTimeAgoFormatParser,
         ENISOFormatParser,
+        ENTimeExpressionParser,
 
         ENMergeDateRangeRefiner,
 
