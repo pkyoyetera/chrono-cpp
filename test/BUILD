@@ -1,9 +1,8 @@
 cc_test(
-    name = "Result__test",
+    name = "resultTest",
     srcs = [
         "gtest_main.cc",
-        "test_result.cpp",
-        # "//src/parsers/en/ENCasualTimeParser.cc",
+        "result.test/test_result.cpp",
     ],
     args = [
         "--test_verbose_timeout_warnings",
@@ -11,6 +10,9 @@ cc_test(
     ],
     copts = [
         "-std=c++14",
+    ],
+    linkopts = [
+        "-lstdc++",
         "-lboost_date_time",
     ],
     deps = [
@@ -21,10 +23,10 @@ cc_test(
 )
 
 cc_test(
-    name = "ENCasualTest",
+    name = "ENCasualTimeTest",
     srcs = [
         "gtest_main.cc",
-        "test__ENCasualTimeParser.cpp",
+        "parsers.test/ENCasualTimeParser.test.cpp",
     ],
     args = [
         "--verbose_failures",
@@ -42,15 +44,14 @@ cc_test(
         "//src/parsers/en:ENCasualTimeParser",
         "//src/utils:utilities",
         "@googletest//:gtest_main",
-        #"@boost//:date_time"
     ],
 )
 
 cc_test(
-    name = "ENCasualDate__test",
+    name = "ENCasualDateTest",
     srcs = [
         "gtest_main.cc",
-        "test__ENCasualDateParser.cpp",
+        "parsers.test/ENCasualDateParser.test.cpp",
     ],
     args = [
         "--verbose_failures",
@@ -68,15 +69,14 @@ cc_test(
         "//src/parsers/en:ENCasualDateParser",
         "//src/utils:utilities",
         "@googletest//:gtest_main",
-        #"@boost//:date_time"
     ],
 )
 
 cc_test(
-    name = "ENDeadlineFormat__test",
+    name = "ENDeadlineFormatTest",
     srcs = [
         "gtest_main.cc",
-        "test__ENDeadlineFormatParser.cpp",
+        "parsers.test/ENDeadlineFormatParser.test.cpp",
     ],
     args = [
         "--verbose_failures",
@@ -94,7 +94,6 @@ cc_test(
         "//src/parsers/en:ENDeadlineFormatParser",
         "//src/utils:utilities",
         "@googletest//:gtest_main",
-        #"@boost//:date_time"
     ],
 )
 
@@ -102,7 +101,7 @@ cc_test(
     name = "overlapRemovalTest",
     srcs = [
         "gtest_main.cc",
-        "test__OverlapRemovalRefiner.cpp",
+        "refiners.test/OverlapRemovalRefiner.test.cpp",
     ],
     args = [
         "--verbose_failures",
@@ -243,22 +242,22 @@ cc_test(
     ],
 )
 
-cc_test(
-    name = "entryPointTest",
-    srcs = [
-        "gtest_main.cc",
-        "test_MainEntryPointFile.cpp",
-    ],
-    args = [
-        "--verbose_failures",
-        "--test_verbose_timeout_warnings",
-    ],
-    copts = [
-        "-std=c++14",
-        "-lboost_date_time",
-    ],
-    deps = [
-        "//src/parsers/en:ENCasualTimeParser",
-        "@googletest//:gtest_main",
-    ],
-)
+#cc_test(
+#    name = "entryPointTest",
+#    srcs = [
+#        "gtest_main.cc",
+#        "test_MainEntryPointFile.cpp",
+#    ],
+#    args = [
+#        "--verbose_failures",
+#        "--test_verbose_timeout_warnings",
+#    ],
+#    copts = [
+#        "-std=c++14",
+#        "-lboost_date_time",
+#    ],
+#    deps = [
+#        "//src/parsers/en:ENCasualTimeParser",
+#        "@googletest//:gtest_main",
+#    ],
+#)

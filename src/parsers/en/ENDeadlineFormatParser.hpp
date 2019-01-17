@@ -27,7 +27,7 @@ public:
         else if(!tmp.compare("a") || !tmp.compare("an")) {
             num = 1;
         }
-        else if(!tmp.compare("few")) {
+        else if(tmp.find("few") != std::string::npos) {
             num = 3;
         }
         else if(tmp.find("half") != std::string::npos) {
@@ -37,10 +37,10 @@ public:
             try {
                 num = std::stoi(tmp);
             }
-            catch (std::invalid_argument e) {
+            catch (std::invalid_argument& e) {
                 std::cerr << e.what() << std::endl;
             }
-            catch (std::out_of_range x) {
+            catch (std::out_of_range& x) {
                 std::cerr << x.what() << std::endl;
             }
         }

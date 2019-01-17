@@ -64,11 +64,11 @@ TEST_F(Result__Test, PR__Test) {
     ASSERT_EQ(pr.startDate.getYear(), 0);
     ASSERT_EQ(pr.startDate.getHour(), 0);
 
-    string sample = "test string";
-    parse::ParsedResult pr1(today, 15, sample);
-
-    EXPECT_EQ(pr1.startDate.getHour(), 0);
-    EXPECT_EQ(pr1.startDate.getYear(), 0);
-    // ASSERT_EQ(pr.anchor.getYear, today["year"].second);
+//    string sample = "test string";
+//    parse::ParsedResult pr1(today, 15, sample);
+//
+//    EXPECT_EQ(pr1.startDate.getHour(), 0);
+//    EXPECT_EQ(pr1.startDate.getYear(), 0);
+//    // ASSERT_EQ(pr.anchor.getYear, today["year"].second);
     // todo: tests for operator=...IMPORTANT
 }
