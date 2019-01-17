@@ -1,0 +1,45 @@
+
+
+#include "gtest/gtest.h"
+#include "src/parsers/en/ENISOFormatParser.hpp"
+
+using namespace std;
+
+
+class ENISOFormatTest : public ::testing::Test {
+public:
+    string text;
+    Result results;
+    posix_time::ptime t;
+    parse::ParsedResult r;
+    ENISOFormatParser isoParser;
+
+    ENISOFormatTest() {
+        string date{"2019-01-21 23:59:00.00"};
+        t = posix_time::time_from_string(date);
+    }
+    ~ENISOFormatTest() { }
+};
+
+
+TEST_F(ENISOFormatTest, t1) {
+    text = "2016-11-17";
+    results = isoParser.execute(text, t);
+    r = results[0];
+    EXPECT_EQ(results.size(), 1);
+    EXPECT_EQ(r.startDate.getYear(), 2016);
+    EXPECT_EQ(r.startDate.getMonth(), 11);
+    EXPECT_EQ(r.startDate.get_mDay(), 17);
+
+    text = "2022-12-01T08:15:30";
+    results = isoParser.execute(text, t);
+    r = results[0];
+    EXPECT_EQ(results.size(), 1);
+    EXPECT_EQ(r.startDate.getYear(), 2022);
+    EXPECT_EQ(r.startDate.getMonth(), 12);
+    EXPECT_EQ(r.startDate.get_mDay(), 1);
+    EXPECT_EQ(r.startDate.getHour(), 8);
+    EXPECT_EQ(r.startDate.getMinute(), 15);
+    EXPECT_EQ(r.startDate.getSeconds(), 30);
+
+}
