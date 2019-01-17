@@ -7,7 +7,8 @@
 #define WEEKDAY_GROUP 3
 #define POSTFIX_GROUP 4
 
-#define PATTERN "(\\W|^)(?:(this|last|next)\\s*)?(Sunday|Sun|Monday|Mon|Tuesday|Tues|Tue|Wednesday|Wed|Thursday|Thu(?:rs|r)?|Friday|Fri|Saturday|Sat)(?=\\W|$)"
+#define PATTERN "(\\W|^)(?:(this|last|next)\\s*)?(Sunday|Sun|Monday|Mon|Tuesday|Tues|" \
+                "Tue|Wednesday|Wed|Thursday|Thu(?:rs|r)?|Friday|Fri|Saturday|Sat)(?=\\W|$)"
 /* part of pattern (on\s*)?*/
 
 /**

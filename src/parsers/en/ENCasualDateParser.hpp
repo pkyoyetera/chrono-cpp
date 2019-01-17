@@ -3,7 +3,8 @@
 
 #include "src/parsers/parsers.hpp"
 
-#define PATTERN "(\\W|^)(now|today|tonight|last\\s*night|(?:tomorrow|tmr|yesterday)\\s*|tomorrow|tmr|yesterday)(?=\\W|$)"
+#define PATTERN "(\\W|^)(now|today|tonight|last\\s*night|(?:tomorrow|tmr|yesterday)\\s*" \
+                "|tomorrow|tmr|yesterday)(?=\\W|$)"
 
 class ENCasualDateParser : public Parser {
 

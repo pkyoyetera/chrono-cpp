@@ -13,7 +13,10 @@
 #define YEAR__GROUP       3
 #define YEAR_BE_GROUP_    4
 
-#define PATTERN "(^|\\D\\s+|[^\\w\\s])(Jan\\.?|January|Feb\\.?|February|Mar\\.?|March|Apr\\.?|April|May\\.?|Jun\\.?|June|Jul\\.?|July|Aug\\.?|August|Sep\\.?|Sept\\.?|September|Oct\\.?|October|Nov\\.?|November|Dec\\.?|December)\\s*(?:[,-]?\\s*([0-9]{4})(\\s*BE|AD|BC)?)?(?=[^\\s\\w]|\\s+[^0-9]|\\s+$|$)"
+#define PATTERN "(^|\\D\\s+|[^\\w\\s])(Jan\\.?|January|Feb\\.?|February|Mar\\.?|March|" \
+                "Apr\\.?|April|May\\.?|Jun\\.?|June|Jul\\.?|July|Aug\\.?|August|Sep\\.?|" \
+                "Sept\\.?|September|Oct\\.?|October|Nov\\.?|November|Dec\\.?|December)\\s*" \
+                "(?:[,-]?\\s*([0-9]{4})(\\s*BE|AD|BC)?)?(?=[^\\s\\w]|\\s+[^0-9]|\\s+$|$)"
 
 
 class ENMonthNameParser : public Parser {

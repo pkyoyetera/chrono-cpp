@@ -114,3 +114,16 @@ cc_library(
         "//src/parsers",
     ],
 )
+
+cc_library(
+    name = "ENTimeExpression",
+    hdrs = [
+        "ENTimeExpressionParser.hpp",
+    ],
+    visibility = [
+        "//visibility:public",
+    ],
+    deps = [
+        "//src/parsers",
+    ],
+)
