@@ -42,4 +42,17 @@ TEST_F(ENISOFormatTest, t1) {
     EXPECT_EQ(r.startDate.getMinute(), 15);
     EXPECT_EQ(r.startDate.getSeconds(), 30);
 
+    text = "1994-11-05T13:15:30Z";
+    results = isoParser.execute(text, t);
+    r = results[0];
+    EXPECT_EQ(results.size(), 1);
+    EXPECT_EQ(r.startDate.getYear(), 1994);
+    EXPECT_EQ(r.startDate.getMonth(), 11);
+    EXPECT_EQ(r.startDate.get_mDay(), 5);
+    EXPECT_EQ(r.startDate.getHour(), 13);
+    EXPECT_EQ(r.startDate.getMinute(), 15);
+    EXPECT_EQ(r.startDate.getSeconds(), 30);
+
+
 }
+
