@@ -2,7 +2,7 @@
 #ifndef ENTIMELATERPARSER_HPP
 #define ENTIMELATERPARSER_HPP
 
-#include "src/parsers/parsers.h"
+#include "src/parsers/parsers.hpp"
 
 #define PATTERN "(\\W|^)((?:((?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)|[0-9]+|an?(?:\\s*few)?|half(?:\\s*an?)?)\\s*(sec(?:onds?)?|min(?:ute)?s?|hours?|weeks?|days?|months?|years?)\\s*)+)(?:later|after|from now|henceforth|forward|out)(?=(?:\\W|$))"
 

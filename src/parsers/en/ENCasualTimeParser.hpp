@@ -7,7 +7,7 @@
 
 #include <chrono>
 
-#include "src/parsers/parsers.h"
+#include "src/parsers/parsers.hpp"
 
 #define PATTERN "(\\W|^)((this)?\\s*(morning|afternoon|evening|noon|night))"
 

@@ -1,7 +1,7 @@
 cc_library(
     name = "ENCasualTimeParser",
     hdrs = [
-        "ENCasualTimeParser.h",
+        "ENCasualTimeParser.hpp",
     ],
     visibility = [
         "//visibility:public",
@@ -14,7 +14,7 @@ cc_library(
 cc_library(
     name = "ENCasualDateParser",
     hdrs = [
-        "ENCasualDateParser.h",
+        "ENCasualDateParser.hpp",
     ],
     visibility = [
         "//visibility:public",
@@ -93,6 +93,19 @@ cc_library(
     name = "ENTimeAgoParser",
     hdrs = [
         "ENTimeAgoFormatParser.hpp",
+    ],
+    visibility = [
+        "//visibility:public",
+    ],
+    deps = [
+        "//src/parsers",
+    ],
+)
+
+cc_library(
+    name = "ENISOParser",
+    hdrs = [
+        "ENISOFormatParser.hpp",
     ],
     visibility = [
         "//visibility:public",

@@ -1,7 +1,7 @@
 #ifndef ENCASUALDATEPARSER_H
 #define ENCASUALDATEPARSER_H
 
-#include "src/parsers/parsers.h"
+#include "src/parsers/parsers.hpp"
 
 #define PATTERN "(\\W|^)(now|today|tonight|last\\s*night|(?:tomorrow|tmr|yesterday)\\s*|tomorrow|tmr|yesterday)(?=\\W|$)"
 

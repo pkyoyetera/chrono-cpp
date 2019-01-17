@@ -1,7 +1,7 @@
 
 #include <iostream>
 
-#include "src/result.h"
+#include "src/result.hpp"
 #include "gtest/gtest.h"
 
 using namespace std;

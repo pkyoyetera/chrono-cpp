@@ -2,8 +2,8 @@
 #include <iostream>
 #include <string>
 
-#include "src/parsers/en/ENCasualTimeParser.h"
-#include "src/parsers/en/ENCasualDateParser.h"
+#include "src/parsers/en/ENCasualTimeParser.hpp"
+#include "src/parsers/en/ENCasualDateParser.hpp"
 #include "src/parsers/en/ENTimeLaterParser.hpp"
 #include "src/parsers/en/ENMonthNameParser.hpp"
 #include "src/parsers/en/ENDayOfTheWeekParser.hpp"

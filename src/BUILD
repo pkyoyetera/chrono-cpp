@@ -1,16 +1,14 @@
-
-cc_library (
+cc_library(
     name = "result",
     srcs = [
         "result.cc",
     ],
     hdrs = [
-        "result.h",
-    ],
-    deps = [
-        "//src/utils:utilities",
-	#"@boost//:date_time",
+        "result.hpp",
     ],
     visibility = ["//visibility:public"],
+    deps = [
+        "//src/utils:utilities",
+        #"@boost//:date_time",
+    ],
 )
-

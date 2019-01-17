@@ -1,7 +1,7 @@
 
 #include <iostream>
 #include "gtest/gtest.h"
-#include "src/parsers/en/ENCasualTimeParser.h"
+#include "src/parsers/en/ENCasualTimeParser.hpp"
 
 using namespace std;
 using std::atoi;

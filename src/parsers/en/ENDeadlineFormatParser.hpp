@@ -1,7 +1,7 @@
 #ifndef ENDEADLINEFORMATPARSER_HPP
 #define ENDEADLINEFORMATPARSER_HPP
 
-#include "src/parsers/parsers.h"
+#include "src/parsers/parsers.hpp"
 
 #define PATTERN "(\\W|^)(within|in)\\s*((?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)|[0-9]+|an?(?:\\s*few)?|half(?:\\s*an?)?)\\s*(seconds?|min(?:ute)?s?|hour(?:s)?|days?|weeks?|months?|years?)\\s*(?=\\W|$)"
 

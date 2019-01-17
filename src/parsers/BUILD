@@ -1,7 +1,15 @@
 cc_library(
     name = "parsers",
-    srcs = ["parsers.cc"],
-    hdrs = ["parsers.h"],
-    visibility = ["//visibility:public"],
-    deps = ["//src:result"],
+    srcs = [
+        "parsers.cc",
+    ],
+    hdrs = [
+        "parsers.hpp",
+    ],
+    visibility = [
+        "//visibility:public",
+    ],
+    deps = [
+        "//src:result",
+    ],
 )

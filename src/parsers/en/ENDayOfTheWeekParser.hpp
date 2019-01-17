@@ -1,7 +1,7 @@
 #ifndef ENDATEOFWEEKPARSER_HPP
 #define ENDATEOFWEEKPARSER_HPP
 
-#include "src/parsers/parsers.h"
+#include "src/parsers/parsers.hpp"
 
 #define PREFIX_GROUP  2
 #define WEEKDAY_GROUP 3

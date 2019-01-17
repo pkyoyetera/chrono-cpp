@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <string>
-#include "src/result.h"
+#include "src/result.hpp"
 #include "src/utils/utils.hpp"
 
 class Parser {

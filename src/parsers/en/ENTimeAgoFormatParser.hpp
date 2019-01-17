@@ -3,7 +3,7 @@
 #ifndef ENTIMEAGOFORMATPARSER_HPP
 #define ENTIMEAGOFORMATPARSER_HPP
 
-#include "src/parsers/parsers.h"
+#include "src/parsers/parsers.hpp"
 
 #define PATTERN "(\\W|^)(?:within\\s*)?((?:((?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)|[0-9]+|an?(?:\\s*few)?|half(?:\\s*an?)?)\\s*(sec(?:onds?)?|min(?:ute)?s?|hours?|weeks?|days?|months?|years?)\\s*)+)(?:ago|before|earlier)(?=(?:\\W|$))"
 

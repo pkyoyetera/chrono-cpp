@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "src/utils/utils.hpp"
-#include "src/parsers/parsers.h"
+#include "src/parsers/parsers.hpp"
 
 class Refiner {
 protected:
