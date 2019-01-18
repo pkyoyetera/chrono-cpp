@@ -150,7 +150,7 @@ TEST_F(ENTimeExpTest, range_expression) {
 
 }
 
-TEST_F(ENTimeExpTest, asserted_meridian) {
+TEST_F(ENTimeExpTest, implied_meridiem) {
     text = "from 4:57 p.m to 6:50";
     results = timeExpressionParser.execute(text, t);
     r = results[0];
@@ -160,4 +160,15 @@ TEST_F(ENTimeExpTest, asserted_meridian) {
     EXPECT_TRUE(r.end());
     EXPECT_EQ(r.endDate.getHour(), 18);
     EXPECT_EQ(r.endDate.getMinute(), 50);
+}
+
+TEST_F(ENTimeExpTest, implied_meridiem_part2) {
+    text = "from 4:57 to 6:50 p.m";
+    results = timeExpressionParser.execute(text, t);
+    r = results[0];
+    EXPECT_EQ(results.size(), 1);
+    EXPECT_EQ(r.startDate.getHour(), 16);
+    EXPECT_EQ(r.startDate.getMinute(), 57);
+
+
 }

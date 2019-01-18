@@ -34,6 +34,7 @@ public:
             return result;
 
         int hour{0}, minute{0}, tz{-1}, meridian{-1};
+        char ampm_s;
 
         //------------Seconds------------------
         if(!match[SECOND_GROUP].str().empty()){
@@ -78,19 +79,19 @@ public:
             // if the text has am/pm provided then the logic follows
             // that the hour should not be greater than 12
             if(hour > 12) return result;
-            char& ampm = match[AM_PM_HOUR_GROUP].str()[0];
-            if(ampm == 'a'){
+            ampm_s = match[AM_PM_HOUR_GROUP].str()[0];
+            if(ampm_s == 'a'){
                 //meridian = 0;
                 if(hour == 12) hour = 0;
             }
 
-            if(ampm == 'p'){
+            if(ampm_s == 'p'){
                 //meridian = 1;
                 if(hour != 12) hour += 12;
             }
         }
 
-        /*  // commented out because I do not use the meridian
+        /*  // no use for meridian yet
         if (meridiem >= 0) {
             result.start.assign('meridiem', meridiem);
         } else {
@@ -153,7 +154,22 @@ public:
                     if(to_hour == 12)
                         to_hour = 0;
 
-                if(ampm == 'p')
+                if(ampm == 'p') {
+                    if (to_hour != 12)
+                        to_hour += 12;
+                    if(match[AM_PM_HOUR_GROUP].str().empty()) {
+                        if (hour != 12) {
+                            hour += 12;
+                            result.startDate.setHour(hour);
+                        }
+                    }
+                }
+            } else {
+                // imply the meridiem if it wasn't provided on the to clause
+                if(ampm_s == 'a')
+                    if(to_hour == 12)
+                        to_hour = 0;
+                if(ampm_s == 'p')
                     if(to_hour != 12)
                         to_hour += 12;
             }
