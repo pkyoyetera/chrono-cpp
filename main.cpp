@@ -10,6 +10,8 @@
 #include "src/parsers/en/ENTimeAgoFormatParser.hpp"
 #include "src/parsers/en/ENDeadlineFormatParser.hpp"
 #include "src/parsers/en/ENMonthNameMiddleEndianParser.hpp"
+#include "src/parsers/en/ENTimeExpressionParser.hpp"
+#include "src/parsers/en/ENISOFormatParser.hpp"
 
 #include "src/refiners/OverlapRemovalRefiner.hpp"
 #include "src/refiners/en/ENMergeDateRangeRefiner.hpp"
@@ -40,11 +42,13 @@ int main(int argc, char* argv[]) {
     Parser* tl  = new ENTimeLaterParser();
     Parser* mn  = new ENMonthNameParser();
     Parser* ta  = new ENTimeAgoFormatParser();
+    Parser* tx  = new ENTimeExpressionParser();
+    Parser* iso = new ENISOFormatParser();
 
     Refiner* ov  = new OverlapRemover();
     // Refiner* mdr = new ENMergeDateRange();
 
-    list<Parser*>  parsers  {tp, dfp, dp, dow, mme, tl, mn, ta};
+    list<Parser*>  parsers  {tp, dfp, dp, dow, mme, tl, mn, ta, tx, iso};
     // list<Refiner*> refiners {ov, mdr};
 
     str = argv[1];

@@ -129,4 +129,35 @@ TEST_F(ENTimeExpTest, ampm) {
 }
 
 
+TEST_F(ENTimeExpTest, range_expression) {
+    text = "from 4:57 p.m to 6:50 p.m.";
+    results = timeExpressionParser.execute(text, t);
+    r = results[0];
+    EXPECT_EQ(results.size(), 1);
+    EXPECT_TRUE(r.end());
+    EXPECT_EQ(r.endDate.getHour(), 18);
+    EXPECT_EQ(r.endDate.getMinute(), 50);
 
+    text = "from 4:57am - 6:50am";
+    results = timeExpressionParser.execute(text, t);
+    r = results[0];
+    EXPECT_EQ(results.size(), 1);
+    EXPECT_TRUE(r.end());
+    EXPECT_EQ(r.startDate.getHour(), 4);
+    EXPECT_EQ(r.startDate.getMinute(), 57);
+    EXPECT_EQ(r.endDate.getHour(), 6);
+    EXPECT_EQ(r.endDate.getMinute(), 50);
+
+}
+
+TEST_F(ENTimeExpTest, asserted_meridian) {
+    text = "from 4:57 p.m to 6:50";
+    results = timeExpressionParser.execute(text, t);
+    r = results[0];
+    EXPECT_EQ(results.size(), 1);
+    EXPECT_EQ(r.startDate.getHour(), 16);
+    EXPECT_EQ(r.startDate.getMinute(), 57);
+    EXPECT_TRUE(r.end());
+    EXPECT_EQ(r.endDate.getHour(), 18);
+    EXPECT_EQ(r.endDate.getMinute(), 50);
+}

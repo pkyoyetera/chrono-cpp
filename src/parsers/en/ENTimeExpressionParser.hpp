@@ -12,7 +12,10 @@
 #define PATTERN "(^|\\s|T)(?:(?:at|from)\\s*)?" \
                 "?(\\d{1,4}|noon|midnight)(?:(?:\\.|\\:|\\：)(\\d{1,2})(?:(?:\\:|\\：)" \
                 "(\\d{2})(?:\\.(\\d{1,6}))?)?)?(?:\\s*(A\\.M\\.?|P\\.M\\.?|AM?|PM?|" \
-                "O\\W*CLOCK))?(?=\\W|$)"
+                "O\\W*CLOCK))?(?=\\W|$)" \
+                " ?((^|\\s*)(\\-|\\–|\\~|\\〜|to|\\?)\\s*(\\d{1,4})(?:(?:\\.|\\:|\\：)" \
+                "(\\d{1,2})(?:(?:\\.|\\:|\\：)(\\d{1,2})(?:\\.(\\d{1,6}))?)?)?(?:\\s*" \
+                "(A\\.M\\.?|P\\.M\\.?|AM?|PM?|O\\W*CLOCK))?(?=\\W|$))?"
 
 #include "src/parsers/parsers.hpp"
 
@@ -72,6 +75,8 @@ public:
 
         // ----- AM & PM
         if(!match[AM_PM_HOUR_GROUP].str().empty()) {
+            // if the text has am/pm provided then the logic follows
+            // that the hour should not be greater than 12
             if(hour > 12) return result;
             char& ampm = match[AM_PM_HOUR_GROUP].str()[0];
             if(ampm == 'a'){
@@ -97,6 +102,7 @@ public:
         }
         */
 
+
         result.startDate.setHour(hour);
         result.startDate.setMinute(minute);
 
@@ -105,10 +111,78 @@ public:
         result.startDate.implyComponent("year", ref.date().year());
 
         result.setTag(utils::ENTimeExpressionParser);
+
+        /************************************************************
+        //               if there exists a "to" expression          //
+        //                e.g: from 5 a.m to 5 p.m                  //
+        *************************************************************/
+        if(!match[7].str().empty()) {
+            if (std::regex_match(match[7].str(), std::regex(R"(^\s*(\+|\-)\s*\d{3,4}$)"))) {
+                return result;
+            }
+            // "to" portion of match
+            int to_hour{0}, to_minute{0}, to_tz{-1};
+
+            if(match[10].str() == "noon"){
+                to_hour = 12;
+            } else if (match[10].str() == "midnight") {
+                to_hour = 0;
+            } else {
+                to_hour = std::stoi(match[10].str());
+            }
+
+            if(!match[11].str().empty()){
+                to_minute = std::stoi(match[11].str());
+            } else if(to_hour > 100) {
+                to_minute = to_hour%100;
+                to_hour   = to_hour/100;
+            }
+
+            if(to_minute >= 60 or to_hour > 24) {
+                return result;
+            }
+
+            if(!match[14].str().empty()) {
+                // if the text has am/pm provided then the logic follows
+                // that the hour should not be greater than 12
+                if(to_hour > 12)
+                    return result;
+
+                char& ampm = match[14].str()[0];
+                if(ampm == 'a')
+                    if(to_hour == 12)
+                        to_hour = 0;
+
+                if(ampm == 'p')
+                    if(to_hour != 12)
+                        to_hour += 12;
+            }
+
+            if(!match[12].str().empty()){
+                int to_second = std::stoi(match[12].str());
+                if(to_second >= 60 or to_second < 0)
+                    return result;
+
+                result.endDate.setSeconds(to_second);
+            }
+            result.makeEndDateValid();
+
+            result.endDate.setHour(to_hour);
+            result.endDate.setMinute(to_minute);
+
+            result.endDate.implyComponent("mday", ref.date().day());
+            result.endDate.implyComponent("month", ref.date().month());
+            result.endDate.implyComponent("year", ref.date().year());
+
+        }
+
         return result;
     }
 };
 
+// todo: if miridiem is provided on only one part of the range,
+// it follows that the other should correspond to the meridiem
+// e.g: 4-6pm: 16:00 - 18:00 not 4:00 - 18:00
 
 #undef HOUR_GROUP
 #undef MINUTE_GROUP
