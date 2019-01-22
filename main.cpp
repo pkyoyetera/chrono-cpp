@@ -85,5 +85,11 @@ int main(int argc, char* argv[]) {
     else
         cout << "Date:\t"  << results_pre[0].toDate() << endl;
 
+    for(auto p: parsers)
+        delete p;
+    for (auto r: refiners)
+        delete r;
+
+
     return 0;
 }

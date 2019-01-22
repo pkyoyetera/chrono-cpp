@@ -7,6 +7,7 @@ cc_binary(
         "-std=c++11",
         "-g",
         "-O0",
+        "-w",  #no-non-virtual-dto",
     ],
     linkopts = [
         "-lboost_date_time",
