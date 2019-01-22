@@ -60,11 +60,11 @@ public:
                 } else {
                     offset += minuteOffset;
                 }
-                // todo: set up timezone support
-                // result.start.assign('timezoneOffset', offset);
+                result.startDate.setTimeZoneOffset(offset);
             }
         }
         result.setTag(utils::ENISOFormatParser);
+        return result;
     }
 
 };
