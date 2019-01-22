@@ -23,13 +23,12 @@ public:
         for(unsigned i=1; i<r.size(); i++) {
             parse::ParsedResult tmpRes{r[i]};
             if (tmpRes.getIndex() < prevResult.getIndex() + prevResult.textLength()) {
-                if(tmpRes.textLength() > prevResult.textLength()) {
+                if (tmpRes.textLength() > prevResult.textLength())
                     prevResult = tmpRes;
-                }
-                else {
-                    filteredResults.push_back(prevResult);
-                    prevResult = tmpRes;
-                }
+            }
+            else {
+                filteredResults.push_back(prevResult);
+                prevResult = tmpRes;
             }
         }
         if (!prevResult.isEmpty())

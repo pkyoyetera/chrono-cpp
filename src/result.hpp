@@ -69,6 +69,7 @@ public:
     ParsedResult(posix_time::ptime, unsigned, std::string);
     ParsedResult(const ParsedResult& pr);
     ~ParsedResult();
+    // ParsedResult& operator=(ParsedResult&);
 
     ParsedComponents startDate, endDate;    // todo: make protected & make accessors and mutators
 
@@ -83,7 +84,7 @@ public:
     size_t textLength() const;
     bool end() const;
     void makeEndDateValid();
-    parse::ParsedResult& operator=(const parse::ParsedResult&);
+    parse::ParsedResult& operator=(parse::ParsedResult);
 };
 
 typedef std::vector<parse::ParsedResult> Result;

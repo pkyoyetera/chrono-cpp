@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "src/result.hpp"
+#include "src/utils/utils.hpp"
 #include "gtest/gtest.h"
 
 using namespace std;
@@ -69,6 +70,16 @@ TEST_F(Result__Test, PR__Test) {
 //
 //    EXPECT_EQ(pr1.startDate.getHour(), 0);
 //    EXPECT_EQ(pr1.startDate.getYear(), 0);
-//    // ASSERT_EQ(pr.anchor.getYear, today["year"].second);
     // todo: tests for operator=...IMPORTANT
+}
+
+TEST_F(Result__Test, _operator_eq_test) {
+    parse::ParsedResult  r2, r1{posix_time::second_clock::local_time(),
+                                10, R"(this is a text string)"};
+    r2 = r1;
+
+    EXPECT_EQ(r2.getIndex(), r1.getIndex());
+    EXPECT_EQ(r2.end(), r1.end());
+    EXPECT_FALSE(r2.isEmpty());
+    EXPECT_FALSE(r2.hasPossibleDates());
 }

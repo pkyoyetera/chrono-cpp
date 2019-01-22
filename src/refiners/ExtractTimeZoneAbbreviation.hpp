@@ -11,7 +11,7 @@ public:
     ~ExtractTimeZoneAbbreviation() = default;
 
     Result refine(Result r, std::string text) override {
-        Result refinedResults;
+        // Result refinedResults;
         std::smatch match;
 
         for(auto &res : r) {

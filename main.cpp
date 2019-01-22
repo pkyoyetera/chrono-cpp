@@ -14,7 +14,8 @@
 #include "src/parsers/en/ENISOFormatParser.hpp"
 
 #include "src/refiners/OverlapRemovalRefiner.hpp"
-#include "src/refiners/en/ENMergeDateRangeRefiner.hpp"
+// #include "src/refiners/en/ENMergeDateRangeRefiner.hpp"
+#include "src/refiners/ExtractTimeZoneAbbreviation.hpp"
 
 
 using namespace std;
@@ -30,7 +31,7 @@ int main(int argc, char* argv[]) {
         printUsage();
         return 0;
     }
-    Result results_pre, results_final;
+    Result results, results_pre;
     posix_time::ptime t;
     string str;
 
@@ -46,10 +47,11 @@ int main(int argc, char* argv[]) {
     Parser* iso = new ENISOFormatParser();
 
     Refiner* ov  = new OverlapRemover();
+    Refiner* tza = new ExtractTimeZoneAbbreviation();
     // Refiner* mdr = new ENMergeDateRange();
 
     list<Parser*>  parsers  {tp, dfp, dp, dow, mme, tl, mn, ta, tx, iso};
-    // list<Refiner*> refiners {ov, mdr};
+    list<Refiner*> refiners {ov, tza};
 
     str = argv[1];
 
@@ -62,7 +64,7 @@ int main(int argc, char* argv[]) {
         t = posix_time::time_from_string(refDate);
     }
 
-    for(list<Parser*>::iterator it = parsers.begin(); it != parsers.end(); ++it) {
+    for(list<Parser*>::iterator it = parsers.begin(); it != parsers.end(); ++it) { // NOLINT(modernize-use-auto)
         Result p_result = (*it)->execute(str, t);
         results_pre.insert(results_pre.end(), p_result.begin(), p_result.end());
     }
@@ -72,15 +74,16 @@ int main(int argc, char* argv[]) {
                 return p1.getIndex() < p2.getIndex();
     });
 
-    /*for(list<Refiner*>::iterator it = refiners.begin(); it != refiners.end(); ++it) {
-        results = (*it)->refine(results, str);
-    }*/
-    results_final = ov->refine(results_pre, str);
+    for(list<Refiner*>::iterator it = refiners.begin(); it != refiners.end(); ++it) {
+        results_pre = (*it)->refine(results_pre, str);
+    }
+    // Result r1 = ov->refine(results_pre, str);
+    // Result results_final = tza->refine(r1, str);
 
-    if(results_final.size() > 0)
-        cout << "Date:\t"  << results_final[0].toDate() << endl;
-    else
+    if(results_pre.empty() > 0)
         cout << "[???] -- Invalid date" << endl;
+    else
+        cout << "Date:\t"  << results_pre[0].toDate() << endl;
 
     return 0;
 }

@@ -1,4 +1,6 @@
 #include "result.hpp"
+#include "src/result.hpp"
+
 #include <ctime>
 
 using namespace parse;
@@ -398,22 +400,22 @@ bool ParsedResult::hasPossibleDates() {
 ParsedResult::~ParsedResult() { }
 
 std::string ParsedResult::toDate() {
-    // todo: take into accound timezone offset
+    // todo: take into account timezone offset
     struct tm date_start, date_end;
     std::string res;
 
     date_start.tm_year = startDate.getYear() - 1900;
     date_start.tm_mon  = startDate.getMonth() - 1;
     date_start.tm_mday = startDate.get_mDay();
-    // date.tm_wday = startDate.get_wDay();
     date_start.tm_hour = startDate.getHour();
     date_start.tm_min  = startDate.getMinute();
     date_start.tm_sec  = startDate.getSeconds();
-    /*/ date.tm_isdst = 1;
-    // date.tm_gmtoff = -5*60*60;      // default for Eastern Standard Time
-    // std::cout << asctime(&date);
-    // time_t t = mktime(&date);*/
-    res = posix_time::to_simple_string(posix_time::ptime_from_tm(date_start));
+
+    posix_time::ptime st = posix_time::ptime_from_tm(date_start);
+    if(getTag(utils::ExtractTimeZoneAbbreviation))
+        st += posix_time::minutes(startDate.getTimeZoneOffset());
+
+    res = posix_time::to_simple_string(st);
 
     if(end()) {
         date_end.tm_year = endDate.getYear() - 1900;
@@ -422,6 +424,11 @@ std::string ParsedResult::toDate() {
         date_end.tm_hour = endDate.getHour();
         date_end.tm_min  = endDate.getMinute();
         date_end.tm_sec  = endDate.getSeconds();
+
+        posix_time::ptime ed = posix_time::ptime_from_tm(date_end);
+        if(getTag(utils::ExtractTimeZoneAbbreviation))
+            ed += posix_time::minutes(startDate.getTimeZoneOffset());
+
         res += " - " + posix_time::to_simple_string(posix_time::ptime_from_tm(date_end));
     }
 
@@ -469,7 +476,7 @@ bool ParsedResult::getTag(utils::Modifiers m) {
 
 }
 
-ParsedResult& ParsedResult::operator=(const ParsedResult& pr) {
+ParsedResult& ParsedResult::operator=(ParsedResult pr) {
     anchor    = pr.anchor;
     endDate   = pr.endDate;
     startDate = pr.startDate;
@@ -480,3 +487,8 @@ ParsedResult& ParsedResult::operator=(const ParsedResult& pr) {
 
     return *(this);
 }
+
+/*ParsedResult& ParsedResult::operator=(ParsedResult &) {
+    return <#initializer#>;
+}
+*/
