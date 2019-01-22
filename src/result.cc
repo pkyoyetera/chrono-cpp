@@ -7,14 +7,15 @@ using namespace std;
 
 ParsedComponents::ParsedComponents() {
 // todo: turn wday to correspond to gregorian_day_of_week in boost::gregorian
-    knownValues.insert({"year",  {false, 0}});
-    knownValues.insert({"month", {false, 0}});
-    knownValues.insert({"mday",  {false, 0}});      // day of the month
-    knownValues.insert({"wday",  {false, 0}});      // day of the week
+    knownValues.insert({"year",     {false, 0}});
+    knownValues.insert({"month",    {false, 0}});
+    knownValues.insert({"mday",     {false, 0}});      // day of the month
+    knownValues.insert({"wday",     {false, 0}});      // day of the week
     // knownValues.insert({"isdst", {false, 0x0}});      // daylight savings
-    knownValues.insert({"hour",  {false, 0}});
-    knownValues.insert({"min",   {false, 0}});
-    knownValues.insert({"sec",   {false, 0}});
+    knownValues.insert({"hour",     {false, 0}});
+    knownValues.insert({"min",      {false, 0}});
+    knownValues.insert({"sec",      {false, 0}});
+    knownValues.insert({"tzoffset", {false, 0}});
 }
 
 ParsedComponents::ParsedComponents(const Components& comp) {
@@ -32,6 +33,8 @@ ParsedComponents::ParsedComponents(Components& cmp, Components& anchor) {
     setHour(anchor["hour"].second);
     setMinute(anchor["min"].second);
     setSeconds(anchor["sec"].second);
+
+    setTimeZoneOffset(anchor["tzoffset"].second);
 }
 
 ParsedComponents::~ParsedComponents() = default;
@@ -57,6 +60,7 @@ posix_time::ptime ParsedComponents::date() {
     temp.tm_hour = getHour();
     temp.tm_min  = getMinute();
     temp.tm_sec  = getSeconds();
+    // todo: integrate timezone offset in returned time
 
     return posix_time::ptime_from_tm(temp);
 }
@@ -103,6 +107,13 @@ int ParsedComponents::getSeconds() {
         return impliedValues["sec"].second;
 }
 
+int ParsedComponents::getTimeZoneOffset() {
+    if(knownValues["tzoffset"].first)
+        return knownValues["tzoffset"].second;
+    else
+        return impliedValues["tzoffset"].second;
+}
+
 /*
 int ParsedComponents::getDaylightSavings() {
     if (knownValues["dls"].first)
@@ -112,7 +123,7 @@ int ParsedComponents::getDaylightSavings() {
 }
 */
 
-int ParsedComponents::getHour() {
+int ParsedComponents::getHour()  {
     if(knownValues["hour"].first)
         return knownValues["hour"].second;
     else
@@ -166,6 +177,13 @@ void ParsedComponents::setSeconds(int sec) {
     knownValues["sec"].second   = sec;
     impliedValues["sec"].first  = false;
     impliedValues["sec"].second = 0;
+}
+
+void ParsedComponents::setTimeZoneOffset(int tzo) {
+    knownValues["tzoffset"].first    = true;
+    knownValues["tzoffset"].second   = tzo;
+    impliedValues["tzoffset"].first  = false;
+    impliedValues["tzoffset"].second = 0;
 }
 /*
 void ParsedComponents::setTimeZone(int tz) {
@@ -229,17 +247,15 @@ void ParsedComponents::implyComponent(std::string comp, int value) {
         }
         return;
     }
-/* ue for daylight savings
-    else if(!comp.compare("timezone")) {
-        if(knownValues.timezone == -1)
-            impliedValues.timezone = value;
+    else if(!comp.compare("tzoffset")) {
+        if (!knownValues["tzoffset"].first) {
+            impliedValues["tzoffset"].first = true;
+            impliedValues["tzoffset"].second = value;
+        }
         return;
     }
-*/
     else
         std::cerr << "Invalid option: " << comp << std::endl;
-
-    return;
 }
 
 bool ParsedComponents::isCertain(std::string comp) {
@@ -265,11 +281,9 @@ bool ParsedComponents::isCertain(std::string comp) {
     else if(!comp.compare("sec"))
         return knownValues["sec"].first;
 
-    /*
-    else if(!comp.compare("timezone"))
-        if(knownValues.timezone != -1)
-            return true;
-    */
+    else if(!comp.compare("tzoffset"))
+        return knownValues["tzoffset"].first;
+
     else std::cerr << "Invalid component: " << comp << std::endl;
 
     return false;
@@ -384,6 +398,7 @@ bool ParsedResult::hasPossibleDates() {
 ParsedResult::~ParsedResult() { }
 
 std::string ParsedResult::toDate() {
+    // todo: take into accound timezone offset
     struct tm date_start, date_end;
     std::string res;
 
@@ -423,8 +438,7 @@ void ParsedResult::setIndex(int idx) {
 }
 
 void ParsedResult::setText(std::string tx) {
-    text = tx;
-    return;
+    text += " " + tx;
 }
 
 size_t ParsedResult::textLength() const {
@@ -450,8 +464,9 @@ void ParsedResult::makeEndDateValid() {
     __end = true;
 }
 
-utils::Tags ParsedResult::getTags() const {
-    return tags;
+bool ParsedResult::getTag(utils::Modifiers m) {
+    return tags[m];
+
 }
 
 ParsedResult& ParsedResult::operator=(const ParsedResult& pr) {

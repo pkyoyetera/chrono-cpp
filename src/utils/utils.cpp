@@ -6,6 +6,11 @@ std::string utils::toLowerCase(std::string text) {
     return text;
 }
 
+std::string utils::toUpperCase(std::string text) {
+    std::transform(text.begin(), text.end(), text.begin(), ::toupper);
+    return text;
+}
+
 int utils::argToOrdinalValue(const std::string &arg) {
     std::string value{std::regex_replace(arg, std::regex("-"), " ")};
     value = std::regex_replace(value, std::regex("^ +| +$|( ) +"), "$1");
@@ -15,7 +20,7 @@ int utils::argToOrdinalValue(const std::string &arg) {
 
 std::string utils::keysToString(std::map<std::string, int> arg) {
     std::string result;
-    for(std::map<std::string, int>::iterator it=arg.begin(); it!= arg.end(); ++it) {
+    for(auto it=arg.begin(); it != arg.end(); ++it) {
         result += it->first + "|";
     }
     /*for(auto a : arg) {

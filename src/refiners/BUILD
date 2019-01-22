@@ -37,3 +37,16 @@ cc_library(
         "//src/refiners:refiner",
     ],
 )
+
+cc_library(
+    name = "extractTimeZoneAbbreviation",
+    hdrs = [
+        "ExtractTimeZoneAbbreviation.hpp",
+    ],
+    visibility = [
+        "//visibility:public",
+    ],
+    deps = [
+        "//src/refiners:refiner",
+    ],
+)

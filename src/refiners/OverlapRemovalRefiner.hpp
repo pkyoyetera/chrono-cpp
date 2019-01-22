@@ -9,12 +9,11 @@ protected:
     // Result results;
     // std::string text;
 public:
-    OverlapRemover() {
+    OverlapRemover()  = default;
+    ~OverlapRemover() = default;
 
-    }
-    ~OverlapRemover() {}
-
-    Result refine(Result r, std::string t) {
+    Result refine(Result r, std::string t) override {
+        // can't have overlaps in 1 result
         if (r.size() < 2)
             return r;
 

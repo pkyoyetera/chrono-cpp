@@ -7,6 +7,12 @@
 #define SECOND_GROUP       4
 #define MILLI_SECOND_GROUP 5
 #define AM_PM_HOUR_GROUP   6
+#define TO_GROUP           7
+#define TO_HOUR_GROUP      10
+#define TO_MINUTE_GROUP    11
+#define TO_SECOND_GROUP    12
+#define TO_MERIDIEM_GROUP  14
+
 
 // psst...what even are trigraphs?
 #define PATTERN "(^|\\s|T)(?:(?:at|from)\\s*)?" \
@@ -33,12 +39,12 @@ public:
         if (match.position() > 0 and std::regex_match(tx.substr(match.position() - 1), std::regex("\\w")))
             return result;
 
-        int hour{0}, minute{0}, tz{-1}, meridian{-1};
+        int hour{0}, minute{0};// tz{-1}, meridian{-1};
         char ampm_s;
 
         //------------Seconds------------------
         if(!match[SECOND_GROUP].str().empty()){
-            short second = std::stoi(match[SECOND_GROUP].str());
+            short second = static_cast<short>(std::stoi(match[SECOND_GROUP].str()));
             if(second >= 60) return result;
 
             result.startDate.setSeconds(second);
@@ -70,9 +76,6 @@ public:
         if(hour > 24) {
             return result;
         }
-        /*if (hour >= 12) {
-            meridian = 1;
-        }*/
 
         // ----- AM & PM
         if(!match[AM_PM_HOUR_GROUP].str().empty()) {
@@ -117,23 +120,23 @@ public:
         //               if there exists a "to" expression          //
         //                e.g: from 5 a.m to 5 p.m                  //
         *************************************************************/
-        if(!match[7].str().empty()) {
-            if (std::regex_match(match[7].str(), std::regex(R"(^\s*(\+|\-)\s*\d{3,4}$)"))) {
+        if(!match[TO_GROUP].str().empty()) {
+            if (std::regex_match(match[TO_GROUP].str(), std::regex(R"(^\s*(\+|\-)\s*\d{3,4}$)"))) {
                 return result;
             }
             // "to" portion of match
-            int to_hour{0}, to_minute{0}, to_tz{-1};
+            int to_hour{0}, to_minute{0}; //, to_tz{-1};
 
-            if(match[10].str() == "noon"){
+            if(match[TO_HOUR_GROUP].str() == "noon"){
                 to_hour = 12;
-            } else if (match[10].str() == "midnight") {
+            } else if (match[TO_HOUR_GROUP].str() == "midnight") {
                 to_hour = 0;
             } else {
-                to_hour = std::stoi(match[10].str());
+                to_hour = std::stoi(match[TO_HOUR_GROUP].str());
             }
 
-            if(!match[11].str().empty()){
-                to_minute = std::stoi(match[11].str());
+            if(!match[TO_MINUTE_GROUP].str().empty()){
+                to_minute = std::stoi(match[TO_MINUTE_GROUP].str());
             } else if(to_hour > 100) {
                 to_minute = to_hour%100;
                 to_hour   = to_hour/100;
@@ -143,13 +146,13 @@ public:
                 return result;
             }
 
-            if(!match[14].str().empty()) {
+            if(!match[TO_MERIDIEM_GROUP].str().empty()) {
                 // if the text has am/pm provided then the logic follows
                 // that the hour should not be greater than 12
                 if(to_hour > 12)
                     return result;
 
-                char& ampm = match[14].str()[0];
+                char& ampm = match[TO_MERIDIEM_GROUP].str()[0];
                 if(ampm == 'a')
                     if(to_hour == 12)
                         to_hour = 0;
@@ -174,24 +177,21 @@ public:
                         to_hour += 12;
             }
 
-            if(!match[12].str().empty()){
-                int to_second = std::stoi(match[12].str());
+            if(!match[TO_SECOND_GROUP].str().empty()){
+                int to_second = std::stoi(match[TO_SECOND_GROUP].str());
                 if(to_second >= 60 or to_second < 0)
                     return result;
 
                 result.endDate.setSeconds(to_second);
             }
             result.makeEndDateValid();
-
             result.endDate.setHour(to_hour);
             result.endDate.setMinute(to_minute);
 
             result.endDate.implyComponent("mday", ref.date().day());
             result.endDate.implyComponent("month", ref.date().month());
             result.endDate.implyComponent("year", ref.date().year());
-
         }
-
         return result;
     }
 };
@@ -206,6 +206,11 @@ public:
 #undef MILLI_SECOND_GROUP
 #undef AM_PM_HOUR_GROUP
 
+#undef TO_SECOND_GROUP
+#undef TO_MINUTE_GROUP
+#undef TO_MERIDIEM_GROUP
+#undef TO_HOUR_GROUP
+#undef TO_GROUP
 #undef PATTERN
 
 #endif

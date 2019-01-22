@@ -292,6 +292,32 @@ cc_test(
     ],
 )
 
+cc_test(
+    name = "ExtractTimeZone",
+    srcs = [
+        "gtest_main.cc",
+        "refiners.test/ExtractTimeZoneAbbrev.test.cpp",
+    ],
+    args = [
+        "--verbose_failures",
+        "--compilation_mode=dbg -s",
+    ],
+    copts = [
+        "-std=c++14",
+        "-O0",
+    ],
+    linkopts = [
+        "-lstdc++",
+        "-lboost_date_time",
+    ],
+    deps = [
+        "//src:result",
+        "//src/parsers/en:ENTimeExpression",
+        "//src/refiners:extractTimeZoneAbbreviation",
+        "@googletest//:gtest_main",
+    ],
+)
+
 #cc_test(
 #    name = "entryPointTest",
 #    srcs = [

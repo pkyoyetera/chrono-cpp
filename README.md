@@ -23,7 +23,7 @@ Need to have bazel installed.
 
 ### Running
 
-```./main <phrase with relative time information> <reference date (optional)>```
+```./bazel-bin/main <phrase with relative time information> <reference date (optional)>```
 
 If the reference date is not provided, the program wil default to the current day and time.
 

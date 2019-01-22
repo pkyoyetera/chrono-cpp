@@ -40,6 +40,7 @@ public:
     int getHour();
     int getMinute();
     int getSeconds();
+    int getTimeZoneOffset();
     // int getDaylightSavings();
 
     void setYear(int);
@@ -49,7 +50,8 @@ public:
     void setHour(int);
     void setMinute(int);
     void setSeconds(int);
-    // void setTimeZone(int);
+    void setTimeZoneOffset(int);
+
 };
 
 
@@ -75,7 +77,7 @@ public:
     bool hasPossibleDates();
     std::string toDate();
     unsigned getIndex() const;
-    utils::Tags getTags() const;
+    bool getTag(utils::Modifiers);
     void setIndex(int idx);
     void setText(std::string);
     size_t textLength() const;
