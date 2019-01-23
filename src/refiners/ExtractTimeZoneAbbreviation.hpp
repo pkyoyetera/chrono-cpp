@@ -17,7 +17,13 @@ public:
         for(auto &res : r) {
             if(res.getTag(utils::ENTimeExpressionParser)) {
                 // match text starting at index immediately succeeding parser's matched text
-                std::string tmp = text.substr(res.getIndex()+res.textLength(), text.length());
+                std::string tmp;
+                try {
+                    tmp= text.substr(res.getIndex() + res.textLength(), text.length());
+                } catch (std::out_of_range& e) {
+                    std::cerr << e.what() << std::endl;
+                    continue;
+                }
                 if(std::regex_match(tmp, match,
                         std::regex(TIMEZONE_NAME_PATTERN, std::regex::icase))) {
                     std::string tzAbbrev = utils::toUpperCase(match[1].str());

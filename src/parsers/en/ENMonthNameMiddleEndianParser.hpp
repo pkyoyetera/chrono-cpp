@@ -56,7 +56,7 @@ public:
                                               day = std::stoi(match[DATE_NUM_GROUP].str());
 
         // sanity check
-        if (month==0 or day==0)
+        if (month==0 or month>12 or day==0 or day>31)
             return result;
 
         std::string year_s{"-1"};

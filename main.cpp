@@ -80,7 +80,7 @@ int main(int argc, char* argv[]) {
     // Result r1 = ov->refine(results_pre, str);
     // Result results_final = tza->refine(r1, str);
 
-    if(results_pre.empty() > 0)
+    if(results_pre.empty())
         cout << "[???] -- Invalid date" << endl;
     else
         cout << "Date:\t"  << results_pre[0].toDate() << endl;
@@ -89,7 +89,6 @@ int main(int argc, char* argv[]) {
         delete p;
     for (auto r: refiners)
         delete r;
-
 
     return 0;
 }

@@ -29,21 +29,26 @@ public:
         posix_time::ptime date_t{ref};
 
         // subtract each of the elements in fragments to the date/ptinme object
-        for(auto a : fragments) {
-            if(a.first == "year")
-                date -= gregorian::years(static_cast<int> (a.second));
-            else if(a.first == "month")
-                date -= gregorian::months(static_cast<int> (a.second));
-            else if(a.first == "week")            // this did not mean a literal week but rather a weekday
-                date -= gregorian::weeks(a.second);
-            else if(a.first == "day")
-                date -= gregorian::days(static_cast<int> (a.second)); // you sure you wanna cast these bad boys?
-            else if(a.first == "hour")
-                date_t -= posix_time::hours(static_cast<int> (a.second));
-            else if(a.first == "minute")
-                date_t -= posix_time::minutes(static_cast<int> (a.second));
-            else if(a.first == "second")
-                date_t -= posix_time::seconds(static_cast<int> (a.second));
+        for (auto a : fragments) {
+            try {
+                if (a.first == "year")
+                    date -= gregorian::years(static_cast<int> (a.second));
+                else if (a.first == "month")
+                    date -= gregorian::months(static_cast<int> (a.second));
+                else if (a.first == "week")            // this did not mean a literal week but rather a weekday
+                    date -= gregorian::weeks(a.second);
+                else if (a.first == "day")
+                    date -= gregorian::days(static_cast<int> (a.second)); // you sure you wanna cast these bad boys?
+                else if (a.first == "hour")
+                    date_t -= posix_time::hours(static_cast<int> (a.second));
+                else if (a.first == "minute")
+                    date_t -= posix_time::minutes(static_cast<int> (a.second));
+                else if (a.first == "second")
+                    date_t -= posix_time::seconds(static_cast<int> (a.second));
+            } catch (std::out_of_range& e) {
+                std::cerr << e.what() << std::endl;
+                continue;
+            }
         }
 
         if (fragments["hour"] > 0 or fragments["minute"] > 0 or fragments["second"] > 0 ) {
