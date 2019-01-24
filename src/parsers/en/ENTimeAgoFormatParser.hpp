@@ -16,14 +16,14 @@ public:
     ENTimeAgoFormatParser() : Parser(false, std::regex(PATTERN, std::regex::icase)) { }
 
     parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime &ref) override {
-        int idx = match.position() + match[1].length();
-        std::string text = match[0].str().substr(match[1].length());
+        int idx = match.position(0) + match.length(1);
+        std::string text = match.str(0).substr(match.length(1));
         parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
 
-        if (match.position() > 0 and std::regex_match(text.substr(match.position() - 1), std::regex("\\w")))
+        if (match.position(0) > 0 and std::regex_match(text.substr(match.position(0)-1), std::regex("\\w")))
             return result;
 
-        std::map<std::string, float> fragments = utils::extractDateTimeUnitFragments(match[2].str());
+        std::map<std::string, float> fragments = utils::extractDateTimeUnitFragments(match.str(2));
 
         gregorian::date date{ref.date()};
         posix_time::ptime date_t{ref};
@@ -46,7 +46,7 @@ public:
                 else if (a.first == "second")
                     date_t -= posix_time::seconds(static_cast<int> (a.second));
             } catch (std::out_of_range& e) {
-                std::cerr << e.what() << std::endl;
+                std::cerr << e.what() << " at ENTimeAgoFormatParser" << std::endl;
                 continue;
             }
         }

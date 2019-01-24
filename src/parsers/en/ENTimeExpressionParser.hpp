@@ -31,39 +31,39 @@ public:
     ENTimeExpressionParser() : Parser(false, std::regex(PATTERN, std::regex::icase)) { }
 
     parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime& ref) override {
-        std::string text = match[0].str().substr(match[1].length());
-        int idx = match.position() + match[1].length();
-
+        std::string text = match.str(0).substr(match.length(1));
+        long idx = match.position(0) + match.length(1);
         parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
 
-        if (match.position() > 0 and std::regex_match(tx.substr(match.position() - 1), std::regex("\\w")))
+        if (match.position(0) > 0 and std::regex_match(tx.substr(match.position(0) - 1), std::regex("\\w")))
             return result;
 
         int hour{0}, minute{0};// tz{-1}, meridian{-1};
         char ampm_s;
 
         //------------Seconds------------------
-        if(!match[SECOND_GROUP].str().empty()){
-            short second = static_cast<short>(std::stoi(match[SECOND_GROUP].str()));
-            if(second >= 60) return result;
+        if(!match.str(SECOND_GROUP).empty()){
+            unsigned short second = static_cast<unsigned short>(std::stoi(match.str(SECOND_GROUP)));
+            if(second >= 60)
+                return result;
 
             result.startDate.setSeconds(second);
         }
 
         //--------------Hour------------------
-        if(match[HOUR_GROUP].str() == "noon"){
+        if(match.str(HOUR_GROUP) == "noon"){
             // meridian = 1;
             hour = 12;
-        } else if (match[HOUR_GROUP].str() == "midnight") {
+        } else if (match.str(HOUR_GROUP) == "midnight") {
             // meridian = 0;
             hour = 0;
         } else {
-            hour = std::stoi(match[HOUR_GROUP].str());
+            hour = std::stoi(match.str(HOUR_GROUP));
         }
 
         //------------Minutes---------------
-        if(!match[MINUTE_GROUP].str().empty()){
-            minute = std::stoi(match[MINUTE_GROUP].str());
+        if(!match.str(MINUTE_GROUP).empty()){
+            minute = std::stoi(match.str(MINUTE_GROUP));
         } else if(hour > 100) {
             minute = hour%100;
             hour   = hour/100;
@@ -78,11 +78,11 @@ public:
         }
 
         // ----- AM & PM
-        if(!match[AM_PM_HOUR_GROUP].str().empty()) {
+        if(!match.str(AM_PM_HOUR_GROUP).empty()) {
             // if the text has am/pm provided then the logic follows
             // that the hour should not be greater than 12
             if(hour > 12) return result;
-            ampm_s = match[AM_PM_HOUR_GROUP].str()[0];
+            ampm_s = match.str(AM_PM_HOUR_GROUP)[0];
             if(ampm_s == 'a'){
                 //meridian = 0;
                 if(hour == 12) hour = 0;
@@ -106,7 +106,6 @@ public:
         }
         */
 
-
         result.startDate.setHour(hour);
         result.startDate.setMinute(minute);
 
@@ -120,23 +119,23 @@ public:
         //               if there exists a "to" expression          //
         //                e.g: from 5 a.m to 5 p.m                  //
         *************************************************************/
-        if(!match[TO_GROUP].str().empty()) {
-            if (std::regex_match(match[TO_GROUP].str(), std::regex(R"(^\s*(\+|\-)\s*\d{3,4}$)"))) {
+        if(!match.str(TO_GROUP).empty()) {
+            if (std::regex_match(match.str(TO_GROUP), std::regex(R"(^\s*(\+|\-)\s*\d{3,4}$)"))) {
                 return result;
             }
             // "to" portion of match
             int to_hour{0}, to_minute{0}; //, to_tz{-1};
 
-            if(match[TO_HOUR_GROUP].str() == "noon"){
+            if(match.str(TO_HOUR_GROUP) == "noon"){
                 to_hour = 12;
-            } else if (match[TO_HOUR_GROUP].str() == "midnight") {
+            } else if (match.str(TO_HOUR_GROUP) == "midnight") {
                 to_hour = 0;
             } else {
-                to_hour = std::stoi(match[TO_HOUR_GROUP].str());
+                to_hour = std::stoi(match.str(TO_HOUR_GROUP));
             }
 
-            if(!match[TO_MINUTE_GROUP].str().empty()){
-                to_minute = std::stoi(match[TO_MINUTE_GROUP].str());
+            if(!match.str(TO_MINUTE_GROUP).empty()){
+                to_minute = std::stoi(match.str(TO_MINUTE_GROUP));
             } else if(to_hour > 100) {
                 to_minute = to_hour%100;
                 to_hour   = to_hour/100;
@@ -146,13 +145,13 @@ public:
                 return result;
             }
 
-            if(!match[TO_MERIDIEM_GROUP].str().empty()) {
+            if(!match.str(TO_MERIDIEM_GROUP).empty()) {
                 // if the text has am/pm provided then the logic follows
                 // that the hour should not be greater than 12
                 if(to_hour > 12)
                     return result;
 
-                char& ampm = match[TO_MERIDIEM_GROUP].str()[0];
+                char& ampm = match.str(TO_MERIDIEM_GROUP)[0];
                 if(ampm == 'a')
                     if(to_hour == 12)
                         to_hour = 0;
@@ -160,7 +159,7 @@ public:
                 if(ampm == 'p') {
                     if (to_hour != 12)
                         to_hour += 12;
-                    if(match[AM_PM_HOUR_GROUP].str().empty()) {
+                    if(match.str(AM_PM_HOUR_GROUP).empty()) {
                         if (hour != 12) {
                             hour += 12;
                             result.startDate.setHour(hour);
@@ -177,8 +176,8 @@ public:
                         to_hour += 12;
             }
 
-            if(!match[TO_SECOND_GROUP].str().empty()){
-                int to_second = std::stoi(match[TO_SECOND_GROUP].str());
+            if(!match.str(TO_SECOND_GROUP).empty()){
+                int to_second = std::stoi(match.str(TO_SECOND_GROUP));
                 if(to_second >= 60 or to_second < 0)
                     return result;
 
