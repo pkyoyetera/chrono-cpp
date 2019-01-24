@@ -9,68 +9,69 @@ public:
     ENDayOfWeekParser dwp;
     Result results;
     posix_time::ptime t;
+    parse::ParsedResult r;
 
     ENDayOfTheWeekTest() {
         std::string s = "2019-01-21 23:59:00.00";
         t = posix_time::time_from_string(s);
     }
-    ~ENDayOfTheWeekTest() { }
+    ~ENDayOfTheWeekTest() = default;
 
 };
 
 TEST_F(ENDayOfTheWeekTest, test1) {
     string text{"Monday"};
     results = dwp.execute(text, t);
-
-    EXPECT_EQ(results[0].startDate.getYear(), 2019);
-    EXPECT_EQ(results[0].startDate.getMonth(), 1);
-    EXPECT_EQ(results[0].startDate.get_mDay(), 21);
+    r = results[0];
+    EXPECT_EQ(r.startDate.getYear(), 2019);
+    EXPECT_EQ(r.startDate.getMonth(), 1);
+    EXPECT_EQ(r.startDate.get_mDay(), 21);
 
     text = "Friday";
     results = dwp.execute(text, t);
-
-    EXPECT_EQ(results[0].startDate.getYear(), 2019);
-    EXPECT_EQ(results[0].startDate.getMonth(), 1);
-    EXPECT_EQ(results[0].startDate.get_mDay(), 25);
+    r = results[0];
+    EXPECT_EQ(r.startDate.getYear(), 2019);
+    EXPECT_EQ(r.startDate.getMonth(), 1);
+    EXPECT_EQ(r.startDate.get_mDay(), 25);
 
     text = "Sunday";
     results = dwp.execute(text, t);
-
-    EXPECT_EQ(results[0].startDate.getYear(), 2019);
-    EXPECT_EQ(results[0].startDate.getMonth(), 1);
-    EXPECT_EQ(results[0].startDate.get_mDay(), 20);
+    r = results[0];
+    EXPECT_EQ(r.startDate.getYear(), 2019);
+    EXPECT_EQ(r.startDate.getMonth(), 1);
+    EXPECT_EQ(r.startDate.get_mDay(), 20);
 }
 
 TEST_F(ENDayOfTheWeekTest, test2) {
     string text{"this Tuesday"};
     results = dwp.execute(text, t);
-
-    EXPECT_EQ(results[0].startDate.getYear(), 2019);
-    EXPECT_EQ(results[0].startDate.getMonth(), 1);
-    EXPECT_EQ(results[0].startDate.get_mDay(), 22);
+    r = results[0];
+    EXPECT_EQ(r.startDate.getYear(), 2019);
+    EXPECT_EQ(r.startDate.getMonth(), 1);
+    EXPECT_EQ(r.startDate.get_mDay(), 22);
 
     text = "this Sat";
     results = dwp.execute(text, t);
-
-    EXPECT_EQ(results[0].startDate.getYear(), 2019);
-    EXPECT_EQ(results[0].startDate.getMonth(), 1);
-    EXPECT_EQ(results[0].startDate.get_mDay(), 26);
+    r = results[0];
+    EXPECT_EQ(r.startDate.getYear(), 2019);
+    EXPECT_EQ(r.startDate.getMonth(), 1);
+    EXPECT_EQ(r.startDate.get_mDay(), 26);
 }
 
 TEST_F(ENDayOfTheWeekTest, test3) {
     string text{"next thursday"};
     results = dwp.execute(text, t);
-
-    EXPECT_EQ(results[0].startDate.getYear(), 2019);
-    EXPECT_EQ(results[0].startDate.getMonth(), 1);
-    EXPECT_EQ(results[0].startDate.get_mDay(), 31);
+    r = results[0];
+    EXPECT_EQ(r.startDate.getYear(), 2019);
+    EXPECT_EQ(r.startDate.getMonth(), 1);
+    EXPECT_EQ(r.startDate.get_mDay(), 31);
 
     text = "next Monday";
     results = dwp.execute(text, t);
-
-    EXPECT_EQ(results[0].startDate.getYear(), 2019);
-    EXPECT_EQ(results[0].startDate.getMonth(), 1);
-    EXPECT_EQ(results[0].startDate.get_mDay(), 28);
+    r = results[0];
+    EXPECT_EQ(r.startDate.getYear(), 2019);
+    EXPECT_EQ(r.startDate.getMonth(), 1);
+    EXPECT_EQ(r.startDate.get_mDay(), 28);
 
 }
 
@@ -78,23 +79,23 @@ TEST_F(ENDayOfTheWeekTest, test3) {
 TEST_F(ENDayOfTheWeekTest, test4) {
     string text{"last thursday"};
     results = dwp.execute(text, t);
-
-    EXPECT_EQ(results[0].startDate.getYear(), 2019);
-    EXPECT_EQ(results[0].startDate.getMonth(), 1);
-    EXPECT_EQ(results[0].startDate.get_mDay(), 17);
+    r = results[0];
+    EXPECT_EQ(r.startDate.getYear(), 2019);
+    EXPECT_EQ(r.startDate.getMonth(), 1);
+    EXPECT_EQ(r.startDate.get_mDay(), 17);
 
     text = "last Sunday";
     results = dwp.execute(text, t);
-
-    EXPECT_EQ(results[0].startDate.getYear(), 2019);
-    EXPECT_EQ(results[0].startDate.getMonth(), 1);
-    EXPECT_EQ(results[0].startDate.get_mDay(), 13);
+    r = results[0];
+    EXPECT_EQ(r.startDate.getYear(), 2019);
+    EXPECT_EQ(r.startDate.getMonth(), 1);
+    EXPECT_EQ(r.startDate.get_mDay(), 13);
 
     text = "last mon";
     results = dwp.execute(text, t);
-
-    EXPECT_EQ(results[0].startDate.getYear(), 2019);
-    EXPECT_EQ(results[0].startDate.getMonth(), 1);
-    EXPECT_EQ(results[0].startDate.get_mDay(), 14);
+    r = results[0];
+    EXPECT_EQ(r.startDate.getYear(), 2019);
+    EXPECT_EQ(r.startDate.getMonth(), 1);
+    EXPECT_EQ(r.startDate.get_mDay(), 14);
 }
 
