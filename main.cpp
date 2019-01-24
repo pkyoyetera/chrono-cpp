@@ -14,7 +14,7 @@
 #include "src/parsers/en/ENISOFormatParser.hpp"
 
 #include "src/refiners/OverlapRemovalRefiner.hpp"
-// #include "src/refiners/en/ENMergeDateRangeRefiner.hpp"
+#include "src/refiners/en/ENMergeDateRangeRefiner.hpp"
 #include "src/refiners/ExtractTimeZoneAbbreviation.hpp"
 
 
@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
         printUsage();
         return 0;
     }
-    Result results, results_pre;
+    Result results;
     posix_time::ptime t;
     string str;
 
@@ -48,10 +48,10 @@ int main(int argc, char* argv[]) {
 
     Refiner* ov  = new OverlapRemover();
     Refiner* tza = new ExtractTimeZoneAbbreviation();
-    // Refiner* mdr = new ENMergeDateRange();
+    Refiner* mdr = new ENMergeDateRange();
 
     list<Parser*>  parsers  {tp, dfp, dp, dow, mme, tl, mn, ta, tx, iso};
-    list<Refiner*> refiners {ov, tza};
+    list<Refiner*> refiners {ov, tza, mdr};
 
     str = argv[1];
 
@@ -66,24 +66,26 @@ int main(int argc, char* argv[]) {
 
     for(list<Parser*>::iterator it = parsers.begin(); it != parsers.end(); ++it) { // NOLINT(modernize-use-auto)
         Result p_result = (*it)->execute(str, t);
-        results_pre.insert(results_pre.end(), p_result.begin(), p_result.end());
+        results.insert(results.end(), p_result.begin(), p_result.end());
     }
 
-    std::sort(results_pre.begin(), results_pre.end(),
+    std::sort(results.begin(), results.end(),
             [&](parse::ParsedResult p1, parse::ParsedResult p2) {
                 return p1.getIndex() < p2.getIndex();
     });
 
     for(list<Refiner*>::iterator it = refiners.begin(); it != refiners.end(); ++it) {
-        results_pre = (*it)->refine(results_pre, str);
+        results = (*it)->refine(results, str);
     }
-    // Result r1 = ov->refine(results_pre, str);
+    // Result r1 = ov->refine(results, str);
     // Result results_final = tza->refine(r1, str);
 
-    if(results_pre.empty())
+    // results =  mdr->refine(results, str);
+
+    if(results.empty())
         cout << "[???] -- Invalid date" << endl;
     else
-        cout << "Date:\t"  << results_pre[0].toDate() << endl;
+        cout << "Date:\t"  << results[0].toDate() << endl;
 
     for(auto p: parsers)
         delete p;
