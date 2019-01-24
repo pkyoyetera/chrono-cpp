@@ -12,9 +12,10 @@ class ENDeadlineFormatParser : public Parser {
 public:
     ENDeadlineFormatParser() : Parser(false, std::regex(PATTERN, std::regex::icase)) { }
 
-    parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime& ref) {
+    parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime& ref, long idx)
+    override {
         std::string text = match.str(0).substr(match.length(1));
-        long idx = match.position(0) + match.length(1);
+        // long idx = match.position(0) + match.length(1);
         posix_time::ptime tmpTime{ref};
         gregorian::date tmpDate{ ref.date() };
 

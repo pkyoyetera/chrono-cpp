@@ -34,7 +34,7 @@ TEST_F(ENCasualTimeTest, test1) {
     results = ps.execute(text1, t);
     r = results[0];
 
-    EXPECT_EQ(r.getIndex(), 11);
+    EXPECT_EQ(r.getIndex(), 10);
     EXPECT_EQ(r.startDate.getYear(), t.date().year());
     EXPECT_EQ(r.startDate.getMonth(), t.date().month());
     EXPECT_EQ(r.startDate.get_mDay(), t.date().day());
@@ -43,18 +43,22 @@ TEST_F(ENCasualTimeTest, test1) {
 
     results = ps.execute(text2, t);
     r = results[0];
+    EXPECT_EQ(r.getIndex(), 0);
     ASSERT_EQ(r.startDate.getHour(), 15);
 
     results = ps.execute(text3, t);
     r = results[0];
+    EXPECT_EQ(r.getIndex(), 3);
     ASSERT_EQ(r.startDate.getHour(), 20);
 
     results = ps.execute(text4, t);
     r = results[0];
+    EXPECT_EQ(r.getIndex(), 8);
     ASSERT_EQ(r.startDate.getHour(), 12);
 
     results = ps.execute(text5, t);
     r = results[0];
+    EXPECT_EQ(r.getIndex(), 14);
     ASSERT_EQ(r.startDate.getHour(), 20);
 }
 

@@ -16,7 +16,7 @@ public:
     Parser(bool, std::regex);       // strictMode, pattern
     std::regex getPattern();
 
-    virtual parse::ParsedResult extract(std::string, std::smatch, posix_time::ptime&) {
+    virtual parse::ParsedResult extract(std::string, std::smatch, posix_time::ptime&, long) {
         parse::ParsedResult tmp{ };
         return tmp;
     }

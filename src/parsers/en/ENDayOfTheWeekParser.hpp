@@ -116,13 +116,14 @@ public:
         return res;
     }
 
-    parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime& ref) {
+    parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime& ref, long idx)
+    override {
         std::string text      = match.str(0).substr(match.length(1));
         std::string prefix    = match.str(PREFIX_GROUP);
         std::string postfix   = match.str(POSTFIX_GROUP);
         std::string dayOfWeek = match.str(WEEKDAY_GROUP);
         std::string norm;
-        long idx = match.position(0) + match.length(1);
+        // long idx = match.position(0) + match.length(1);
 
         parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
 

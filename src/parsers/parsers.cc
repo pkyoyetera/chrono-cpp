@@ -36,7 +36,7 @@ Result Parser::execute(std::string& text, posix_time::ptime& ref) {
         idx = match.position(0) + text.length() - remainingText.length();
 
         parse::ParsedResult res{};
-        res = extract(remainingText, match, ref);
+        res = extract(remainingText, match, ref, idx);
 
         if (/*!strictMode or */res.hasPossibleDates())
             results.push_back(res);

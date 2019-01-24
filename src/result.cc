@@ -55,8 +55,8 @@ ParsedComponents& ParsedComponents::operator=(const ParsedComponents& obj) {
 
 posix_time::ptime ParsedComponents::date() {
     tm temp;
-    temp.tm_year = getYear();
-    temp.tm_mon  = getMonth();
+    temp.tm_year = getYear()-1900;
+    temp.tm_mon  = getMonth()-1;
     temp.tm_mday = get_mDay();
     temp.tm_wday = get_wDay();
     temp.tm_hour = getHour();

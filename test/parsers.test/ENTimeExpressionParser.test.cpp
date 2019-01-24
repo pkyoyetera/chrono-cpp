@@ -26,6 +26,8 @@ TEST_F(ENTimeExpTest, time_words) {
     text = "at noon";
     results = timeExpressionParser.execute(text, t);
     r = results[0];
+
+    EXPECT_EQ(r.getIndex(), 0);
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 1);
@@ -36,6 +38,8 @@ TEST_F(ENTimeExpTest, time_words) {
     text = "let's get together around midnight.";
     results = timeExpressionParser.execute(text, t);
     r = results[0];
+
+    EXPECT_EQ(r.getIndex(), 25);
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 1);
@@ -64,6 +68,7 @@ TEST_F(ENTimeExpTest, using_from) {
     EXPECT_EQ(results.size(), 1);
 
     r = results[0];
+    EXPECT_EQ(r.getIndex(), 16);
     EXPECT_EQ(r.startDate.getHour(), 16);
     EXPECT_EQ(r.startDate.getMinute(), 12);
 }
@@ -75,6 +80,7 @@ TEST_F(ENTimeExpTest, ampm) {
     EXPECT_EQ(results.size(), 1);
 
     r = results[0];
+    EXPECT_EQ(r.getIndex(), 8);
     EXPECT_EQ(r.startDate.getHour(), 16);
     EXPECT_EQ(r.startDate.getMinute(), 57);
 

@@ -26,6 +26,8 @@ TEST_F(ENISOFormatTest, t1) {
     text = "2016-11-17";
     results = isoParser.execute(text, t);
     r = results[0];
+
+    EXPECT_EQ(r.getIndex(), 0);
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getYear(), 2016);
     EXPECT_EQ(r.startDate.getMonth(), 11);
