@@ -64,7 +64,6 @@ public:
         result.setTag(utils::ENISOFormatParser);
         return result;
     }
-
 };
 
 #undef YEAR_NUMBER_GROUP

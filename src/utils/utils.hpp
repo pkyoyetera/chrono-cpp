@@ -173,6 +173,7 @@ namespace utils {
 
     int argToOrdinalValue(const std::string &);
 
+    // todo: make template
     std::string keysToString(std::map<std::string, int>);
 
     static std::string INTEGER_WORDS_PATTERN{"(?:" + utils::keysToString(utils::INTEGER_WORDS) + ")"};
