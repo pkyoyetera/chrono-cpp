@@ -24,24 +24,30 @@ public:
     ENMonthNameParser() : Parser(false, std::regex(PATTERN, std::regex::icase)) { }
 
     parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime &ref) override {
-        std::string text = match[0].str().substr(match[1].length());
-        int idx = match.position() + match[1].length();
-
+        std::string text = match.str(0).substr(match.length(1));
+        long idx = match.position(0) + match.length(1);
         parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
 
-        std::string month_s = match[MONTH__NAME_GROUP];
-        int month = utils::MONTH_CONSTANTS[month_s];
-
-        short unsigned day = 1;
+        int month = utils::MONTH_CONSTANTS[match.str(MONTH__NAME_GROUP)];
+        unsigned day = 1;
 
         int year{-1};
-        if(!match[YEAR__GROUP].str().empty()) {
-            year = std::stoi(match[YEAR__GROUP].str());
-            if(!match[YEAR_BE_GROUP_].str().empty()) {
-                if (std::regex_search(match[YEAR_BE_GROUP_].str(), std::regex("BE", std::regex::icase))) {
+        if(!match.str(YEAR__GROUP).empty()) {
+            try {
+                year = std::stoi(match[YEAR__GROUP].str());
+            }
+            catch(std::out_of_range& e) {
+                std::cerr << e.what() << " at ENMonthNameParser" << std::endl;
+            }
+            catch(std::invalid_argument& x) {
+                std::cerr << x.what() << " at ENMonthNameParser" << std::endl;
+            }
+
+            if(!match.str(YEAR_BE_GROUP_).empty()) {
+                if (std::regex_search(match.str(YEAR_BE_GROUP_), std::regex("BE", std::regex::icase))) {
                     // Buddhist era
                     year -= 543;
-                } else if (std::regex_search(match[YEAR_BE_GROUP_].str(), std::regex("BC", std::regex::icase))) {
+                } else if (std::regex_search(match.str(YEAR_BE_GROUP_), std::regex("BC", std::regex::icase))) {
                     // Before Christ
                     year = -year;
                 }

@@ -63,3 +63,12 @@ TEST_F(ENMonthNameTest, t1) {
     EXPECT_EQ(r.startDate.getMonth(), 9);
     EXPECT_EQ(r.startDate.get_mDay(), 1);
 }
+
+TEST_F(ENMonthNameTest, t2) {
+    text = "1200 BC";
+    results = monthParser.execute(text, t);
+
+    // todo: complete BC/AD tests
+
+
+}
