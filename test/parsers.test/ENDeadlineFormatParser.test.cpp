@@ -12,7 +12,7 @@ public:
     posix_time::ptime t;
     ENDeadlineFormatTest() : t{posix_time::second_clock::local_time()} { }
 
-    ~ENDeadlineFormatTest() { }
+    ~ENDeadlineFormatTest() = default;
 };
 
 TEST_F (ENDeadlineFormatTest, test1) {

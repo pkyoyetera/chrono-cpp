@@ -13,14 +13,14 @@ public:
     ENDeadlineFormatParser() : Parser(false, std::regex(PATTERN, std::regex::icase)) { }
 
     parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime& ref) {
-        std::string text = match[0].str().substr(match[1].length());
-        int idx = match.position(0) + match[1].length();
+        std::string text = match.str(0).substr(match.length(1));
+        long idx = match.position(0) + match.length(1);
         posix_time::ptime tmpTime{ref};
         gregorian::date tmpDate{ ref.date() };
 
         parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
 
-        std::string tmp = match[3];
+        std::string tmp = match.str(3);
         float num;
         // check if integer is in integer_words
         if(utils::INTEGER_WORDS.find(tmp) != utils::INTEGER_WORDS.end()) {
@@ -52,8 +52,8 @@ public:
          * i.e: instead of hours(0.5) use minutes(30) e.t.c
          */
         std::regex dwmy(("day|week|month|year"));
-        if( std::regex_search(match[4].str(), dwmy) ) {
-            if(!match[4].str().find("day")) {
+        if( std::regex_search(match.str(4), dwmy) ) {
+            if(!match.str(4).find("day")) {
                 if(floor(num) == num)
                     tmpDate += gregorian::days(num);
                 else {
@@ -69,19 +69,19 @@ public:
                     return result;
                 }
             }
-            else if (!match[4].str().find("week")) {
+            else if (!match.str(4).find("week")) {
                 if(floor(num) == num)
                     tmpDate += gregorian::weeks(num);
                 else
                     tmpDate += gregorian::days(3);
             }
-            else if(!match[4].str().find("month")) {
+            else if(!match.str(4).find("month")) {
                 if(floor(num) == num)
                     tmpDate += gregorian::months(num);
                 else
                     tmpDate += gregorian::days(15);
             }
-            else if(!match[4].str().find("year")) {
+            else if(!match.str(4).find("year")) {
                 if(floor(num) == num)
                     tmpDate += gregorian::years(num);
                 else
@@ -95,20 +95,19 @@ public:
             return result;
         }
 
-        if(!match[4].str().find("hour")) {
-
+        if(!match.str(4).find("hour")) {
             if(floor(num) == num)
                 tmpTime += posix_time::hours(num);
             else
                 tmpTime += posix_time::minutes(30);
         }
-        else if(!match[4].str().find("minute")) {
+        else if(!match.str(4).find("minute")) {
             if(floor(num) == num)
                 tmpTime += posix_time::minutes(num);
             else
                 tmpTime += posix_time::seconds(30);
         }
-        else if(!match[4].str().find("second")) {
+        else if(!match.str(4).find("second")) {
             tmpTime += posix_time::seconds(ceil(num));
         }
         result.startDate.implyComponent("year", tmpDate.year());

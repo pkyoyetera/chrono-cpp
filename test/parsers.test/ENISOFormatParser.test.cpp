@@ -53,6 +53,7 @@ TEST_F(ENISOFormatTest, t1) {
     EXPECT_EQ(r.startDate.getMinute(), 15);
     EXPECT_EQ(r.startDate.getSeconds(), 30);
 
+    // todo: tests including parsing of timezones offset element
 
 }
 

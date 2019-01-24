@@ -23,36 +23,34 @@ public:
     ENISOFormatParser() : Parser(false, std::regex(PATTERN, std::regex::icase)) { }
 
     parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime& ref) override {
-        std::string text = match[0].str().substr(match[1].length());
-        int idx = match.position() + match[1].length();
-
+        std::string text = match.str(0).substr(match.length(1));
+        long idx = match.position(0) + match.length(1);
         parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
 
-        int month = std::stoi(match[MONTH_NUMBER_GROUP].str());
-        int day = std::stoi(match[DATE_NUMBER_GROUP].str());
+        int month = std::stoi(match.str(MONTH_NUMBER_GROUP));
+        int day   = std::stoi(match.str(DATE_NUMBER_GROUP));
         if(month > 12 or month < 1 or day > 31 or day < 1)
             return result;
 
-        result.startDate.setYear(std::stoi(match[YEAR_NUMBER_GROUP].str()));
+        result.startDate.setYear(std::stoi(match.str(YEAR_NUMBER_GROUP)));
         result.startDate.setMonth(month);
         result.startDate.set_mDay(day);
 
-        if(!match[HOUR_NUMBER_GROUP].str().empty()) {
-            result.startDate.setHour(std::stoi(match[HOUR_NUMBER_GROUP].str()));
-            result.startDate.setMinute(std::stoi(match[MINUTE_NUMBER_GROUP].str()));
+        if(!match.str(HOUR_NUMBER_GROUP).empty()) {
+            result.startDate.setHour(std::stoi(match.str(HOUR_NUMBER_GROUP)));
+            result.startDate.setMinute(std::stoi(match.str(MINUTE_NUMBER_GROUP)));
 
-            if (!match[SECOND_NUMBER_GROUP].str().empty()) {
-                result.startDate.setSeconds(std::stoi(match[SECOND_NUMBER_GROUP].str()));
+            if (!match.str(SECOND_NUMBER_GROUP).empty()) {
+                result.startDate.setSeconds(std::stoi(match.str(SECOND_NUMBER_GROUP)));
             }
 
-            if (match[TZD_HOUR_OFFSET_GROUP].str().empty()) {
-
-                // result.start.assign('timezoneOffset', 0);
+            if (match.str(TZD_HOUR_OFFSET_GROUP).empty()) {
+                result.startDate.setTimeZoneOffset(0);
             } else {
                 int minuteOffset = 0;
-                int hourOffset = std::stoi(match[TZD_HOUR_OFFSET_GROUP].str());
-                if(!match[TZD_MINUTE_OFFSET_GROUP].str().empty())
-                    minuteOffset = std::stoi(match[TZD_MINUTE_OFFSET_GROUP].str());
+                int hourOffset = std::stoi(match.str(TZD_HOUR_OFFSET_GROUP));
+                if(!match.str(TZD_MINUTE_OFFSET_GROUP).empty())
+                    minuteOffset = std::stoi(match.str(TZD_MINUTE_OFFSET_GROUP));
 
                 int offset = hourOffset * 60;
                 if (offset < 0) {
