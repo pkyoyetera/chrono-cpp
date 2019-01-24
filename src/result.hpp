@@ -66,7 +66,7 @@ protected:
 
 public:
     ParsedResult();
-    ParsedResult(posix_time::ptime, unsigned, std::string);
+    ParsedResult(posix_time::ptime, long, std::string);
     ParsedResult(const ParsedResult& pr);
     ~ParsedResult();
     // ParsedResult& operator=(ParsedResult&);

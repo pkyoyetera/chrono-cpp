@@ -41,11 +41,14 @@
 
 class ENMonthNameMiddleEndianParser : public Parser {
 public:
-    ENMonthNameMiddleEndianParser() : Parser(false, std::regex(PATTERN, std::regex::icase)) {}
+    ENMonthNameMiddleEndianParser() : Parser(false, std::regex(PATTERN, std::regex::icase)) { }
 
     parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime &ref) override {
 
-        parse::ParsedResult result;
+        std::string text = match[0].str().substr(match[1].length());
+        unsigned idx = match.position() + match[1].length();
+
+        parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
         // gregorian::date d;
 
         std::string month_s = match[MONTH_NAME_GROUP];

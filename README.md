@@ -17,7 +17,7 @@ The library supports formats such as:
 ### Building  
 
 ##### NOTE: 
-Need to have bazel installed.
+Need to have [bazel](https://bazel.build/) installed.
 
 ```bazel build main```
 

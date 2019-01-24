@@ -13,6 +13,7 @@ public:
     tm anchor;
     string text1, text2, text3, text4, text5;
     Result results;
+    parse::ParsedResult r;
 
     ENCasualTimeTest() {
         text1 = "What about this morning!";
@@ -31,24 +32,30 @@ TEST_F(ENCasualTimeTest, test1) {
     anchor = posix_time::to_tm(t);
 
     results = ps.execute(text1, t);
+    r = results[0];
 
-    EXPECT_EQ(results[0].startDate.getYear(), t.date().year());
-    EXPECT_EQ(results[0].startDate.getMonth(), t.date().month());
-    EXPECT_EQ(results[0].startDate.get_mDay(), t.date().day());
-    EXPECT_EQ(results[0].startDate.get_wDay(), t.date().day_of_week());
-    ASSERT_EQ(results[0].startDate.getHour(), 06);
+    EXPECT_EQ(r.getIndex(), 11);
+    EXPECT_EQ(r.startDate.getYear(), t.date().year());
+    EXPECT_EQ(r.startDate.getMonth(), t.date().month());
+    EXPECT_EQ(r.startDate.get_mDay(), t.date().day());
+    EXPECT_EQ(r.startDate.get_wDay(), t.date().day_of_week());
+    ASSERT_EQ(r.startDate.getHour(), 06);
 
     results = ps.execute(text2, t);
-    ASSERT_EQ(results[0].startDate.getHour(), 15);
+    r = results[0];
+    ASSERT_EQ(r.startDate.getHour(), 15);
 
     results = ps.execute(text3, t);
-    ASSERT_EQ(results[0].startDate.getHour(), 20);
+    r = results[0];
+    ASSERT_EQ(r.startDate.getHour(), 20);
 
     results = ps.execute(text4, t);
-    ASSERT_EQ(results[0].startDate.getHour(), 12);
+    r = results[0];
+    ASSERT_EQ(r.startDate.getHour(), 12);
 
     results = ps.execute(text5, t);
-    ASSERT_EQ(results[0].startDate.getHour(), 20);
+    r = results[0];
+    ASSERT_EQ(r.startDate.getHour(), 20);
 }
 
 
@@ -58,23 +65,28 @@ TEST_F(ENCasualTimeTest, test2) {
     anchor = posix_time::to_tm(t);
 
     results = ps.execute(text1, t);
+    r = results[0];
 
-    EXPECT_EQ(results[0].startDate.getYear(), t.date().year());
-    EXPECT_EQ(results[0].startDate.getMonth(), t.date().month());
-    EXPECT_EQ(results[0].startDate.get_mDay(), t.date().day());
-    EXPECT_EQ(results[0].startDate.get_wDay(), anchor.tm_wday);
-    ASSERT_EQ(results[0].startDate.getHour(), 06);
+    EXPECT_EQ(r.startDate.getYear(), t.date().year());
+    EXPECT_EQ(r.startDate.getMonth(), t.date().month());
+    EXPECT_EQ(r.startDate.get_mDay(), t.date().day());
+    EXPECT_EQ(r.startDate.get_wDay(), anchor.tm_wday);
+    ASSERT_EQ(r.startDate.getHour(), 06);
 
     results = ps.execute(text2, t);
-    ASSERT_EQ(results[0].startDate.getHour(), 15);
+    r = results[0];
+    ASSERT_EQ(r.startDate.getHour(), 15);
 
     results = ps.execute(text3, t);
-    ASSERT_EQ(results[0].startDate.getHour(), 20);
+    r = results[0];
+    ASSERT_EQ(r.startDate.getHour(), 20);
 
     results = ps.execute(text4, t);
-    ASSERT_EQ(results[0].startDate.getHour(), 12);
+    r = results[0];
+    ASSERT_EQ(r.startDate.getHour(), 12);
 
     results = ps.execute(text5, t);
-    ASSERT_EQ(results[0].startDate.getHour(), 20);
+    r = results[0];
+    ASSERT_EQ(r.startDate.getHour(), 20);
 
 }

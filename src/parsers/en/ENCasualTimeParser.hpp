@@ -18,16 +18,15 @@ public:
     ENCasualTimeParser(): Parser(false, std::regex(PATTERN, std::regex::icase)) { }
 
     parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime& ref) override {
-        std::string text = match[0].str().substr(match[1].length());
-        int idx = match.position() + match[1].length();
+        std::string text = match.str(0).substr(match.length(1));
+        long idx = match.position(0) + match.length(1);
 
         parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
 
-        int time_match = 4;
-        if(match[time_match] == "") time_match = 3;
+        unsigned time_match = 4;
+        if(match.str(time_match).empty()) time_match = 3;
 
-        std::string subs = match[time_match].str();
-        std::transform(subs.begin(), subs.end(), subs.begin(), ::tolower);
+        std::string subs{utils::toLowerCase(match.str(time_match))};
 
         if(!subs.compare("afternoon")) {
             result.startDate.implyComponent("hour", 15);
@@ -42,16 +41,11 @@ public:
         else if (!subs.compare("noon")) {
             result.startDate.implyComponent("hour", 12);
         }
-        else {
-            // std::cerr << "invalid match" << std::endl; // this should be a loggable error
-        }
-
-        // local = posix_time::to_tm(ref);
 
         result.startDate.implyComponent("year",  ref.date().year());
         result.startDate.implyComponent("month", ref.date().month());
         result.startDate.implyComponent("mday",  ref.date().day());
-        result.startDate.implyComponent("wday",  ref.date().day_of_week());     /// todo: mappping between tm_wday and gregorian_day_of_the_week
+        result.startDate.implyComponent("wday",  ref.date().day_of_week());
         result.startDate.implyComponent( "min",  ref.time_of_day().minutes());
 
         // indicate parser used

@@ -28,8 +28,16 @@ namespace utils {
         ExtractTimeZoneAbbreviation,
 
     } Modifiers;
-
     typedef std::unordered_map<Modifiers, bool> Tags;
+
+    static std::list<modifiers> ModList{ENCasualTimeParser, ENCasualDateParser,
+                                        ENDeadlineFormatParser, ENDayOfTheWeekParser,
+                                        ENMonthNameMiddleEndianParser, ENTimeLaterParser,
+                                        ENMonthNameParser, ENTimeAgoFormatParser,
+                                        ENISOFormatParser, ENTimeExpressionParser,
+
+                                        ENMergeDateRangeRefiner,
+                                        ExtractTimeZoneAbbreviation,};
 
     static std::map<std::string, int> INTEGER_WORDS{
             {"one",    1},

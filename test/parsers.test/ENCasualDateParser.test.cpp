@@ -9,12 +9,12 @@ class ENCasualDateTest : public ::testing::Test {
 protected:
 
     ENCasualDateParser dateParser;
-    tm anchor;
     string t1, t2, t3, t4, t5;
     Result results;
+    parse::ParsedResult r;
 
     ENCasualDateTest() {
-        t1 = "last NIGHT was not bonkers";
+        t1 = "What happened last NIGHT bro?";
         t2 = "Was tomorrow morning even acceptable?";
         t3 = "";
         t4 = "Later tonight then? ";
@@ -27,42 +27,42 @@ protected:
 
 
 TEST_F(ENCasualDateTest, construct) {
-    // posix_time::ptime anchor( posix_time::second_clock::local_time() );
-
     string testRefDate("2018-02-13 18:16:27");
     posix_time::ptime anchor (posix_time::time_from_string(testRefDate));
 
     // test 1: date corresponds to yesterday's
-
     results = dateParser.execute(t1, anchor);
+    r = results[0];
 
-    EXPECT_EQ(results[0].startDate.getYear(),  anchor.date().year());
-    EXPECT_EQ(results[0].startDate.getMonth(), anchor.date().month()) ;
-    EXPECT_EQ(results[0].startDate.get_mDay(), anchor.date().day()-1);
-    // EXPECT_EQ(results[0].startDate.get_wDay(), );
-    // EXPECT_STREQ(results[0].text, t1.substr(0, 10)); // text is protected
-
-    /// todo: place the above tests into a general test case for parsers in general
+    EXPECT_EQ(r.getIndex(), 14);
+    EXPECT_EQ(r.startDate.getYear(),  anchor.date().year());
+    EXPECT_EQ(r.startDate.getMonth(), anchor.date().month()) ;
+    EXPECT_EQ(r.startDate.get_mDay(), anchor.date().day()-1);
+    EXPECT_EQ(r.startDate.getHour(), 0);
 
     /// test 2: date corresponds to tomorrow
     results = dateParser.execute(t2, anchor);
-    EXPECT_EQ(results[0].startDate.getYear(),  anchor.date().year());
-    EXPECT_EQ(results[0].startDate.getMonth(), anchor.date().month());
-    EXPECT_EQ(results[0].startDate.get_mDay(), anchor.date().day() + 1);
-    EXPECT_EQ(results[0].startDate.get_wDay(), anchor.date().day_of_week() + 1);
+    r = results[0];
+    EXPECT_EQ(r.startDate.getYear(),  anchor.date().year());
+    EXPECT_EQ(r.startDate.getMonth(), anchor.date().month());
+    EXPECT_EQ(r.startDate.get_mDay(), anchor.date().day() + 1);
 
-    /// test 4: date should correspond to later today
+    // test 4: date should correspond to later today
     results = dateParser.execute(t4, anchor);
-    EXPECT_EQ(results[0].startDate.getYear(),  anchor.date().year());
-    EXPECT_EQ(results[0].startDate.getMonth(), anchor.date().month());
-    EXPECT_EQ(results[0].startDate.get_mDay(), anchor.date().day());
-    EXPECT_EQ(results[0].startDate.get_wDay(), anchor.date().day_of_week());
+    r = results[0];
+    EXPECT_EQ(r.startDate.getYear(),  anchor.date().year());
+    EXPECT_EQ(r.startDate.getMonth(), anchor.date().month());
+    EXPECT_EQ(r.startDate.get_mDay(), anchor.date().day());
+    EXPECT_EQ(r.startDate.getHour(), 22);
 
-    /// test 5: corresponds to right this moment
+    // test 5: corresponds to right this moment
     results = dateParser.execute(t5, anchor);
-    EXPECT_EQ(results[0].startDate.getYear(),  anchor.date().year());
-    EXPECT_EQ(results[0].startDate.getMonth(), anchor.date().month());
-    EXPECT_EQ(results[0].startDate.get_mDay(), anchor.date().day());
-    EXPECT_EQ(results[0].startDate.get_wDay(), anchor.date().day_of_week());
-}
+    r = results[0];
+    EXPECT_EQ(r.startDate.getYear(),  anchor.date().year());
+    EXPECT_EQ(r.startDate.getMonth(), anchor.date().month());
+    EXPECT_EQ(r.startDate.get_mDay(), anchor.date().day());
+    EXPECT_EQ(r.startDate.getHour(),  anchor.time_of_day().hours());
+    EXPECT_EQ(r.startDate.getMinute(), anchor.time_of_day().minutes());
+    EXPECT_EQ(r.startDate.getSeconds(), anchor.time_of_day().seconds());
+ }
 

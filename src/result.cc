@@ -360,7 +360,7 @@ ParsedResult::ParsedResult() {
     */
 }
 
-ParsedResult::ParsedResult(posix_time::ptime an, unsigned idx, std::string tx) {
+ParsedResult::ParsedResult(posix_time::ptime an, long idx, std::string tx) {
     anchor = an;
     index = idx;
     text = tx;

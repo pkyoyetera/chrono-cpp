@@ -20,20 +20,20 @@ std::regex Parser::getPattern() {
 Result Parser::execute(std::string& text, posix_time::ptime& ref) {
     Result results;
     std::smatch match;
-    bool possible_match;
     unsigned long idx;
 
-    std::transform(text.begin(), text.end(), text.begin(), ::tolower);
+    text = utils::toLowerCase(text);
     std::string remainingText = text;
 
     try {
-        possible_match = std::regex_search(remainingText, match, getPattern());
+        std::regex_search(remainingText, match, getPattern());
     } catch (std::regex_error& err) {
         std::cerr << err.what() << std::endl;
     }
 
-    while(possible_match) {
-        idx = match.position(0) + text.length() - remainingText.length(); // index of match on full text
+    while(!match.empty()) {
+        // index of match on full text
+        idx = match.position(0) + text.length() - remainingText.length();
 
         parse::ParsedResult res{};
         res = extract(remainingText, match, ref);
@@ -41,13 +41,13 @@ Result Parser::execute(std::string& text, posix_time::ptime& ref) {
         if (/*!strictMode or */res.hasPossibleDates())
             results.push_back(res);
         else
-            remainingText = text.substr(match.position() + 1);
+            remainingText = text.substr(match.position(0) + 1);
 
         // set remaining text to string immediately following the matched string
-        remainingText = text.substr(idx + match[0].str().length());
+        remainingText = text.substr(idx + match.length(0));
 
         try {
-            possible_match = std::regex_search(remainingText, match, getPattern());
+            std::regex_search(remainingText, match, getPattern());
         } catch (std::regex_error& err) {
             std::cerr << err.what() << std::endl;
         }
@@ -55,4 +55,3 @@ Result Parser::execute(std::string& text, posix_time::ptime& ref) {
 
     return results;
 }
-
