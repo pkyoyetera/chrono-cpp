@@ -16,7 +16,8 @@ public:
             parse::ParsedResult, parse::ParsedResult);
 
     Result refine(Result r, std::string t) override {
-        if(r.size() < 2) return r;
+        if(r.size() < 2) // can not merge less than two ParsdeResult items
+            return r;
 
         parse::ParsedResult prev, curr, tmp;
         Result merged_result;
@@ -25,7 +26,6 @@ public:
             curr = r[i];
             prev = r[i-1];
 
-            bool able = isAbleToMerge(t, prev, curr);
             if (!prev.end() and !curr.end() and isAbleToMerge(t, prev, curr)) {
                 prev = mergeResult(t, prev, curr);
                 curr = tmp;
@@ -42,7 +42,13 @@ public:
 
 parse::ParsedResult ENMergeDateRange::mergeResult(std::string text,
         parse::ParsedResult fromResult, parse::ParsedResult toResult) {
-
+    /**
+     * @brief Merges two results, of the form <date> to <date>
+     * @param text: original text matched against
+     * @param fromResult: the earlier/lhs date result
+     * @param toResult: the later/rhs date result
+     * @returns a combined date with fromResult as startDate and toResult as endDate
+     */
     if(fromResult.startDate.date() > toResult.startDate.date()) {
         parse::ParsedResult tmp = fromResult;
         toResult = fromResult;
@@ -69,7 +75,13 @@ parse::ParsedResult ENMergeDateRange::mergeResult(std::string text,
 
 bool ENMergeDateRange::isAbleToMerge(std::string text,
                                      parse::ParsedResult r1, parse::ParsedResult r2) {
-
+    /**
+     * @brief checks if the text between two ParsedResults indicates
+     *        that they refer to a date range and can be merged together
+     * @param r1: lhs/from result
+     * @param r2: rhs/to result
+     * @return true if merging is possible, false otherwise
+     */
     unsigned begin = r1.getIndex() + r1.textLength();
     unsigned end   = r2.getIndex();
     std::string textBetween = text.substr(begin, end - begin);
