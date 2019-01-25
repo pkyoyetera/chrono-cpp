@@ -24,6 +24,7 @@ cc_binary(
         "//src/parsers/en:ENTimeExpression",
         "//src/parsers/en:ENTimeLaterParser",
         "//src/refiners:extractTimeZoneAbbreviation",
+        "//src/refiners:mergeDateAndTime",
         "//src/refiners:mergeDateRange",
         "//src/refiners:overlapRemoval",
     ],

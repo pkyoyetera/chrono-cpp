@@ -16,6 +16,7 @@
 #include "src/refiners/OverlapRemovalRefiner.hpp"
 #include "src/refiners/en/ENMergeDateRangeRefiner.hpp"
 #include "src/refiners/ExtractTimeZoneAbbreviation.hpp"
+#include "src/refiners/en/ENMergeDateAndTimeRefiner.hpp"
 
 
 using namespace std;
@@ -49,6 +50,7 @@ int main(int argc, char* argv[]) {
     Refiner* ov  = new OverlapRemover();
     Refiner* tza = new ExtractTimeZoneAbbreviation();
     Refiner* mdr = new ENMergeDateRange();
+    Refiner* mdt = new ENMergeDateAndTime();
 
     list<Parser*>  parsers  {tp, dfp, dp, dow, mme, tl, mn, ta, tx, iso};
     list<Refiner*> refiners {ov, tza, mdr};
@@ -80,12 +82,12 @@ int main(int argc, char* argv[]) {
     // Result r1 = ov->refine(results, str);
     // Result results_final = tza->refine(r1, str);
 
-    // results =  mdr->refine(results, str);
+    results =  mdt->refine(results, str);
 
     if(results.empty())
         cout << "[???] -- Invalid date" << endl;
     else
-        cout << "Date:\t"  << results[0].toDate() << endl;
+        cout << "Date:\t"  << results.at(0).toDate() << endl;
 
     for(auto p: parsers)
         delete p;

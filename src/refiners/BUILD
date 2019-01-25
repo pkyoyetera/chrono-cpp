@@ -50,3 +50,16 @@ cc_library(
         "//src/refiners:refiner",
     ],
 )
+
+cc_library(
+    name = "mergeDateAndTime",
+    hdrs = [
+        "en/ENMergeDateAndTimeRefiner.hpp",
+    ],
+    visibility = [
+        "//visibility:public",
+    ],
+    deps = [
+        "//src/refiners:refiner",
+    ],
+)

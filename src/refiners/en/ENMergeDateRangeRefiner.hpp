@@ -4,7 +4,7 @@
 class ENMergeDateRange : public Refiner {
 private:
     // std::regex to{R"(^\s*(and|to|\-)\s*$)"};
-    std::regex to{R"(\s*(and|to|\-)\s*)"};
+    std::regex to{R"(\s*(and|to|through|\-)\s*)"};
 
 public:
     ENMergeDateRange() = default;
@@ -29,7 +29,7 @@ public:
             if (!prev.end() and !curr.end() and isAbleToMerge(t, prev, curr)) {
                 prev = mergeResult(t, prev, curr);
                 curr = tmp;
-                i += 1;
+                i++;
             }
             merged_result.push_back(prev);
         }

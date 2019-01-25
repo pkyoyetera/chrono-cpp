@@ -445,7 +445,7 @@ void ParsedResult::setIndex(int idx) {
 }
 
 void ParsedResult::setText(std::string tx) {
-    text += " " + tx;
+    text = tx;
 }
 
 size_t ParsedResult::textLength() const {

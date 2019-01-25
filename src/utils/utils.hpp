@@ -25,6 +25,7 @@ namespace utils {
         ENTimeExpressionParser,
 
         ENMergeDateRangeRefiner,
+        ENMergeDateAndTimeRefiner,
         ExtractTimeZoneAbbreviation,
 
     } Modifiers;
@@ -36,7 +37,7 @@ namespace utils {
                                         ENMonthNameParser, ENTimeAgoFormatParser,
                                         ENISOFormatParser, ENTimeExpressionParser,
 
-                                        ENMergeDateRangeRefiner,
+                                        ENMergeDateRangeRefiner, ENMergeDateAndTimeRefiner,
                                         ExtractTimeZoneAbbreviation,};
 
     static std::map<std::string, int> INTEGER_WORDS{
