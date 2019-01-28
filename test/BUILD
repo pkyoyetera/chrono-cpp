@@ -318,6 +318,31 @@ cc_test(
     ],
 )
 
+cc_test(
+    name = "US_holidays",
+    srcs = [
+        "gtest_main.cc",
+        "parsers.test/ENUSHolidaysParser.test.cpp",
+    ],
+    args = [
+        "--verbose_failures",
+        "--compilation_mode=dbg -s",
+    ],
+    copts = [
+        "-std=c++14",
+        "-O0",
+    ],
+    linkopts = [
+        "-lstdc++",
+        "-lboost_date_time",
+    ],
+    deps = [
+        "//src:result",
+        "//src/parsers/en:ENUSHolidays",
+        "@googletest//:gtest_main",
+    ],
+)
+
 #cc_test(
 #    name = "entryPointTest",
 #    srcs = [

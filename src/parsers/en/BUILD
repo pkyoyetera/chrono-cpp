@@ -127,3 +127,16 @@ cc_library(
         "//src/parsers",
     ],
 )
+
+cc_library(
+    name = "ENUSHolidays",
+    hdrs = [
+        "ENUSHolidaysParser.hpp",
+    ],
+    visibility = [
+        "//visibility:public",
+    ],
+    deps = [
+        "//src/parsers",
+    ],
+)

@@ -23,6 +23,7 @@ namespace utils {
         ENTimeAgoFormatParser,
         ENISOFormatParser,
         ENTimeExpressionParser,
+        ENUSHolidaysParser,
 
         ENMergeDateRangeRefiner,
         ENMergeDateAndTimeRefiner,
@@ -36,6 +37,7 @@ namespace utils {
                                         ENMonthNameMiddleEndianParser, ENTimeLaterParser,
                                         ENMonthNameParser, ENTimeAgoFormatParser,
                                         ENISOFormatParser, ENTimeExpressionParser,
+                                        ENUSHolidaysParser,
 
                                         ENMergeDateRangeRefiner, ENMergeDateAndTimeRefiner,
                                         ExtractTimeZoneAbbreviation,};
@@ -187,7 +189,8 @@ namespace utils {
     std::map<std::string, float> extractDateTimeUnitFragments(std::string);
 
     std::map<std::string, float> collectDateTimeFragment(std::smatch , std::map<std::string, float>& );
-
 }
+typedef gregorian::nth_day_of_the_week_in_month ndow;
+typedef gregorian::last_day_of_the_week_in_month ldow;
 
 #endif
