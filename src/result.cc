@@ -387,6 +387,9 @@ ParsedResult::ParsedResult(const ParsedResult& pr) {
 }
 
 bool ParsedResult::hasPossibleDates() {
+    /**
+     * @brief checks if (*this) result contains a valid date
+     */
     if(startDate.getYear()    == 0 and startDate.getMonth()   == 0 and
        startDate.get_mDay()   == 0 and// startDate.get_wDay()   == 0 and
        startDate.getHour()    == 0 and startDate.getMinute()  == 0 and

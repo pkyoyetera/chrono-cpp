@@ -195,9 +195,6 @@ public:
     }
 };
 
-// todo: if miridiem is provided on only one part of the range,
-// it follows that the other should correspond to the meridiem
-// e.g: 4-6pm: 16:00 - 18:00 not 4:00 - 18:00
 
 #undef HOUR_GROUP
 #undef MINUTE_GROUP

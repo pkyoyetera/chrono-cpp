@@ -97,6 +97,12 @@ public:
     }
 
     Result refine(Result r, std::string t) override {
+        /**
+         * @brief Merge a date-only result and a time-only result into one combined result
+         * @param r: list of results from parsers
+         * @param t: complete original text
+         * @return list of parse::ParsedResults
+         */
         if (r.size() < 2) // no second component to merge
             return r;
 
@@ -113,16 +119,17 @@ public:
                     curr = r.at(i+1);
                 }
                 catch (std::out_of_range e) {
-                    std::cerr << e.what() << " at ENMergeDateAndTimeRefiner " << std::endl;
+                    std::cerr << e.what() << " at ENMergeDateAndTimeRefiner" << std::endl;
                 }
                 i++;
-            } else if (isDateOnly(curr) and isTimeOnly(prev) and isAbleToMerge(t, curr, prev)) {
+            }
+            else if (isDateOnly(curr) and isTimeOnly(prev) and isAbleToMerge(t, prev, curr)) {
                 prev = mergeResult(t, curr, prev);
                 try {
                     curr = r.at(i+1);
                 }
                 catch (std::out_of_range e) {
-                    std::cerr << e.what() << " at ENMergeDateAndTimeRefiner " << std::endl;
+                    std::cerr << e.what() << " at ENMergeDateAndTimeRefiner" << std::endl;
                 }
                 i++;
             }

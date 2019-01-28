@@ -32,28 +32,29 @@ int main(int argc, char* argv[]) {
         printUsage();
         return 0;
     }
+
     Result results;
     posix_time::ptime t;
     string str;
 
-    Parser* tp  = new ENCasualTimeParser();
-    Parser* dp  = new ENCasualDateParser();
+    Parser* ctp = new ENCasualTimeParser();
+    Parser* cdp = new ENCasualDateParser();
     Parser* dfp = new ENDeadlineFormatParser();
     Parser* dow = new ENDayOfWeekParser();
     Parser* mme = new ENMonthNameMiddleEndianParser();
-    Parser* tl  = new ENTimeLaterParser();
-    Parser* mn  = new ENMonthNameParser();
-    Parser* ta  = new ENTimeAgoFormatParser();
-    Parser* tx  = new ENTimeExpressionParser();
+    Parser* tlp = new ENTimeLaterParser();
+    Parser* mnp = new ENMonthNameParser();
+    Parser* tap = new ENTimeAgoFormatParser();
+    Parser* txp = new ENTimeExpressionParser();
     Parser* iso = new ENISOFormatParser();
 
-    Refiner* ov  = new OverlapRemover();
+    Refiner* olr = new OverlapRemover();
     Refiner* tza = new ExtractTimeZoneAbbreviation();
     Refiner* mdr = new ENMergeDateRange();
     Refiner* mdt = new ENMergeDateAndTime();
 
-    list<Parser*>  parsers  {tp, dfp, dp, dow, mme, tl, mn, ta, tx, iso};
-    list<Refiner*> refiners {ov, tza, mdr};
+    list<Parser*>  parsers  {ctp, dfp, dow, cdp, mme, tlp, mnp, tap, txp, iso};
+    list<Refiner*> refiners {olr, tza, mdt, mdr}; // NOTE: place mdt refiner before mdr refiner
 
     str = argv[1];
 
@@ -79,19 +80,16 @@ int main(int argc, char* argv[]) {
     for(list<Refiner*>::iterator it = refiners.begin(); it != refiners.end(); ++it) {
         results = (*it)->refine(results, str);
     }
-    // Result r1 = ov->refine(results, str);
-    // Result results_final = tza->refine(r1, str);
-
-    results =  mdt->refine(results, str);
 
     if(results.empty())
         cout << "[???] -- Invalid date" << endl;
     else
         cout << "Date:\t"  << results.at(0).toDate() << endl;
 
+    // free memory
     for(auto p: parsers)
         delete p;
-    for (auto r: refiners)
+    for(auto r: refiners)
         delete r;
 
     return 0;
