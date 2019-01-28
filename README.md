@@ -9,6 +9,7 @@ The library supports formats such as:
 * last friday, next tuesday
 * 7 years ago
 * 4 days from now
+* Holidays like: mlk day, christmas, independence(U.S)
 
 ...with additional functionality in the works.
  

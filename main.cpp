@@ -12,6 +12,7 @@
 #include "src/parsers/en/ENMonthNameMiddleEndianParser.hpp"
 #include "src/parsers/en/ENTimeExpressionParser.hpp"
 #include "src/parsers/en/ENISOFormatParser.hpp"
+#include "src/parsers/en/ENUSHolidaysParser.hpp"
 
 #include "src/refiners/OverlapRemovalRefiner.hpp"
 #include "src/refiners/en/ENMergeDateRangeRefiner.hpp"
@@ -47,13 +48,14 @@ int main(int argc, char* argv[]) {
     Parser* tap = new ENTimeAgoFormatParser();
     Parser* txp = new ENTimeExpressionParser();
     Parser* iso = new ENISOFormatParser();
+    Parser* hol = new ENHolidayParser();
 
     Refiner* olr = new OverlapRemover();
     Refiner* tza = new ExtractTimeZoneAbbreviation();
     Refiner* mdr = new ENMergeDateRange();
     Refiner* mdt = new ENMergeDateAndTime();
 
-    list<Parser*>  parsers  {ctp, dfp, dow, cdp, mme, tlp, mnp, tap, txp, iso};
+    list<Parser*>  parsers  {ctp, dfp, dow, cdp, mme, tlp, mnp, tap, txp, iso, hol};
     list<Refiner*> refiners {olr, tza, mdt, mdr}; // NOTE: place mdt refiner before mdr refiner
 
     str = argv[1];

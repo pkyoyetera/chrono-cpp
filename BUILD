@@ -23,6 +23,7 @@ cc_binary(
         "//src/parsers/en:ENTimeAgoParser",
         "//src/parsers/en:ENTimeExpression",
         "//src/parsers/en:ENTimeLaterParser",
+        "//src/parsers/en:ENUSHolidays",
         "//src/refiners:extractTimeZoneAbbreviation",
         "//src/refiners:mergeDateAndTime",
         "//src/refiners:mergeDateRange",
