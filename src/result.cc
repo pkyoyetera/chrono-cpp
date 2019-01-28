@@ -404,6 +404,9 @@ ParsedResult::~ParsedResult() { }
 
 std::string ParsedResult::toDate() {
     // todo: take into account timezone offset
+    // temporary timezone adjustment to UTC.
+    // NOTE: this is machine dependent. Be very careful where/when its used
+    typedef date_time::local_adjustor<posix_time::ptime, -5, posix_time::us_dst> us_eastern;
     struct tm date_start, date_end;
     std::string res;
 
@@ -415,6 +418,8 @@ std::string ParsedResult::toDate() {
     date_start.tm_sec  = startDate.getSeconds();
 
     posix_time::ptime st = posix_time::ptime_from_tm(date_start);
+    // posix_time::ptime st =  us_eastern::local_to_utc(posix_time::ptime_from_tm(date_start));
+
     if(getTag(utils::ExtractTimeZoneAbbreviation))
         st += posix_time::minutes(startDate.getTimeZoneOffset());
 
