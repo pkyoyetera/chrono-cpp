@@ -24,6 +24,7 @@ cc_binary(
         "//src/parsers/en:ENTimeExpression",
         "//src/parsers/en:ENTimeLaterParser",
         "//src/parsers/en:ENUSHolidays",
+        "//src/parsers/en:ENWeekExpression",
         "//src/refiners:extractTimeZoneAbbreviation",
         "//src/refiners:mergeDateAndTime",
         "//src/refiners:mergeDateRange",

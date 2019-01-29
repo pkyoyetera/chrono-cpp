@@ -367,6 +367,7 @@ cc_test(
         "@googletest//:gtest_main",
     ],
 )
+
 #cc_test(
 #    name = "entryPointTest",
 #    srcs = [
