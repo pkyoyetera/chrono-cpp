@@ -1,7 +1,7 @@
 cc_binary(
     name = "main",
     srcs = [
-        "main.cpp",
+        "time.cpp",
     ],
     copts = [
         "-std=c++11",

@@ -367,23 +367,3 @@ cc_test(
         "@googletest//:gtest_main",
     ],
 )
-
-#cc_test(
-#    name = "entryPointTest",
-#    srcs = [
-#        "gtest_main.cc",
-#        "test_MainEntryPointFile.cpp",
-#    ],
-#    args = [
-#        "--verbose_failures",
-#        "--test_verbose_timeout_warnings",
-#    ],
-#    copts = [
-#        "-std=c++14",
-#        "-lboost_date_time",
-#    ],
-#    deps = [
-#        "//src/parsers/en:ENCasualTimeParser",
-#        "@googletest//:gtest_main",
-#    ],
-#)
