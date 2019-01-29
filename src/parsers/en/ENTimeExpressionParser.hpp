@@ -30,7 +30,8 @@ class ENTimeExpressionParser : public Parser {
 public:
     ENTimeExpressionParser() : Parser(false, std::regex(PATTERN, std::regex::icase)) { }
 
-    parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime& ref, long idx) override {
+    parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime& ref, long idx)
+    override {
         std::string text = match.str(0).substr(match.length(1));
         // long idx = match.position(0) + match.length(1);
         parse::ParsedResult result = parse::ParsedResult(ref, idx, text);

@@ -18,7 +18,7 @@ public:
         string date{"2019-01-21 23:59:00.00"};
         t = posix_time::time_from_string(date);
     }
-    ~ENISOFormatTest() { }
+    ~ENISOFormatTest() = default;
 };
 
 

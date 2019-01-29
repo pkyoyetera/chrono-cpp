@@ -140,3 +140,16 @@ cc_library(
         "//src/parsers",
     ],
 )
+
+cc_library(
+    name = "ENWeekExpression",
+    hdrs = [
+        "ENWeekExperessionParser.hpp",
+    ],
+    visibility = [
+        "//visibility:public",
+    ],
+    deps = [
+        "//src/parsers",
+    ],
+)
