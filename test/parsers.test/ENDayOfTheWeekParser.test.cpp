@@ -100,3 +100,34 @@ TEST_F(ENDayOfTheWeekTest, test4) {
     EXPECT_EQ(r.startDate.get_mDay(), 14);
 }
 
+TEST_F(ENDayOfTheWeekTest, test5) {
+    string text{"Sunday next week"};
+    results = dwp.execute(text, t);
+    r = results[0];
+    EXPECT_EQ(r.startDate.getYear(), 2019);
+    EXPECT_EQ(r.startDate.getMonth(), 1);
+    EXPECT_EQ(r.startDate.get_mDay(), 27);
+
+    text = "friday last week";
+    results = dwp.execute(text, t);
+    r = results[0];
+    EXPECT_EQ(r.startDate.getYear(), 2019);
+    EXPECT_EQ(r.startDate.getMonth(), 1);
+    EXPECT_EQ(r.startDate.get_mDay(), 18);
+
+    text = "earlier last friday";
+    results = dwp.execute(text, t);
+    r = results[0];
+    EXPECT_EQ(r.startDate.getYear(), 2019);
+    EXPECT_EQ(r.startDate.getMonth(), 1);
+    EXPECT_EQ(r.startDate.get_mDay(), 18);
+    EXPECT_EQ(r.startDate.getHour(), 9);
+
+    text = "late last friday";
+    results = dwp.execute(text, t);
+    r = results[0];
+    EXPECT_EQ(r.startDate.getYear(), 2019);
+    EXPECT_EQ(r.startDate.getMonth(), 1);
+    EXPECT_EQ(r.startDate.get_mDay(), 18);
+    EXPECT_EQ(r.startDate.getHour(), 19);
+}

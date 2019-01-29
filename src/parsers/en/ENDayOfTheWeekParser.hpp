@@ -3,12 +3,18 @@
 
 #include "src/parsers/parsers.hpp"
 
-#define PREFIX_GROUP  2
-#define WEEKDAY_GROUP 3
-#define POSTFIX_GROUP 4
+#define TIMING_GROUP  2
+#define PREFIX_GROUP  3
+#define WEEKDAY_GROUP 4
+#define POSTFIX_GROUP 5
+#define WEEK_GROUP    6
 
-#define PATTERN "(\\W|^)(?:(this|last|next)\\s*)?(Sunday|Sun|Monday|Mon|Tuesday|Tues|" \
+//#define PATTERN "(\\W|^)(?:(this|last|next)\\s*)?(Sunday|Sun|Monday|Mon|Tuesday|Tues|" \
                 "Tue|Wednesday|Wed|Thursday|Thu(?:rs|r)?|Friday|Fri|Saturday|Sat)(?=\\W|$)"
+#define PATTERN "(\\W|^)(earl(?:ier|y)|late)?(?:\\s*(this|last|next)\\s*)?" \
+                "(Sunday|Sun|Monday|Mon|Tuesday|Tues|Tue|Wednesday|Wed|" \
+                "Thursday|Thu(?:rs|r)?|Friday|Fri|Saturday|Sat)(?:\\s*" \
+                "(this|last|next)\\s*)?(?:(week)\\s*)?(?=\\W|$)"
 /* part of pattern (on\s*)?*/
 
 /**
@@ -20,8 +26,8 @@ class ENDayOfWeekParser : public Parser {
 public:
     ENDayOfWeekParser() : Parser(false, std::regex(PATTERN, std::regex::icase)) { }
 
-    parse::ParsedResult updateParsedComponent(parse::ParsedResult res,
-            posix_time::ptime& ref, int offset, std::string modifier) {
+    parse::ParsedResult updateParsedComponent(parse::ParsedResult res, posix_time::ptime& ref,
+            int offset, std::string modifier, std::string timing) {
 
         gregorian::date resOffset, start{ref.date()};
         bool start_fixed{false};
@@ -40,13 +46,6 @@ public:
             else
                 resOffset = tmp;
             start_fixed = true;
-            /*resOffset = previous_weekday(start, gregorian::greg_weekday(offset));
-            while(resOffset.week_number() >= start.week_number()) {
-                // avoid returning current day or offset from current week.
-                // See: https://stackoverflow.com/a/30470686
-                resOffset = date_time::next_weekday(start - gregorian::days(count), gregorian::greg_weekday(offset));
-                count++;
-            }*/
         }
         else if(!modifier.compare("next")) {
             gregorian::date tmp = start + gregorian::weeks(1);
@@ -59,13 +58,7 @@ public:
             else
                 resOffset = tmp;
             start_fixed = true;
-            /*resOffset = date_time::next_weekday(start, gregorian::greg_weekday(offset));
-            while(resOffset.week_number() <= start.week_number()) {
-                // avoid returning current day or offset from current week.
-                // See: https://stackoverflow.com/a/30470686
-                resOffset = date_time::next_weekday(start + gregorian::days(count), gregorian::greg_weekday(offset));
-                count++;
-            }*/
+
         }
         else if(!modifier.compare("this") or modifier.empty()) {
             if(offset == ref.date().day_of_week().as_number()){
@@ -111,6 +104,15 @@ public:
             res.startDate.implyComponent("month", resOffset.month());
             res.startDate.implyComponent("year", resOffset.year());
         }
+        if(timing == "earlier" or timing == "early") {
+            res.startDate.implyComponent("hour", 6);
+            res.startDate.implyComponent("min", 1);
+        }
+        else if(timing == "late") {
+            res.startDate.implyComponent("hour", 20);
+            res.startDate.implyComponent("min", 1);
+        }
+
         res.setTag(utils::ENDayOfTheWeekParser);
 
         return res;
@@ -118,11 +120,13 @@ public:
 
     parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime& ref, long idx)
     override {
-        std::string text      = match.str(0).substr(match.length(1));
-        std::string prefix    = match.str(PREFIX_GROUP);
-        std::string postfix   = match.str(POSTFIX_GROUP);
-        std::string dayOfWeek = match.str(WEEKDAY_GROUP);
-        std::string norm;
+        std::string text      = match.str(0).substr(match.length(1)),
+                    timing    = match.str(TIMING_GROUP),
+                    prefix    = match.str(PREFIX_GROUP),
+                    postfix   = match.str(POSTFIX_GROUP),
+                    dayOfWeek = match.str(WEEKDAY_GROUP),
+                    week      = match.str(WEEK_GROUP),
+                    norm;
         // long idx = match.position(0) + match.length(1);
 
         parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
@@ -139,13 +143,16 @@ public:
         else
             norm = "";
 
-        return updateParsedComponent(result, ref, offset, norm);
+        return updateParsedComponent(result, ref, offset, norm, timing);
     }
 };
 
+#undef TIMING_GROUP
 #undef PATTERN
 #undef PREFIX_GROUP
 #undef WEEKDAY_GROUP
 #undef POSTFIX_GROUP
+#undef WEEK_GROUP
+
 
 #endif
