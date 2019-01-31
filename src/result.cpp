@@ -1,7 +1,4 @@
-#include "result.hpp"
 #include "src/result.hpp"
-
-#include <ctime>
 
 using namespace parse;
 using namespace std;
@@ -406,7 +403,7 @@ std::string ParsedResult::toDate() {
     // todo: take into account timezone offset
     // temporary timezone adjustment to UTC.
     // NOTE: this is machine dependent. Be very careful where/when its used
-    typedef date_time::local_adjustor<posix_time::ptime, -5, posix_time::us_dst> us_eastern;
+    // typedef date_time::local_adjustor<posix_time::ptime, -5, posix_time::us_dst> us_eastern;
     struct tm date_start, date_end;
     std::string res;
 

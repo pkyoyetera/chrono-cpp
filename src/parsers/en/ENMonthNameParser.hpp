@@ -29,8 +29,8 @@ public:
         // long idx = match.position(0) + match.length(1);
         parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
 
-        int month = utils::MONTH_CONSTANTS[match.str(MONTH__NAME_GROUP)];
-        unsigned day = 1;
+        short unsigned month = utils::MONTH_CONSTANTS[match.str(MONTH__NAME_GROUP)];
+        short unsigned day = 1;
 
         int year{-1};
         if(!match.str(YEAR__GROUP).empty()) {

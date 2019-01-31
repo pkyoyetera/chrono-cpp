@@ -9,8 +9,6 @@
 #define POSTFIX_GROUP 5
 #define WEEK_GROUP    6
 
-//#define PATTERN "(\\W|^)(?:(this|last|next)\\s*)?(Sunday|Sun|Monday|Mon|Tuesday|Tues|" \
-                "Tue|Wednesday|Wed|Thursday|Thu(?:rs|r)?|Friday|Fri|Saturday|Sat)(?=\\W|$)"
 #define PATTERN "(\\W|^)(earl(?:ier|y)|late)?(?:\\s*(this|last|next)\\s*)?" \
                 "(Sunday|Sun|Monday|Mon|Tuesday|Tues|Tue|Wednesday|Wed|" \
                 "Thursday|Thu(?:rs|r)?|Friday|Fri|Saturday|Sat)(?:\\s*" \
@@ -27,7 +25,7 @@ public:
     ENDayOfWeekParser() : Parser(false, std::regex(PATTERN, std::regex::icase)) { }
 
     parse::ParsedResult updateParsedComponent(parse::ParsedResult res, posix_time::ptime& ref,
-            int offset, std::string modifier, std::string timing) {
+            short unsigned offset, std::string modifier, std::string timing) {
 
         gregorian::date resOffset, start{ref.date()};
         bool start_fixed{false};
@@ -131,7 +129,7 @@ public:
 
         parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
 
-        int offset = utils::WEEKDAY_OFFSET[dayOfWeek];
+	    short unsigned offset = utils::WEEKDAY_OFFSET[dayOfWeek];
         if(offset < 0 or offset > 6) {
             return result;
         }

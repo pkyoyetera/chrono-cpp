@@ -45,7 +45,7 @@ namespace utils {
                                         ENMergeDateRangeRefiner, ENMergeDateAndTimeRefiner,
                                         ExtractTimeZoneAbbreviation,};
 
-    static std::map<std::string, int> INTEGER_WORDS{
+    static std::map<std::string, unsigned> INTEGER_WORDS{
             {"one",    1},
             {"two",    2},
             {"three",  3},
@@ -60,7 +60,7 @@ namespace utils {
             {"twelve", 12}
     };
 
-    static std::map<std::string, int> ORDINAL_WORDS{
+    static std::map<std::string, unsigned> ORDINAL_WORDS{
             {"first",           1},
             {"second",          2},
             {"third",           3},
@@ -95,7 +95,7 @@ namespace utils {
     };
 
 
-    static std::map<std::string, int> MONTH_CONSTANTS{
+    static std::map<std::string, short unsigned> MONTH_CONSTANTS{
             {"january",    1}, {"jan", 1},  {"jan.",  1},
             {"february",   2}, {"feb", 2},  {"feb.",  2},
             {"march",      3}, {"mar", 3},  {"mar.",  3},
@@ -110,7 +110,7 @@ namespace utils {
             {"december",  12}, {"dec", 12}, {"dec.", 12},
     };
 
-    static std::map<std::string, int> WEEKDAY_OFFSET{
+    static std::map<std::string, short unsigned> WEEKDAY_OFFSET{
             {"sunday",   0}, {"sun",  0},
             {"monday",   1}, {"mon",  1},
             {"tuesday",  2}, {"tue",  2}, {"tues",  2},
@@ -162,7 +162,7 @@ namespace utils {
             {"YEKT",  360}
     };
 
-    static std::string ordinalWords = [&](std::map<std::string, int> &) -> std::string {
+    static std::string ordinalWords = [&](std::map<std::string, unsigned> &) -> std::string {
         std::string retVal, t;
         // std::regex re{"\\s"};
         for (auto a : ORDINAL_WORDS) {
@@ -177,10 +177,10 @@ namespace utils {
     std::string toLowerCase(std::string);
     std::string toUpperCase(std::string);
 
-    int argToOrdinalValue(const std::string &);
+    unsigned argToOrdinalValue(const std::string &);
 
     // todo: make template
-    std::string keysToString(std::map<std::string, int>);
+    std::string keysToString(std::map<std::string, unsigned>);
 
     static std::string INTEGER_WORDS_PATTERN{"(?:" + utils::keysToString(utils::INTEGER_WORDS) + ")"};
 

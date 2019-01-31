@@ -11,14 +11,14 @@ std::string utils::toUpperCase(std::string text) {
     return text;
 }
 
-int utils::argToOrdinalValue(const std::string &arg) {
+unsigned utils::argToOrdinalValue(const std::string &arg) {
     std::string value{std::regex_replace(arg, std::regex("-"), " ")};
     value = std::regex_replace(value, std::regex("^ +| +$|( ) +"), "$1");
     std::transform(value.begin(), value.end(), value.begin(), ::tolower);
     return utils::ORDINAL_WORDS[value];
 };
 
-std::string utils::keysToString(std::map<std::string, int> arg) {
+std::string utils::keysToString(std::map<std::string, unsigned> arg) {
     std::string result;
     for(auto it=arg.begin(); it != arg.end(); ++it) {
         result += it->first + "|";

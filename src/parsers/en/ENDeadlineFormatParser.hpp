@@ -98,18 +98,18 @@ public:
 
         if(!match.str(4).find("hour")) {
             if(floor(num) == num)
-                tmpTime += posix_time::hours(num);
+                tmpTime += posix_time::hours(static_cast<int>(num));
             else
                 tmpTime += posix_time::minutes(30);
         }
         else if(!match.str(4).find("minute")) {
             if(floor(num) == num)
-                tmpTime += posix_time::minutes(num);
+                tmpTime += posix_time::minutes(static_cast<int>(num));
             else
                 tmpTime += posix_time::seconds(30);
         }
         else if(!match.str(4).find("second")) {
-            tmpTime += posix_time::seconds(ceil(num));
+            tmpTime += posix_time::seconds(static_cast<int>(ceil(num)));
         }
         result.startDate.implyComponent("year", tmpDate.year());
         result.startDate.implyComponent("month", tmpDate.month());

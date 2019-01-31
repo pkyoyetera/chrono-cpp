@@ -1,8 +1,9 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include <iostream>
+#include <regex>
 #include <string>
+#include <iostream>
 #include "src/result.hpp"
 #include "src/utils/utils.hpp"
 

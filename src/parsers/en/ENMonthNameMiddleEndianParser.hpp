@@ -7,6 +7,7 @@
 #ifndef ENMONTHNAMEMIDDLEENDIAN_PARSER
 #define ENMONTHNAMEMIDDLEENDIAN_PARSER
 
+// ##include "src/parsers/parsers.hpp"
 #include "src/parsers/parsers.hpp"
 
 #define WEEKDAY__GROUP    2
@@ -51,9 +52,9 @@ public:
         parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
         // gregorian::date d;
 
-        unsigned month = utils::MONTH_CONSTANTS[match.str(MONTH_NAME_GROUP)];
+        short unsigned month = utils::MONTH_CONSTANTS[match.str(MONTH_NAME_GROUP)];
 
-        unsigned day;
+	    short unsigned day;
         match.str(DATE_NUM_GROUP).empty() ? day = utils::argToOrdinalValue(match.str(DATE_GROUP)) :
                                             day = std::stoi(match.str(DATE_NUM_GROUP));
 

@@ -1,33 +1,41 @@
+load("//:boost.bzl", "boost")
+
 cc_binary(
-    name = "main",
-    srcs = [
-        "time.cpp",
-    ],
+    name = "time",
+    srcs = glob(
+        [
+            "time.cpp",
+            "src/**/*.hpp",
+            "src/**/*.cpp",
+        ],
+    ),
     copts = [
-        "-std=c++11",
+        "-std=c++17",
         "-g",
         "-O0",
-        "-w",  #no-non-virtual-dto",
     ],
-    linkopts = [
-        "-lboost_date_time",
-    ],
+    includes = ["src"],
     deps = [
-        "//src/parsers/en:ENCasualDateParser",
-        "//src/parsers/en:ENCasualTimeParser",
-        "//src/parsers/en:ENDayOfTheWeekParser",
-        "//src/parsers/en:ENDeadlineFormatParser",
-        "//src/parsers/en:ENISOParser",
-        "//src/parsers/en:ENMonthNameMiddleEndianParser",
-        "//src/parsers/en:ENMonthNameParser",
-        "//src/parsers/en:ENTimeAgoParser",
-        "//src/parsers/en:ENTimeExpression",
-        "//src/parsers/en:ENTimeLaterParser",
-        "//src/parsers/en:ENUSHolidays",
-        "//src/parsers/en:ENWeekExpression",
-        "//src/refiners:extractTimeZoneAbbreviation",
-        "//src/refiners:mergeDateAndTime",
-        "//src/refiners:mergeDateRange",
-        "//src/refiners:overlapRemoval",
+        "@boost//:date_time",
+    ],
+)
+
+cc_library(
+    name = "libtime",
+    srcs = glob(
+        ["src/**/*.cpp"],
+    ),
+    hdrs = glob(
+        ["src/**/*.hpp"],
+    ),
+    copts = [
+        "-std=c++17",
+        "-g",
+        "-O0",
+    ],
+    #includes = ["src"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@boost//:date_time",
     ],
 )

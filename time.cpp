@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include <string>
+#include <memory>
 
 #include "src/parsers/en/ENISOFormatParser.hpp"
 #include "src/parsers/en/ENTimeLaterParser.hpp"
@@ -39,26 +40,27 @@ int main(int argc, char* argv[]) {
     posix_time::ptime t;
     string str;
 
-    Parser* ctp = new ENCasualTimeParser();
-    Parser* cdp = new ENCasualDateParser();
-    Parser* dfp = new ENDeadlineFormatParser();
-    Parser* dow = new ENDayOfWeekParser();
-    Parser* mme = new ENMonthNameMiddleEndianParser();
-    Parser* tlp = new ENTimeLaterParser();
-    Parser* mnp = new ENMonthNameParser();
-    Parser* tap = new ENTimeAgoFormatParser();
-    Parser* txp = new ENTimeExpressionParser();
-    Parser* iso = new ENISOFormatParser();
-    Parser* hol = new ENHolidayParser();
-    Parser* wxp = new ENWeekExpressionParser();
+    std::shared_ptr<Parser> ctp = make_shared<ENCasualTimeParser>();
+    std::shared_ptr<Parser> dfp = make_shared<ENDeadlineFormatParser>();
+    std::shared_ptr<Parser> cdp = make_shared<ENCasualDateParser>();
+    std::shared_ptr<Parser> dow = make_shared<ENDayOfWeekParser>();
+    std::shared_ptr<Parser> mme = make_shared<ENMonthNameMiddleEndianParser>();
+    std::shared_ptr<Parser> tlp = make_shared<ENTimeLaterParser>();
+    std::shared_ptr<Parser> mnp = make_shared<ENMonthNameParser>();
+    std::shared_ptr<Parser> tap = make_shared<ENTimeAgoFormatParser>();
+    std::shared_ptr<Parser> iso = make_shared<ENISOFormatParser>();
+    std::shared_ptr<Parser> hol = make_shared<ENHolidayParser>();
+    std::shared_ptr<Parser> wxp = make_shared<ENWeekExpressionParser>();
+    std::shared_ptr<Parser> txp = make_shared<ENTimeExpressionParser>();
 
-    Refiner* olr = new OverlapRemover();
-    Refiner* tza = new ExtractTimeZoneAbbreviation();
-    Refiner* mdr = new ENMergeDateRange();
-    Refiner* mdt = new ENMergeDateAndTime();
+    std::shared_ptr<Refiner> olr = make_shared<OverlapRemover>();
+    std::shared_ptr<Refiner> tza = make_shared<ExtractTimeZoneAbbreviation>();
+    std::shared_ptr<Refiner> mdt = make_shared<ENMergeDateAndTime>();
+    std::shared_ptr<Refiner> mdr = make_shared<ENMergeDateRange>();
 
-    list<Parser*>  parsers  {ctp, dfp, dow, cdp, mme, tlp, mnp, tap, txp, iso, hol, wxp};
-    list<Refiner*> refiners {olr, tza, mdt, mdr}; // NOTE: place mdt refiner before mdr refiner
+
+    list<std::shared_ptr<Parser> >  parsers  {ctp, dfp, dow, cdp, mme, tlp, mnp, tap, txp, iso, hol, wxp};
+    list<std::shared_ptr<Refiner> > refiners {olr, tza, mdt, mdr}; // NOTE: place mdt refiner before mdr refiner
 
     str = argv[1];
 
@@ -71,8 +73,8 @@ int main(int argc, char* argv[]) {
         t = posix_time::time_from_string(refDate);
     }
 
-    for(list<Parser*>::iterator it = parsers.begin(); it != parsers.end(); ++it) { // NOLINT(modernize-use-auto)
-        Result p_result = (*it)->execute(str, t);
+    for(auto& parser: parsers) {
+        Result p_result = parser->execute(str, t);
         results.insert(results.end(), p_result.begin(), p_result.end());
     }
 
@@ -81,8 +83,8 @@ int main(int argc, char* argv[]) {
                 return p1.getIndex() < p2.getIndex();
     });
 
-    for(list<Refiner*>::iterator it = refiners.begin(); it != refiners.end(); ++it) {
-        results = (*it)->refine(results, str);
+    for(auto& refiner: refiners) {
+        results = refiner->refine(results, str);
     }
 
     if(results.empty())
@@ -90,11 +92,6 @@ int main(int argc, char* argv[]) {
     else
         cout << "Date:\t"  << results.at(0).toDate() << endl;
 
-    // free memory
-    for(auto p: parsers)
-        delete p;
-    for(auto r: refiners)
-        delete r;
 
     return 0;
 }

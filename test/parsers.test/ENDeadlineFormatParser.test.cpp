@@ -46,7 +46,7 @@ TEST_F(ENDeadlineFormatTest, test3) {
     results = dp.execute(text, t);
     r = results[0];
 
-    EXPECT_EQ(r.getIndex(), 7);
+    EXPECT_EQ(r.getIndex(), 6);
     EXPECT_EQ(r.startDate.getYear(), testTime.date().year());
     EXPECT_EQ(r.startDate.getMonth(), testTime.date().month());
     EXPECT_EQ(r.startDate.get_mDay(), testTime.date().day());
