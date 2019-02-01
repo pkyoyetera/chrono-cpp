@@ -27,6 +27,7 @@ namespace utils {
         ENISOFormatParser,
         ENTimeExpressionParser,
         ENUSHolidaysParser,
+        ENRelativeDateFormatParser,
 
         ENMergeDateRangeRefiner,
         ENMergeDateAndTimeRefiner,
@@ -40,7 +41,7 @@ namespace utils {
                                         ENMonthNameMiddleEndianParser, ENTimeLaterParser,
                                         ENMonthNameParser, ENTimeAgoFormatParser,
                                         ENISOFormatParser, ENTimeExpressionParser,
-                                        ENUSHolidaysParser,
+                                        ENUSHolidaysParser, ENRelativeDateFormatParser,
 
                                         ENMergeDateRangeRefiner, ENMergeDateAndTimeRefiner,
                                         ExtractTimeZoneAbbreviation,};

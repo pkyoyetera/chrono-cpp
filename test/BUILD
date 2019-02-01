@@ -162,3 +162,13 @@ cc_test(
         "test-common",
     ],
 )
+
+cc_test(
+    name = "relativeFormat",
+    srcs = [
+        "parsers.test/ENRelativeFormat.test.cpp",
+    ],
+    deps = [
+        "test-common",
+    ],
+)

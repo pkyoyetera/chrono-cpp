@@ -54,7 +54,7 @@ public:
          */
         std::regex dwmy(("day|week|month|year"));
         if( std::regex_search(match.str(4), dwmy) ) {
-            if(!match.str(4).find("day")) {
+            if(match.str(4).find("day") != std::string::npos) {
                 if(floor(num) == num)
                     tmpDate += gregorian::days(num);
                 else {
@@ -70,23 +70,29 @@ public:
                     return result;
                 }
             }
-            else if (!match.str(4).find("week")) {
-                if(floor(num) == num)
+            else if (match.str(4).find("week") != std::string::npos) {
+                if(floor(num) == num) {
                     tmpDate += gregorian::weeks(num);
-                else
+                }
+                else {
                     tmpDate += gregorian::days(3);
+                }
             }
-            else if(!match.str(4).find("month")) {
-                if(floor(num) == num)
+            else if(match.str(4).find("month") != std::string::npos) {
+                if(floor(num) == num) {
                     tmpDate += gregorian::months(num);
-                else
+                }
+                else {
                     tmpDate += gregorian::days(15);
+                }
             }
-            else if(!match.str(4).find("year")) {
-                if(floor(num) == num)
+            else if(match.str(4).find("year") != std::string::npos) {
+                if(floor(num) == num) {
                     tmpDate += gregorian::years(num);
-                else
+                }
+                else {
                     tmpDate += gregorian::months(6);
+                }
             }
 
             result.startDate.implyComponent("year", tmpDate.year());
