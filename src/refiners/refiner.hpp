@@ -6,25 +6,29 @@
 #include "src/utils/utils.hpp"
 #include "src/parsers/parsers.hpp"
 
-class Refiner {
-protected:
-    std::vector<std::string> options;
+namespace time { namespace refiners {
 
-public:
-    Refiner() { }
-    void setOpt(std::vector<std::string> opt) {
-        options = opt;
-    }
-    std::vector<std::string> getOpt() {
-        return options;
-    }
+    class Refiner {
+    protected:
+        std::vector<std::string> options;
 
-    virtual Result refine(Result, std::string) {
-        Result r;
-        return r;
-    }
+    public:
+        Refiner() {}
 
-};
+        void setOpt(std::vector<std::string> opt) {
+            options = opt;
+        }
 
+        std::vector<std::string> getOpt() {
+            return options;
+        }
+
+        virtual Result refine(Result, std::string) {
+            Result r;
+            return r;
+        }
+
+    };
+} }
 
 #endif

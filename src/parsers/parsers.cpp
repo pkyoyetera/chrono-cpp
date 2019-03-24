@@ -1,20 +1,25 @@
+/**
+ * Author: Patrick Kyoyetera
+ *          2019
+ */
 
 #include "parsers.hpp"
 
+using time::parser::Parser;
 
-Parser::Parser() {
-    strictMode = false;
-}
+Parser::Parser() = default;
 
-Parser::~Parser() { }
+Parser::~Parser() = default;
 
+/*
 Parser::Parser(bool strict, std::regex _pattern) {
     strictMode = strict;
     pattern = _pattern;
 }
+*/
 
-std::regex Parser::getPattern() {
-    return pattern;
+std::regex Parser::getPattern() const {
+    return std::regex();
 }
 
 Result Parser::execute(std::string& text, posix_time::ptime& ref) {
@@ -26,7 +31,7 @@ Result Parser::execute(std::string& text, posix_time::ptime& ref) {
     std::string remainingText = text;
 
     try {
-        std::regex_search(remainingText, match, getPattern());
+        std::regex_search(remainingText, match, getPattern(0));
     } catch (std::regex_error& err) {
         std::cerr << err.what() << std::endl;
     }
@@ -38,18 +43,21 @@ Result Parser::execute(std::string& text, posix_time::ptime& ref) {
         parse::ParsedResult res{};
         res = extract(remainingText, match, ref, idx);
 
-        if (/*!strictMode or */res.hasPossibleDates())
+        if (/*!strictMode or */res.hasPossibleDates()) {
             results.push_back(res);
-        else
+        }
+        else {
             remainingText = text.substr(match.position(0) + 1);
+        }
 
         // set remaining text to string immediately following the matched string
         remainingText = text.substr(idx + match.length(0));
 
         try {
-            std::regex_search(remainingText, match, getPattern());
+            std::regex_search(remainingText, match, getPattern(0));
         } catch (std::regex_error& err) {
             std::cerr << err.what() << std::endl;
+            return res;
         }
     }
 
