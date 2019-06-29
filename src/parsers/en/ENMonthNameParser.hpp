@@ -7,7 +7,7 @@
 
 #include "src/parsers/parsers.hpp"
 
- namespace parse {
+ namespace parser {
 
     class ENMonthNameParser : public Parser {
     private:
@@ -25,6 +25,8 @@
                                     R"(Sept\.?|September|Oct\.?|October|Nov\.?|November|Dec\.?|December)\s*)"
                                     R"((?:[,-]?\s*([0-9]{4})(\s*BE|AD|BC)?)?(?=[^\s\w]|\s+[^0-9]|\s+$|$))",
                                     std::regex::icase);
+
+            return PATTERN;
         }
 
         parse::ParsedResult extract(std::string&, const std::smatch& match, const posix_time::ptime& ref, long idx)

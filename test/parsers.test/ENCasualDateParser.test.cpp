@@ -3,7 +3,7 @@
 #include "src/parsers/en/ENCasualDateParser.hpp"
 
 using namespace std;
-using time::parser::ENCasualDateParser;
+using parser::ENCasualDateParser;
 
 class ENCasualDateTest : public ::testing::Test {
 protected:

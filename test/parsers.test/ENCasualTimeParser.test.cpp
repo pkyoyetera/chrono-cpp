@@ -9,7 +9,7 @@ using std::atoi;
 
 class ENCasualTimeTest : public ::testing::Test {
 public:
-    ENCasualTimeParser ps;
+    parser::ENCasualTimeParser ps;
     tm anchor;
     string text1, text2, text3, text4, text5;
     Result results;

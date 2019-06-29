@@ -8,7 +8,6 @@
 using parser::Parser;
 
 Parser::Parser() = default;
-
 Parser::~Parser() = default;
 
 /*
@@ -17,10 +16,11 @@ Parser::Parser(bool strict, std::regex _pattern) {
     pattern = _pattern;
 }
 */
-
+/*
 std::regex Parser::getPattern() const {
     return std::regex();
 }
+*/
 
 Result Parser::execute(std::string& text, posix_time::ptime& ref) {
     Result results;
@@ -31,8 +31,9 @@ Result Parser::execute(std::string& text, posix_time::ptime& ref) {
     std::string remainingText = text;
 
     try {
-        std::regex_search(remainingText, match, getPattern(0));
-    } catch (std::regex_error& err) {
+        std::regex_search(remainingText, match, getPattern());
+    } // only throws if the regex can not be built
+    catch (std::regex_error& err) {
         std::cerr << err.what() << std::endl;
     }
 
@@ -54,10 +55,10 @@ Result Parser::execute(std::string& text, posix_time::ptime& ref) {
         remainingText = text.substr(idx + match.length(0));
 
         try {
-            std::regex_search(remainingText, match, getPattern(0));
+            std::regex_search(remainingText, match, getPattern());
         } catch (std::regex_error& err) {
             std::cerr << err.what() << std::endl;
-            return res;
+            return results;
         }
     }
 

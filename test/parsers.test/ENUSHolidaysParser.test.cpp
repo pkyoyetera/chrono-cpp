@@ -11,7 +11,7 @@ public:
     Result results;
     posix_time::ptime t;
     parse::ParsedResult r;
-    ENHolidayParser holidayParser;
+    parser::ENHolidayParser holidayParser;
 
     ENUSHolidaysTest() {
         string date{"2019-01-21 23:59:00.00"};

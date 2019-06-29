@@ -4,14 +4,13 @@
 
 using namespace std;
 
-
 class ENMiddleEndianTest : public ::testing::Test {
 public:
     string text;
     Result results;
     posix_time::ptime t;
     parse::ParsedResult r;
-    ENMonthNameMiddleEndianParser middleEndianParser;
+    parser::ENMonthNameMiddleEndianParser middleEndianParser;
 
     ENMiddleEndianTest() {
         string date{"2019-01-21 23:59:00.00"};

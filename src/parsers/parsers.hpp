@@ -19,7 +19,7 @@ namespace parser {
         Parser();
 
         //Parser(bool, std::regex);       // strictMode, pattern
-        virtual std::regex getPattern() const;
+        virtual std::regex getPattern() const { return std::regex(); };
 
         virtual parse::ParsedResult extract(std::string &, const std::smatch &, const posix_time::ptime &, long) {
             parse::ParsedResult tmp{};

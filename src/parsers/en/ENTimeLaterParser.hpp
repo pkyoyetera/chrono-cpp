@@ -10,21 +10,21 @@
     public:
         ENTimeLaterParser() = default;
 
-    std::regex getPattern() const override {
-        static const std::regex PATTERN {
-            R"((\b))"
-                R"(((?:)"
-                    R"(((?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)|)"
-                    R"([0-9]+)"
-                    R"(|an?(?:\s*few)?|half(?:\s+an?)?)"
-                R"(")\s+)"
-                R"((sec(?:onds?)?|min(?:ute)?s?|hours?|weeks?|days?|months?|years?)\\s*)+))"
-                    R"((?:later|after|from now|henceforth|forward|out))"
-            R"((\b))", std::regex::icase};
-        return PATTERN;
-    }
+        std::regex getPattern() const override {
+            static const std::regex PATTERN {
+                R"((\b))"
+                    R"(((?:)"
+                        R"(((?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)|)"
+                        R"([0-9]+)"
+                        R"(|an?(?:\s*few)?|half(?:\s+an?)?)"
+                    R"(")\s+)"
+                    R"((sec(?:onds?)?|min(?:ute)?s?|hours?|weeks?|days?|months?|years?)\\s*)+))"
+                        R"((?:later|after|from now|henceforth|forward|out))"
+                R"((\b))", std::regex::icase};
+            return PATTERN;
+        }
 
-        parse::ParsedResult extract(std::string tx, std::smatch match, posix_time::ptime &ref, long idx)
+        parse::ParsedResult extract(std::string&, const std::smatch& match, const posix_time::ptime& ref, long idx)
         override {
             std::string text = match.str(FULL_MATCH).substr(match.length(1));
             parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
