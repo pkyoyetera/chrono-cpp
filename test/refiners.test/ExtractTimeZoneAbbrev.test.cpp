@@ -8,7 +8,7 @@ using namespace std;
 
 class ExtractTimeZone : public ::testing::Test {
 public:
-    ENTimeExpressionParser parser;
+    parser::ENTimeExpressionParser parser;
     ExtractTimeZoneAbbreviation extractor;
     Result res;
     posix_time::ptime t;

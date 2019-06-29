@@ -2,7 +2,7 @@
 
 #include "src/refiners/refiner.hpp"
 
-class ENMergeDateAndTime : public Refiner {
+class ENMergeDateAndTime : public refiners::Refiner {
 private:
     std::regex pattern{"(T|at|on|of|,|-)?", std::regex::icase};
 
@@ -121,7 +121,7 @@ public:
                 try {
                     curr = r.at(i+1);
                 }
-                catch (std::out_of_range e) {
+                catch (std::out_of_range& e) {
                     std::cerr << e.what() << " at ENMergeDateAndTimeRefiner" << std::endl;
                 }
                 i++;
@@ -131,7 +131,7 @@ public:
                 try {
                     curr = r.at(i+1);
                 }
-                catch (std::out_of_range e) {
+                catch (std::out_of_range& e) {
                     std::cerr << e.what() << " at ENMergeDateAndTimeRefiner" << std::endl;
                 }
                 i++;
