@@ -1,7 +1,7 @@
 
 #include "src/refiners/refiner.hpp"
 
-class ENMergeDateRange : public Refiner {
+class ENMergeDateRange : public refiners::Refiner {
 private:
     // std::regex to{R"(^\s*(and|to|\-)\s*$)"};
     std::regex to{R"(\s*(and|to|through|\-)\s*)"};
@@ -16,8 +16,9 @@ public:
             parse::ParsedResult, parse::ParsedResult);
 
     Result refine(Result r, std::string t) override {
-        if(r.size() < 2) // can not merge less than two ParsdeResult items
+        if(r.size() < 2) {// can not merge less than two ParsdeResult items
             return r;
+        }
 
         parse::ParsedResult prev, curr, tmp;
         Result merged_result;
@@ -26,15 +27,16 @@ public:
             curr = r[i];
             prev = r[i-1];
 
-            if (!prev.end() and !curr.end() and isAbleToMerge(t, prev, curr)) {
+            if(!prev.end() and !curr.end() and isAbleToMerge(t, prev, curr)) {
                 prev = mergeResult(t, prev, curr);
                 curr = tmp;
                 i++;
             }
             merged_result.push_back(prev);
         }
-        if(!prev.isEmpty())
+        if(!prev.isEmpty()) {
             merged_result.push_back(prev);  // if prev != null add to list of results
+        }
 
         return merged_result;
     }
@@ -64,7 +66,7 @@ parse::ParsedResult ENMergeDateRange::mergeResult(std::string text,
     fromResult.setIndex(static_cast<int>(startIndex));
     fromResult.setText(text.substr(startIndex, endIndex - startIndex + 1));
 
-    for(auto& mod: utils::ModList) {
+    for(const auto& mod: utils::ModList) {
         if(toResult.getTag(mod))
             fromResult.setTag(mod);
     }

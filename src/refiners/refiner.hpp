@@ -1,12 +1,11 @@
-#ifndef REFINER_HPP
-#define REFINER_HPP
+#pragma once
 
 #include <iostream>
 
 #include "src/utils/utils.hpp"
 #include "src/parsers/parsers.hpp"
 
-namespace time { namespace refiners {
+ namespace refiners {
 
     class Refiner {
     protected:
@@ -29,6 +28,5 @@ namespace time { namespace refiners {
         }
 
     };
-} }
+}
 
-#endif
