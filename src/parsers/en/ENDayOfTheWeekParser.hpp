@@ -3,31 +3,32 @@
 #include "src/parsers/parsers.hpp"
 
 
-namespace time { namespace parser {
+ namespace parser {
     /**
      * @brief: relative day_of_week pattern parser
      * Works with first day of the week being Monday
      */
     class ENDayOfWeekParser : public Parser {
     private:
-        static const unsigned short TIMING_GROUP  = 2;
-        static const unsigned short PREFIX_GROUP  = 3;
-        static const unsigned short WEEKDAY_GROUP = 4;
-        static const unsigned short POSTFIX_GROUP = 5;
-        static const unsigned short WEEK_GROUP    = 6;
+        static const unsigned short TIMING_GROUP  = 2,
+                                    PREFIX_GROUP  = 3,
+                                    WEEKDAY_GROUP = 4,
+                                    POSTFIX_GROUP = 5,
+                                    WEEK_GROUP    = 6;
 
     public:
         ENDayOfWeekParser() = default;
 
         std::regex getPattern() const override {
-            static const std::regex PATTERN =
-                    std::regex(R"((\W|^)(earl(?:ier|y)|late)?)"
-                                  R"((?:\s*(this|last|next)\s*)?))"
-                                     R"((Sun(?:day)?|Mon(?:day)?|Tue(?:s(?:day)?)?|Wed(?:nesday)?|Thu(?:r(?:s(?:day)?)?)?|Fri(?:day)?|Sat(?:urday)?))"
-                                        R"((?:\s*(this|last|next)\s*)?(?:(week)\s*)?)"
-                               R"((\b)",
-                            /* part of pattern (on\s*)?*/
-                               std::regex::icase);
+            static const std::regex PATTERN {
+                R"((\b))"
+                    R"((earl(?:ier|y)|late)?)"
+                        R"((?:\s*(this|last|next)\s*)?))"
+                            R"((Sun(?:day)?|Mon(?:day)?|Tue(?:s(?:day)?)?|Wed(?:nesday)?|Thu(?:r(?:s(?:day)?)?)?|Fri(?:day)?|Sat(?:urday)?))"
+                                R"((?:\s*(this|last|next)\s*)?(?:(week)\s*)?)"
+                R"((\b)", /* part of pattern (on\s*)?*/
+            std::regex::icase};
+
             return PATTERN;
         }
 
@@ -151,4 +152,4 @@ namespace time { namespace parser {
             return updateParsedComponent(result, ref, offset, norm, timing);
         }
     };
-} }
+}

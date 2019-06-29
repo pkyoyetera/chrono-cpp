@@ -3,7 +3,7 @@
 
 #include "src/parsers/parsers.hpp"
 
-namespace time { namespace parser {
+ namespace parser {
     class ENRelativeDateFormatParser : public Parser {
     private:
         static const unsigned short MODIFIER_WORD_GROUP   = 2;
@@ -58,16 +58,16 @@ namespace time { namespace parser {
             }
 
             // this ...
-            if (!match.str(MODIFIER_WORD_GROUP).compare("this")) {
-                if (!match.str(MULTIPLIER_WORD_GROUP).empty()) {
+            if(!match.str(MODIFIER_WORD_GROUP).compare("this")) {
+                if(!match.str(MULTIPLIER_WORD_GROUP).empty()) {
                     // "this three week" don't make no sense, return
                     return result;
                 }
                 result.setTag(utils::ENRelativeDateFormatParser);
 
-                if (std::regex_search(match.str(RELATIVE_WORD_GROUP), dwmy)) {
+                if(std::regex_search(match.str(RELATIVE_WORD_GROUP), dwmy)) {
                     // this week
-                    if (match.str(RELATIVE_WORD_GROUP).find("week") != std::string::npos) {
+                    if(match.str(RELATIVE_WORD_GROUP).find("week") != std::string::npos) {
                         short unsigned curr_dow = ref.date().day_of_week();
                         short unsigned diff_back = curr_dow;
                         short unsigned diff_forward = DAYS_OF_WEEK - curr_dow;
@@ -84,7 +84,7 @@ namespace time { namespace parser {
                         result.makeEndDateValid();
                     }
                         // this month
-                    else if (match.str(RELATIVE_WORD_GROUP).find("month") != std::string::npos) {
+                    else if(match.str(RELATIVE_WORD_GROUP).find("month") != std::string::npos) {
                         short last_day = gregorian::gregorian_calendar::end_of_month_day(
                                 ref.date().year(), ref.date().month());
                         result.startDate.implyComponent("mday", 1);
@@ -99,7 +99,7 @@ namespace time { namespace parser {
                            so that's why we set them right away */
                     }
                         // this year
-                    else if (match.str(RELATIVE_WORD_GROUP).find("year") != std::string::npos) {
+                    else if(match.str(RELATIVE_WORD_GROUP).find("year") != std::string::npos) {
                         result.startDate.implyComponent("mday", 1);
                         result.startDate.implyComponent("month", 1);
                         result.startDate.setYear(ref.date().year());
@@ -114,7 +114,7 @@ namespace time { namespace parser {
             }
 
             // not this
-            if (std::regex_search(match.str(RELATIVE_WORD_GROUP), dwmy)) {
+            if(std::regex_search(match.str(RELATIVE_WORD_GROUP), dwmy)) {
                 result.setTag(utils::ENRelativeDateFormatParser);
                 // posix_time::ptime tmpTime{ref};
                 /* NOTE: Since we used num as a float to support use of "few"
@@ -123,17 +123,20 @@ namespace time { namespace parser {
                  *       you'll see posix_time::hours(12) instead of gregorian::days(0.5).
                  *       It's unnecessarily long but I haven't figured out a way around it
                  */
-                if (match.str(RELATIVE_WORD_GROUP).find("day") != std::string::npos) {
-                    if (std::floor(num) == num) {
-                        if (!match.str(MODIFIER_WORD_GROUP).compare("next")) {
+                if(match.str(RELATIVE_WORD_GROUP).find("day") != std::string::npos) {
+                    if(std::floor(num) == num) {
+                        if(!match.str(MODIFIER_WORD_GROUP).compare("next")) {
                             tmpDate += gregorian::days(static_cast<int>(num));
-                        } else {
+                        }
+                        else{
                             tmpDate -= gregorian::days(static_cast<int>(num));
                         }
-                    } else {
-                        if (!match.str(MODIFIER_WORD_GROUP).compare("next")) {
+                    }
+                    else {
+                        if(!match.str(MODIFIER_WORD_GROUP).compare("next")) {
                             tmpTime += posix_time::hours(12);
-                        } else {
+                        }
+                        else {
                             tmpTime -= posix_time::hours(12);
                         }
                         // use tmptime set everything here and return
@@ -147,49 +150,58 @@ namespace time { namespace parser {
                     }
                 }
                     // weeks
-                else if (match.str(RELATIVE_WORD_GROUP).find("week") != std::string::npos) {
-                    if (std::floor(num) == num) {
+                else if(match.str(RELATIVE_WORD_GROUP).find("week") != std::string::npos) {
+                    if(std::floor(num) == num) {
                         if (!match.str(MODIFIER_WORD_GROUP).compare("next")) {
                             tmpDate += gregorian::weeks(static_cast<int>(num));
-                        } else {
+                        }
+                        else {
                             tmpDate -= gregorian::weeks(static_cast<int>(num));
                         }
-                    } else {
-                        if (!match.str(MODIFIER_WORD_GROUP).compare("next")) {
+                    }
+                    else {
+                        if(!match.str(MODIFIER_WORD_GROUP).compare("next")) {
                             tmpDate += gregorian::days(3);
-                        } else {
+                        }
+                        else {
                             tmpDate -= gregorian::days(3);
                         }
                     }
                 }
                     // months
-                else if (match.str(RELATIVE_WORD_GROUP).find("month") != std::string::npos) {
-                    if (std::floor(num) == num) {
-                        if (!match.str(MODIFIER_WORD_GROUP).compare("next")) {
+                else if(match.str(RELATIVE_WORD_GROUP).find("month") != std::string::npos) {
+                    if(std::floor(num) == num) {
+                        if(!match.str(MODIFIER_WORD_GROUP).compare("next")) {
                             tmpDate += gregorian::months(static_cast<int>(num));
-                        } else {
+                        }
+                        else {
                             tmpDate -= gregorian::months(static_cast<int>(num));
                         }
-                    } else {
-                        if (!match.str(MODIFIER_WORD_GROUP).compare("next")) {
+                    }
+                    else {
+                        if(!match.str(MODIFIER_WORD_GROUP).compare("next")) {
                             tmpDate += gregorian::days(15);
-                        } else {
+                        }
+                        else{
                             tmpDate -= gregorian::days(15);
                         }
                     }
                 }
                     // years
-                else if (match.str(RELATIVE_WORD_GROUP).find("year") != std::string::npos) {
-                    if (std::floor(num) == num) {
-                        if (!match.str(MODIFIER_WORD_GROUP).compare("next")) {
+                else if(match.str(RELATIVE_WORD_GROUP).find("year") != std::string::npos) {
+                    if(std::floor(num) == num) {
+                        if(!match.str(MODIFIER_WORD_GROUP).compare("next")) {
                             tmpDate += gregorian::years(static_cast<int>(num));
-                        } else {
+                        }
+                        else {
                             tmpDate -= gregorian::years(static_cast<int>(num));
                         }
-                    } else {
-                        if (!match.str(MODIFIER_WORD_GROUP).compare("next")) {
+                    }
+                    else {
+                        if(!match.str(MODIFIER_WORD_GROUP).compare("next")) {
                             tmpDate += gregorian::months(6);
-                        } else {
+                        }
+                        else {
                             tmpDate -= gregorian::months(6);
                         }
                     }
@@ -207,34 +219,42 @@ namespace time { namespace parser {
                 if (std::floor(num) == num) {
                     if (!match.str(MODIFIER_WORD_GROUP).compare("next")) {
                         tmpTime += posix_time::hours(static_cast<int>(num));
-                    } else {
+                    }
+                    else {
                         tmpTime -= posix_time::hours(static_cast<int>(num));
                     }
-                } else {
+                }
+                else {
                     if (!match.str(MODIFIER_WORD_GROUP).compare("next")) {
                         tmpTime += posix_time::minutes(30);
-                    } else {
+                    }
+                    else {
                         tmpTime -= posix_time::minutes(30);
                     }
                 }
             } else if (match.str(RELATIVE_WORD_GROUP).find("minute") != std::string::npos) {
-                if (std::floor(num) == num) {
+                if(std::floor(num) == num) {
                     if (!match.str(MODIFIER_WORD_GROUP).compare("next")) {
                         tmpTime += posix_time::minutes(static_cast<int>(num));
-                    } else {
+                    }
+                    else {
                         tmpTime -= posix_time::minutes(static_cast<int>(num));
                     }
-                } else {
-                    if (!match.str(MODIFIER_WORD_GROUP).compare("next")) {
+                }
+                else {
+                    if(!match.str(MODIFIER_WORD_GROUP).compare("next")) {
                         tmpTime += posix_time::seconds(30);
-                    } else {
+                    }
+                    else{
                         tmpTime -= posix_time::seconds(30);
                     }
                 }
-            } else if (match.str(RELATIVE_WORD_GROUP).find("second") != std::string::npos) {
-                if (!match.str(MODIFIER_WORD_GROUP).compare("next")) {
+            }
+            else if(match.str(RELATIVE_WORD_GROUP).find("second") != std::string::npos) {
+                if(!match.str(MODIFIER_WORD_GROUP).compare("next")) {
                     tmpTime += posix_time::seconds(static_cast<int>(num));
-                } else {
+                }
+                else{
                     tmpTime -= posix_time::seconds(static_cast<int>(num));
                 }
             }
@@ -251,6 +271,4 @@ namespace time { namespace parser {
         }
     };
 
-} }
-
-
+}

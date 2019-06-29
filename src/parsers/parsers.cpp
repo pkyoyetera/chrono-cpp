@@ -5,7 +5,7 @@
 
 #include "parsers.hpp"
 
-using time::parser::Parser;
+using parser::Parser;
 
 Parser::Parser() = default;
 

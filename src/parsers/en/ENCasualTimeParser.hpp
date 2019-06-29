@@ -6,7 +6,7 @@
 
 #include "src/parsers/parsers.hpp"
 
-namespace time{ namespace parser {
+namespace parser {
     class ENCasualTimeParser : public Parser {
 
     public:
@@ -26,7 +26,7 @@ namespace time{ namespace parser {
             parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
 
             unsigned time_match = 4;
-            if (match.str(time_match).empty()) time_match = 3;
+            if(match.str(time_match).empty()) time_match = 3;
             // todo: clean up above lines
 
             std::string subs{utils::toLowerCase(match.str(time_match))};
@@ -57,4 +57,4 @@ namespace time{ namespace parser {
             return result;
         }
     };
-} }
+}

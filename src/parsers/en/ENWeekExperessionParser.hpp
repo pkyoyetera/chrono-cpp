@@ -2,16 +2,19 @@
 
 #include "src/parsers/parsers.hpp"
 
-namespace time { namespace parser {
+ namespace parser {
 
     class ENWeekExpressionParser : public Parser {
     public:
         ENWeekExpressionParser() = default;
 
         std::regex getPattern() const override {
-            static const std::regex PATTERN = std::regex(R"((\b))"
-                             R"(((?:last|next)\s*(?:(\d+)|(\w{3,9}))?\s*weeks?|this\s*week))"
-                             R"((\b))",std::regex::icase);
+            static const std::regex PATTERN {
+                    R"((\b))"
+                        R"(((?:last|next)\s+)"
+                            R"((?:(\d+)|(\w{3,9}))?\s*)"
+                                R"(weeks?|this\s*week))"
+                    R"((\b))", std::regex::icase};
 
             return PATTERN;
         }
@@ -47,4 +50,4 @@ namespace time { namespace parser {
         }
     };
 
-} }
+}

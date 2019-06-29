@@ -3,17 +3,20 @@
 
 #include "src/parsers/parsers.hpp"
 
-namespace time { namespace  parser {
+ namespace  parser {
     class ENHolidayParser : public Parser {
     public:
         ENHolidayParser() = default;
 
         std::regex getPattern() const override {
-            static const std::regex PATTERN = std::regex(
-                    R"((\b)(Independence|President\'s|New\s*Year\'s(?:\s*eve)?|)"
-                    R"(Columbus|MLK|Martin\s*Luther\s*King\s*(?:Junior|Jr|Jnr)|)"
-                    R"(Thanksgiving|Memorial|Labor|Veteran(?:s|\\'s)|Christmas\\s*(?:eve)?|)"
-                    R"(black\s*Friday)\s*(?:day)?(\b))", std::regex::icase);
+            static const std::regex PATTERN {
+                    R"((\b))"
+                        R"((Independence|President\'s|New\s*Year\'s(?:\s*eve)?|)"
+                        R"(Columbus|MLK|Martin\s*Luther\s*King\s*(?:Junior|Jr|Jnr)|)"
+                        R"(Thanksgiving|Memorial|Labor|Veteran(?:s|\\'s)|Christmas\\s*(?:eve)?|)"
+                        R"(black\s*Friday)\s+)"
+                            R"((?:day)?)"
+                    R"((\b))", std::regex::icase};
 
             return PATTERN;
         }
@@ -66,7 +69,8 @@ namespace time { namespace  parser {
                 result.startDate.setMonth(day.month());
                 result.startDate.set_mDay(day.day());
                 result.startDate.set_wDay(day.day_of_week());
-            } else if (text.find("labor") != std::string::npos) {
+            }
+            else if (text.find("labor") != std::string::npos) {
                 //US labor day is first Monday in Sept
                 utils::ndow firstMondayInSep(utils::ndow::first, gregorian::Monday, gregorian::Sep);
                 day = firstMondayInSep.get_date(ref.date().year());
@@ -75,7 +79,8 @@ namespace time { namespace  parser {
                 result.startDate.setMonth(day.month());
                 result.startDate.set_mDay(day.day());
                 result.startDate.set_wDay(day.day_of_week());
-            } else if (text.find("president") != std::string::npos) {
+            }
+            else if (text.find("president") != std::string::npos) {
                 //in the US president's day is the second Tuesday in Feb
                 utils::ndow thirdMondayInFeb(utils::ndow::third, gregorian::Monday, gregorian::Feb);
                 day = thirdMondayInFeb.get_date(ref.date().year());
@@ -84,7 +89,8 @@ namespace time { namespace  parser {
                 result.startDate.setMonth(day.month());
                 result.startDate.set_mDay(day.day());
                 result.startDate.set_wDay(day.day_of_week());
-            } else if (text.find("thanksgiving") != std::string::npos) {
+            }
+            else if (text.find("thanksgiving") != std::string::npos) {
                 //in the US president's day is the second Tuesday in Feb
                 utils::ndow fourthThurInNov(utils::ndow::fourth, gregorian::Thursday, gregorian::Nov);
                 day = fourthThurInNov.get_date(ref.date().year());
@@ -93,7 +99,8 @@ namespace time { namespace  parser {
                 result.startDate.setMonth(day.month());
                 result.startDate.set_mDay(day.day());
                 result.startDate.set_wDay(day.day_of_week());
-            } else if (text.find("black") != std::string::npos) {
+            }
+            else if (text.find("black") != std::string::npos) {
                 //black friday occurs the day after thanksgiving
                 utils::ndow fourthThurInNov(utils::ndow::fourth, gregorian::Thursday, gregorian::Nov);
                 gregorian::date thanksgiving = fourthThurInNov.get_date(ref.date().year());
@@ -104,7 +111,8 @@ namespace time { namespace  parser {
                 result.startDate.setMonth(day.month());
                 result.startDate.set_mDay(day.day() + 1);
                 result.startDate.set_wDay(day.day_of_week() + 1);
-            } else if (text.find("memorial") != std::string::npos) {
+            }
+            else if (text.find("memorial") != std::string::npos) {
                 // Memorial day is observed on the last Monday of May
                 utils::ldow lastMondayInMay(gregorian::Monday, gregorian::May);
                 day = lastMondayInMay.get_date(ref.date().year());
@@ -113,7 +121,8 @@ namespace time { namespace  parser {
                 result.startDate.setMonth(day.month());
                 result.startDate.set_mDay(day.day());
                 result.startDate.set_wDay(day.day_of_week());
-            } else if (text.find("columbus") != std::string::npos) {
+            }
+            else if (text.find("columbus") != std::string::npos) {
                 // Memorial day is observed on the last Monday of May
                 utils::ndow secondMondayInOct(utils::ndow::second, gregorian::Monday, gregorian::Oct);
                 day = secondMondayInOct.get_date(ref.date().year());

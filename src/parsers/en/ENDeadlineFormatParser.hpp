@@ -2,7 +2,7 @@
 
 #include "src/parsers/parsers.hpp"
 
-namespace time { namespace parser {
+ namespace parser {
     class ENDeadlineFormatParser : public Parser {
     private:
 
@@ -10,12 +10,15 @@ namespace time { namespace parser {
         ENDeadlineFormatParser() = default;
 
         std::regex getPattern() const override {
-            static const std::regex PATTERN =
-                    std::regex(R"((\b))"
-                               R"((within|in)\s*)"
-                               R"(((?:one|two|three|four|five|six|seven|eight|)nine|ten|eleven|twelve)|[0-9]+|an?(?:\\s*few)?|half(?:\\s*an?)?)\\s*)"
+            static const std::regex PATTERN {
+                    R"((\b))"
+                        R"((within|in)\s*)"
+                            R"(((?:one|two|three|four|five|six|seven|eight|)nine|ten|eleven|twelve)|)"
+                            R"([0-9]+|)"
+                            R"(an?(?:\s*few)?|)"
+                            R"(half(?:\s*an?)?)\s+)"
                                R"((sec(?:ond)?s?|min(?:ute)?s?|hour(?:s)?|days?|weeks?|months?|years?)\s*)"
-                               R"((\b))", std::regex::icase);
+                    R"((\b))", std::regex::icase};
             return PATTERN;
         }
 
@@ -57,10 +60,11 @@ namespace time { namespace parser {
              * i.e: instead of hours(0.5) use minutes(30) e.t.c
              */
             std::regex dwmy(("day|week|month|year"));
-            if (std::regex_search(match.str(4), dwmy)) {
-                if (match.str(4).find("day") != std::string::npos) {
-                    if (floor(num) == num)
+            if(std::regex_search(match.str(4), dwmy)) {
+                if(match.str(4).find("day") != std::string::npos) {
+                    if(floor(num) == num) {
                         tmpDate += gregorian::days(num);
+                    }
                     else {
                         tmpTime += posix_time::hours(12);
                         // can't add hours(12) to date object, so use tmptime,
@@ -73,22 +77,28 @@ namespace time { namespace parser {
 
                         return result;
                     }
-                } else if (match.str(4).find("week") != std::string::npos) {
-                    if (floor(num) == num) {
+                }
+                else if(match.str(4).find("week") != std::string::npos) {
+                    if(floor(num) == num) {
                         tmpDate += gregorian::weeks(num);
-                    } else {
+                    }
+                    else {
                         tmpDate += gregorian::days(3);
                     }
-                } else if (match.str(4).find("month") != std::string::npos) {
-                    if (floor(num) == num) {
+                }
+                else if(match.str(4).find("month") != std::string::npos) {
+                    if(floor(num) == num) {
                         tmpDate += gregorian::months(num);
-                    } else {
+                    }
+                    else{
                         tmpDate += gregorian::days(15);
                     }
-                } else if (match.str(4).find("year") != std::string::npos) {
-                    if (floor(num) == num) {
+                }
+                else if(match.str(4).find("year") != std::string::npos) {
+                    if(floor(num) == num) {
                         tmpDate += gregorian::years(num);
-                    } else {
+                    }
+                    else {
                         tmpDate += gregorian::months(6);
                     }
                 }
@@ -100,13 +110,16 @@ namespace time { namespace parser {
                 return result;
             }
 
-            if (!match.str(4).find("hour")) {
-                if (floor(num) == num)
+            if(!match.str(4).find("hour")) {
+                if(floor(num) == num) {
                     tmpTime += posix_time::hours(static_cast<int>(num));
-                else
+                }
+                else {
                     tmpTime += posix_time::minutes(30);
-            } else if (!match.str(4).find("minute")) {
-                if (floor(num) == num)
+                }
+            }
+            else if(!match.str(4).find("minute")) {
+                if(floor(num) == num)
                     tmpTime += posix_time::minutes(static_cast<int>(num));
                 else
                     tmpTime += posix_time::seconds(30);
@@ -126,4 +139,4 @@ namespace time { namespace parser {
         }
 
     };
-} }
+}

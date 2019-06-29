@@ -3,19 +3,24 @@
 
 #include "src/parsers/parsers.hpp"
 
-namespace time { namespace parser {
+ namespace parser {
     class ENTimeLaterParser : public Parser {
     private:
 
     public:
-        ENTimeLaterParser() = = default;
+        ENTimeLaterParser() = default;
 
     std::regex getPattern() const override {
-        static const std::regex PATTERN = std::regex(R"((\b))"
-                         R"(((?:((?:one|two|three|four|five|six|seven|eight|nine|ten|)"
-                         R"(eleven|twelve)|[0-9]+|an?(?:\s*few)?|half(?:\s*an?)?)\s*(sec(?:onds?)?|)"
-                         R"(min(?:ute)?s?|hours?|weeks?|days?|months?|years?)\\s*)+)(?:later|after|)"
-                         R"(from now|henceforth|forward|out)(\b))", std::regex::icase);
+        static const std::regex PATTERN {
+            R"((\b))"
+                R"(((?:)"
+                    R"(((?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)|)"
+                    R"([0-9]+)"
+                    R"(|an?(?:\s*few)?|half(?:\s+an?)?)"
+                R"(")\s+)"
+                R"((sec(?:onds?)?|min(?:ute)?s?|hours?|weeks?|days?|months?|years?)\\s*)+))"
+                    R"((?:later|after|from now|henceforth|forward|out))"
+            R"((\b))", std::regex::icase};
         return PATTERN;
     }
 
@@ -83,4 +88,4 @@ namespace time { namespace parser {
         }
     };
 
-} }
+}

@@ -7,7 +7,7 @@
 
 #include "src/parsers/parsers.hpp"
 
-namespace time { namespace parse {
+ namespace parse {
 
     class ENMonthNameParser : public Parser {
     private:
@@ -36,11 +36,11 @@ namespace time { namespace parse {
             short unsigned day = 1;
 
             int year{-1};
-            if (!match.str(YEAR__GROUP).empty()) {
+            if(!match.str(YEAR__GROUP).empty()) {
                 try {
                     year = std::stoi(match[YEAR__GROUP].str());
                 }
-                catch (std::logic_error& e) {
+                catch(std::logic_error& e) {
                     std::cerr << e.what() << " at ENMonthNameParser" << std::endl;
                     return result;
                 }
@@ -69,9 +69,10 @@ namespace time { namespace parse {
                 gregorian::date prevY{dRef - gregorian::years(1)},
                         nextY{dRef + gregorian::years(1)};
 
-                if (std::abs((nextY - ref.date()).days()) < std::abs((dRef - ref.date()).days())) {
+                if(std::abs((nextY - ref.date()).days()) < std::abs((dRef - ref.date()).days())) {
                     dRef = nextY;
-                } else if (std::abs((prevY - ref.date()).days()) < std::abs((dRef - ref.date()).days())) {
+                }
+                else if(std::abs((prevY - ref.date()).days()) < std::abs((dRef - ref.date()).days())) {
                     dRef = prevY;
                 }
 
@@ -84,4 +85,4 @@ namespace time { namespace parse {
             return result;
         }
     };
-} }
+}
