@@ -12,7 +12,7 @@ protected:
     Result results;
     posix_time::ptime t;
     parse::ParsedResult r;
-    ENTimeExpressionParser timeExpressionParser;
+    parser::ENTimeExpressionParser timeExpressionParser;
 
     ENTimeExpTest() {
         string date{"2019-01-21 23:59:00.00"};

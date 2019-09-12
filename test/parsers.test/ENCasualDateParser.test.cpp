@@ -3,7 +3,7 @@
 #include "src/parsers/en/ENCasualDateParser.hpp"
 
 using namespace std;
-
+using parser::ENCasualDateParser;
 
 class ENCasualDateTest : public ::testing::Test {
 protected:
@@ -33,7 +33,7 @@ TEST_F(ENCasualDateTest, construct) {
     // test 1: date corresponds to yesterday's
     results = dateParser.execute(t1, anchor);
     r = results[0];
-    EXPECT_EQ(r.getIndex(), 13);
+    EXPECT_EQ(r.getIndex(), 14);
     EXPECT_EQ(r.startDate.getYear(),  anchor.date().year());
     EXPECT_EQ(r.startDate.getMonth(), anchor.date().month()) ;
     EXPECT_EQ(r.startDate.get_mDay(), anchor.date().day()-1);
@@ -42,7 +42,7 @@ TEST_F(ENCasualDateTest, construct) {
     /// test 2: date corresponds to tomorrow
     results = dateParser.execute(t2, anchor);
     r = results[0];
-    EXPECT_EQ(r.getIndex(), 3);
+    EXPECT_EQ(r.getIndex(), 4);
     EXPECT_EQ(r.startDate.getYear(),  anchor.date().year());
     EXPECT_EQ(r.startDate.getMonth(), anchor.date().month());
     EXPECT_EQ(r.startDate.get_mDay(), anchor.date().day() + 1);
@@ -50,7 +50,7 @@ TEST_F(ENCasualDateTest, construct) {
     // test 4: date should correspond to later today
     results = dateParser.execute(t4, anchor);
     r = results[0];
-    EXPECT_EQ(r.getIndex(), 5);
+    EXPECT_EQ(r.getIndex(), 6);
     EXPECT_EQ(r.startDate.getYear(),  anchor.date().year());
     EXPECT_EQ(r.startDate.getMonth(), anchor.date().month());
     EXPECT_EQ(r.startDate.get_mDay(), anchor.date().day());

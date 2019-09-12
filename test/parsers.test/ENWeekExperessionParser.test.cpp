@@ -10,7 +10,7 @@ public:
     Result results;
     posix_time::ptime t;
     parse::ParsedResult r;
-    ENWeekExpressionParser weekExpressionParser;
+    parser::ENWeekExpressionParser weekExpressionParser;
 
     ENWeekExpressionTest() {
         string date{"2019-01-28 23:59:00.00"};

@@ -11,7 +11,7 @@ public:
     Result results;
     posix_time::ptime t;
     parse::ParsedResult r;
-    ENTimeLaterParser laterParser;
+    parser::ENTimeLaterParser laterParser;
 
     ENTimeLaterTest() {
         string date{"2019-01-21 23:59:00.00"};

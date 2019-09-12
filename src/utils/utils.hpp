@@ -1,5 +1,4 @@
-#ifndef UTILS_HPP
-#define UTILS_HPP
+#pragma once
 
 #include <map>
 #include <list>
@@ -12,10 +11,15 @@
 #include "boost/date_time/local_time_adjustor.hpp"
 #include "boost/date_time/c_local_time_adjustor.hpp"
 
-using namespace boost;
+namespace gregorian  = boost::gregorian;
+namespace posix_time = boost::posix_time;
 
 namespace utils {
+    typedef gregorian::nth_day_of_the_week_in_month ndow;
+    typedef gregorian::last_day_of_the_week_in_month ldow;
+
     typedef enum modifiers {
+        // parsers
         ENCasualTimeParser,
         ENCasualDateParser,
         ENDeadlineFormatParser,
@@ -28,7 +32,7 @@ namespace utils {
         ENTimeExpressionParser,
         ENUSHolidaysParser,
         ENRelativeDateFormatParser,
-
+        // refiners
         ENMergeDateRangeRefiner,
         ENMergeDateAndTimeRefiner,
         ExtractTimeZoneAbbreviation,
@@ -163,7 +167,7 @@ namespace utils {
             {"YEKT",  360}
     };
 
-    static std::string ordinalWords = [&](std::map<std::string, unsigned> &) -> std::string {
+    static std::string ordinalWords = [](std::map<std::string, unsigned> &) -> std::string {
         std::string retVal, t;
         // std::regex re{"\\s"};
         for (auto a : ORDINAL_WORDS) {
@@ -194,7 +198,5 @@ namespace utils {
 
     std::map<std::string, float> collectDateTimeFragment(std::smatch , std::map<std::string, float>& );
 }
-typedef gregorian::nth_day_of_the_week_in_month ndow;
-typedef gregorian::last_day_of_the_week_in_month ldow;
 
-#endif
+

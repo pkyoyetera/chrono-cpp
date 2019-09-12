@@ -9,7 +9,7 @@ using std::atoi;
 
 class ENCasualTimeTest : public ::testing::Test {
 public:
-    ENCasualTimeParser ps;
+    parser::ENCasualTimeParser ps;
     tm anchor;
     string text1, text2, text3, text4, text5;
     Result results;
@@ -34,7 +34,7 @@ TEST_F(ENCasualTimeTest, test1) {
     results = ps.execute(text1, t);
     r = results[0];
 
-    EXPECT_EQ(r.getIndex(), 10);
+    EXPECT_EQ(r.getIndex(), 11);
     EXPECT_EQ(r.startDate.getYear(), t.date().year());
     EXPECT_EQ(r.startDate.getMonth(), t.date().month());
     EXPECT_EQ(r.startDate.get_mDay(), t.date().day());

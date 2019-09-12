@@ -1,5 +1,4 @@
-#ifndef RESULT_H
-#define RESULT_H
+#pragma once
 
 #include <iostream>
 #include <ctime>
@@ -61,7 +60,7 @@ private:
 protected:
     posix_time::ptime anchor;
     unsigned index;
-    std::string text; /// todo: add accessor for text to aid testing
+    std::string text; // todo: add accessor for text to aid testing
     utils::Tags tags;
 
 public:
@@ -90,4 +89,3 @@ public:
 typedef std::vector<parse::ParsedResult> Result;
 
 
-#endif

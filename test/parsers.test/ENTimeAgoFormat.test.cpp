@@ -5,14 +5,13 @@
 
 using namespace std;
 
-
 class ENTimeAgoTest : public ::testing::Test {
 public:
     string text;
     Result results;
     posix_time::ptime t;
     parse::ParsedResult r;
-    ENTimeAgoFormatParser timeAgoParser;
+    parser::ENTimeAgoFormatParser timeAgoParser;
 
     ENTimeAgoTest() {
         string date{"2019-01-21 23:59:00.00"};

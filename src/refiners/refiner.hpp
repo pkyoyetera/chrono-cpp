@@ -1,30 +1,32 @@
-#ifndef REFINER_HPP
-#define REFINER_HPP
+#pragma once
 
 #include <iostream>
 
 #include "src/utils/utils.hpp"
 #include "src/parsers/parsers.hpp"
 
-class Refiner {
-protected:
-    std::vector<std::string> options;
+ namespace refiners {
 
-public:
-    Refiner() { }
-    void setOpt(std::vector<std::string> opt) {
-        options = opt;
-    }
-    std::vector<std::string> getOpt() {
-        return options;
-    }
+    class Refiner {
+    protected:
+        std::vector<std::string> options;
 
-    virtual Result refine(Result, std::string) {
-        Result r;
-        return r;
-    }
+    public:
+        Refiner() {}
 
-};
+        void setOpt(std::vector<std::string> opt) {
+            options = opt;
+        }
 
+        std::vector<std::string> getOpt() {
+            return options;
+        }
 
-#endif
+        virtual Result refine(Result, std::string) {
+            Result r;
+            return r;
+        }
+
+    };
+}
+

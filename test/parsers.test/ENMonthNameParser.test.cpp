@@ -12,7 +12,7 @@ public:
     Result results;
     posix_time::ptime t;
     parse::ParsedResult r;
-    ENMonthNameParser monthParser;
+    parser::ENMonthNameParser monthParser;
 
     ENMonthNameTest() {
         string date{"2019-01-21 23:59:00.00"};

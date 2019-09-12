@@ -1,29 +1,33 @@
-#ifndef PARSER_H
-#define PARSER_H
+#pragma once
 
 #include <regex>
 #include <string>
 #include <iostream>
+
 #include "src/result.hpp"
 #include "src/utils/utils.hpp"
 
-class Parser {
-protected:
-    bool strictMode;
-    std::regex pattern;
+namespace parser {
+    static const unsigned short FULL_MATCH = 0;
 
-public:
-    Parser();
-    Parser(bool, std::regex);       // strictMode, pattern
-    std::regex getPattern();
+    class Parser {
+    protected:
+        bool strictMode;
+        std::regex pattern;
 
-    virtual parse::ParsedResult extract(std::string, std::smatch, posix_time::ptime&, long) {
-        parse::ParsedResult tmp{ };
-        return tmp;
-    }
+    public:
+        Parser();
 
-    Result execute(std::string&, posix_time::ptime&);
-    ~Parser();
-};
+        //Parser(bool, std::regex);       // strictMode, pattern
+        virtual std::regex getPattern() const { return std::regex(); };
 
-#endif
+        virtual parse::ParsedResult extract(std::string &, const std::smatch &, const posix_time::ptime &, long) {
+            parse::ParsedResult tmp{};
+            return tmp;
+        }
+
+        Result execute(std::string &, posix_time::ptime &);
+
+        ~Parser();
+    };
+}

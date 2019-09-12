@@ -14,7 +14,7 @@ TEST(OverlapRemove, test1) {
     test_result.push_back(r1);
     test_result.push_back(r2);
 
-    Refiner* ovr = new OverlapRemover();
+    refiners::Refiner* ovr = new OverlapRemover();
     Result new_result = ovr->refine(test_result, _long);
 
     EXPECT_EQ(new_result.size(), 1);
