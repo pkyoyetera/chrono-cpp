@@ -22,7 +22,7 @@ public:
 TEST_F(ENDayOfTheWeekTest, test1) {
     string text{"Monday"};
     results = dwp.execute(text, t);
-    r = results[0];
+    r = results.at(0);
     EXPECT_EQ(r.getIndex(), 0);
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 1);

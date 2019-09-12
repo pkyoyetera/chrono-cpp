@@ -44,7 +44,7 @@ Result Parser::execute(std::string& text, posix_time::ptime& ref) {
         parse::ParsedResult res{};
         res = extract(remainingText, match, ref, idx);
 
-        if (/*!strictMode or */res.hasPossibleDates()) {
+        if(/*!strictMode or */res.hasPossibleDates()) {
             results.push_back(res);
         }
         else {

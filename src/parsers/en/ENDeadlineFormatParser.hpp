@@ -12,12 +12,14 @@
         std::regex getPattern() const override {
             static const std::regex PATTERN {
                     R"((\b))"
-                        R"((within|in)\s*)"
-                            R"(((?:one|two|three|four|five|six|seven|eight|)nine|ten|eleven|twelve)|)"
-                            R"([0-9]+|)"
-                            R"(an?(?:\s*few)?|)"
-                            R"(half(?:\s*an?)?)\s+)"
-                               R"((sec(?:ond)?s?|min(?:ute)?s?|hour(?:s)?|days?|weeks?|months?|years?)\s*)"
+                        R"((within|in)\s+)"
+                            R"(()"
+                                R"((?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)|)"
+                                R"([0-9]+|)"
+                                R"(an?(?:\s+few)?|)"
+                                R"(half(?:\s+an?)?)"
+                            R"())"
+                            R"(\s+(sec(?:ond)?s?|min(?:ute)?s?|h(?:ou)?rs?|days?|w(?:ee)?ks?|months?|y(?:ea)?rs?))"
                     R"((\b))", std::regex::icase};
             return PATTERN;
         }

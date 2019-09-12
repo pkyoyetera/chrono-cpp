@@ -25,17 +25,17 @@ namespace parser {
             posix_time::ptime tmp{ref};
             parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
 
-            if(!text.compare("tonight")) {
+            if(!text.find("tonight")) {
                 // implies coming night, normally
                 result.startDate.implyComponent("hour", 22);
             }
-            else if(!text.compare("tomorrow") or !text.compare("tmr")) {
+            else if(!text.find("tomorrow") or !text.find("tmr")) {
                 // checks not tomorrow on a late night
-                if(ref.time_of_day().hours() > 1) {
+                if(ref.time_of_day().hours() > 0) {
                     tmp += gregorian::days(1);
                 }
             }
-            else if(!text.compare("yesterday")) {
+            else if(!text.find("yesterday")) {
                 tmp -= gregorian::days(1);
                 result.startDate.implyComponent("hour", ref.time_of_day().hours());
             }
