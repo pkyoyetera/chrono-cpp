@@ -1,11 +1,11 @@
-workspace(name = "time")
+workspace(name = "chrono")
 
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 # =====================================================================
 #    Boost
 # =====================================================================
-load("@time//:boost.bzl", "boost")
+load("@chrono//:boost.bzl", "boost")
 boost()
 
 load("@com_github_nelhage_rules_boost//:boost/boost.bzl", "boost_deps")
