@@ -25,10 +25,10 @@ TEST_F(ENWeekExpressionTest , t1) {
     results = weekExpressionParser.execute(text, t);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2019);
-    EXPECT_EQ(r.startDate.getMonth(), 2);   // kunjani, muli mutya abeeyo
+    EXPECT_EQ(r.startDate.getMonth(), 2);
     EXPECT_EQ(r.startDate.get_mDay(), 11);
 
-    text = "the last two weeks have been a slugger"; // wiiki ikumi n'andala
+    text = "the last two weeks have been a slugger";
     results = weekExpressionParser.execute(text, t);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2019);
