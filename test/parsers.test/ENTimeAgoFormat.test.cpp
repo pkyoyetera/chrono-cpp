@@ -22,12 +22,11 @@ public:
 
 
 TEST_F(ENTimeAgoTest, t1_ago) {
-    text = "they left 2 days ago";
+    text = "2 days ago";
     results = timeAgoParser.execute(text, t);
-    r = results[0];
+    r = results.at(0);
 
-    EXPECT_EQ(r.getIndex(), 9);
-    EXPECT_EQ(results.size(), 1);
+    EXPECT_EQ(r.getIndex(), 0);
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 1);
     EXPECT_EQ(r.startDate.get_mDay(), 19);

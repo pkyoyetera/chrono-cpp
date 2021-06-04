@@ -132,7 +132,7 @@ namespace parser
             return res;
         }
 
-        parse::ParsedResult extract(std::string& tx, const std::smatch& match, const posix_time::ptime& ref, long idx)
+        parse::ParsedResult extract(std::string&, const std::smatch& match, const posix_time::ptime& ref, long idx)
         override {
             std::string text      = match.str(FULL_MATCH),
                         timing    = match.str(TIMING_GROUP),
@@ -145,8 +145,8 @@ namespace parser
 
             parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
 
-            short unsigned offset = utils::WEEKDAY_OFFSET[dayOfWeek];
-            if (offset < 0 or offset > 6) {
+            const short unsigned offset = utils::WEEKDAY_OFFSET[dayOfWeek];
+            if (offset > 6) {
                 return result;
             }
 

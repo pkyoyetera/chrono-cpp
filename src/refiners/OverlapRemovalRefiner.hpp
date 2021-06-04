@@ -9,9 +9,8 @@ protected:
     // std::string text;
 public:
     OverlapRemover()  = default;
-    ~OverlapRemover() = default;
 
-    Result refine(Result r, std::string t) override {
+    Result refine(Result r, std::string) override {
         // can't have overlaps in 1 result
         if(r.size() < 2) {
             return r;

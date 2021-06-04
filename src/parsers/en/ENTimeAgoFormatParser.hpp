@@ -13,14 +13,16 @@
             static const std::regex PATTERN = std::regex(
                     R"((\b)(?:within\s*)?((?:((?:one|two|three|four|five|six|seven|eight|nine|)"
                     R"(ten|eleven|twelve)|[0-9]+|an?(?:\s*few)?|half(?:\s*an?)?)\s*(sec(?:onds?)?|)"
-                    R"(min(?:ute)?s?|hours?|weeks?|days?|months?|years?)\\s*)+)(?:ago|before|earlier))"
+                    R"(min(?:ute)?s?|hours?|weeks?|days?|months?|years?)\s*)+)(?:ago|before|earlier))"
                     R"((\b))", std::regex::icase);
             return PATTERN;
         }
 
         parse::ParsedResult
-        extract(std::string &tx, const std::smatch &match, const posix_time::ptime &ref, long idx)
+        extract(std::string &, const std::smatch &match, const posix_time::ptime &ref, long idx)
         override {
+            using utils::Units;
+
             std::string text = match.str(FULL_MATCH);
             parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
 
@@ -28,28 +30,27 @@
                 return result;
             }
 
-            std::map<std::string, float> fragments = utils::extractDateTimeUnitFragments(match.str(2));
+            std::map<utils::Units, float> fragments = utils::extractDateTimeUnitFragments(match.str(2));
 
             gregorian::date date{ref.date()};
             posix_time::ptime date_t{ref};
 
-            // subtract each of the elements in fragments to the date/ptinme object
+            // subtract each of the elements in fragments to the date/time object
             for(const auto& a : fragments) {
                 try {
-                    if(a.first == "year")
+                    if(a.first == utils::Units::YEAR)
                         date -= gregorian::years(static_cast<int> (a.second));
-                    else if(a.first == "month")
+                    else if(a.first == utils::Units::MONTH)
                         date -= gregorian::months(static_cast<int> (a.second));
-                    else if(a.first == "week")            // this did not mean a literal week but rather a weekday
+                    else if(a.first == utils::Units::WEEK)   // fixme this did not mean a literal week but rather a weekday
                         date -= gregorian::weeks(a.second);
-                    else if(a.first == "day")
-                        date -= gregorian::days(
-                                static_cast<int> (a.second)); // you sure you wanna cast these bad boys?
-                    else if(a.first == "hour")
+                    else if(a.first == utils::Units::DAY)
+                        date -= gregorian::days(static_cast<int> (a.second)); // you sure you wanna cast these bad boys?
+                    else if(a.first == utils::Units::HOUR)
                         date_t -= posix_time::hours(static_cast<int> (a.second));
-                    else if(a.first == "minute")
+                    else if(a.first == utils::Units::MINUTE)
                         date_t -= posix_time::minutes(static_cast<int> (a.second));
-                    else if(a.first == "second")
+                    else if(a.first == utils::Units::SECOND)
                         date_t -= posix_time::seconds(static_cast<int> (a.second));
                 }
                 catch (std::out_of_range &e) {
@@ -58,13 +59,17 @@
                 }
             }
 
-            if(fragments["hour"] > 0 or fragments["minute"] > 0 or fragments["second"] > 0) {
+            if (fragments[Units::HOUR] > 0 or fragments[Units::MINUTE] > 0 or fragments[Units::SECOND] > 0)
+            {
                 result.startDate.setHour(date_t.time_of_day().hours());
                 result.startDate.setMinute(date_t.time_of_day().minutes());
                 result.startDate.setSeconds(date_t.time_of_day().seconds());
             }
-            if(fragments["day"] > 0 or fragments["month"] > 0 or
-                fragments["year"] > 0 or fragments["week"] > 0) {
+            if (fragments[Units::DAY] > 0 or
+                fragments[Units::MONTH] > 0 or
+                fragments[Units::YEAR] > 0 or
+                fragments[Units::WEEK] > 0)
+            {
                 result.startDate.set_mDay(date.day());
                 result.startDate.setMonth(date.month());
                 result.startDate.setYear(date.year());
