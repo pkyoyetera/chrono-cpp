@@ -4,7 +4,11 @@
 #include <list>
 #include <regex>
 #include <iostream>
+#include <string_view>
 #include <unordered_map>
+
+#include "boost/algorithm/string.hpp"
+
 #include "boost/date_time/gregorian/gregorian.hpp"
 #include "boost/date_time/posix_time/posix_time.hpp"
 // temporary timezone adjustments
@@ -49,6 +53,16 @@ namespace utils {
 
                                         ENMergeDateRangeRefiner, ENMergeDateAndTimeRefiner,
                                         ExtractTimeZoneAbbreviation,};
+
+    typedef enum units {
+        SECOND,
+        MINUTE,
+        HOUR,
+        DAY,
+        WEEK,
+        MONTH,
+        YEAR
+    } Units;
 
     static std::map<std::string, unsigned> INTEGER_WORDS{
             {"one",    1},
@@ -194,9 +208,9 @@ namespace utils {
 
     static std::regex PATTERN_TIME_UNIT(TIME_UNIT, std::regex::icase);
 
-    std::map<std::string, float> extractDateTimeUnitFragments(std::string);
+    std::map<Units, float> extractDateTimeUnitFragments(const std::string&);
 
-    std::map<std::string, float> collectDateTimeFragment(std::smatch , std::map<std::string, float>& );
+    std::map<Units, float> collectDateTimeFragment(std::smatch , std::map<Units, float>& );
 }
 
 
