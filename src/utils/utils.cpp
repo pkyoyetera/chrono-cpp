@@ -16,7 +16,7 @@ unsigned utils::argToOrdinalValue(const std::string &arg) {
     value = std::regex_replace(value, std::regex("^ +| +$|( ) +"), "$1");
     std::transform(value.begin(), value.end(), value.begin(), ::tolower);
     return utils::ORDINAL_WORDS[value];
-};
+}
 
 std::string utils::keysToString(std::map<std::string, unsigned> arg) {
     std::string result;
