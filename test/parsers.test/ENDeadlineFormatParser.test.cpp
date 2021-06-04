@@ -22,7 +22,7 @@ TEST_F (ENDeadlineFormatTest, test1) {
     results = dp.execute(text, t);
     r = results[0];
 
-    EXPECT_EQ(r.getIndex(), 12);
+    EXPECT_EQ(r.getIndex(), 13);
     EXPECT_EQ(r.startDate.getYear(), testTime.date().year());
     EXPECT_EQ(r.startDate.getMonth(), testTime.date().month());
     EXPECT_EQ(r.startDate.get_mDay(), testTime.date().day());
@@ -46,7 +46,7 @@ TEST_F(ENDeadlineFormatTest, test3) {
     results = dp.execute(text, t);
     r = results[0];
 
-    EXPECT_EQ(r.getIndex(), 6);
+    EXPECT_EQ(r.getIndex(), 7);
     EXPECT_EQ(r.startDate.getYear(), testTime.date().year());
     EXPECT_EQ(r.startDate.getMonth(), testTime.date().month());
     EXPECT_EQ(r.startDate.get_mDay(), testTime.date().day());
@@ -62,7 +62,7 @@ TEST_F(ENDeadlineFormatTest, test4) {
     results = dp.execute(text, t);
     r = results[0];
 
-    EXPECT_EQ(r.getIndex(), 17);
+    EXPECT_EQ(r.getIndex(), 18);
     EXPECT_EQ(r.startDate.getYear(), testTime.date().year());
     EXPECT_EQ(r.startDate.getMonth(), testTime.date().month());
     EXPECT_EQ(r.startDate.get_mDay(), testTime.date().day());
@@ -75,7 +75,7 @@ TEST_F(ENDeadlineFormatTest, test5) {
     results = dp.execute(text, t);
     r = results[0];
 
-    EXPECT_EQ(r.getIndex(), 9);
+    EXPECT_EQ(r.getIndex(), 10);
     EXPECT_EQ(r.startDate.getYear(), testTime.date().year());
     EXPECT_EQ(r.startDate.getMonth(), testTime.date().month());
     EXPECT_EQ(r.startDate.get_mDay(), testTime.date().day());
@@ -91,7 +91,7 @@ TEST_F(ENDeadlineFormatTest, test6) {
     results = dp.execute(text, t);
     r = results[0];
 
-    EXPECT_EQ(r.getIndex(), 7);
+    EXPECT_EQ(r.getIndex(), 8);
     EXPECT_EQ(r.startDate.getYear(), testTime.date().year());
     EXPECT_EQ(r.startDate.getMonth(), testTime.date().month());
     EXPECT_EQ(r.startDate.get_mDay(), testTime.date().day());
