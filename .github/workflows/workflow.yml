@@ -1,0 +1,14 @@
+
+on: push
+name: build
+jobs:
+  checks:
+  name: run
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v2
+
+    - name: run
+      uses:
+        with: pkyoyeters/pk/re2
+        args: make build
