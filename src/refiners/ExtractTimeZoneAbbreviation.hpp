@@ -10,12 +10,12 @@ public:
     ExtractTimeZoneAbbreviation()  = default;
     ~ExtractTimeZoneAbbreviation() = default;
 
-    Result refine(Result r, std::string text) override {
+    parse::Result refine(parse::Result r, std::string text) override {
         // Result refinedResults;
         std::smatch match;
 
         for(auto& res : r) {
-            if(res.getTag(utils::ENTimeExpressionParser)) {
+            if (res.getTag(utils::ENTimeExpressionParser)) {
                 // match text starting at index immediately succeeding parser's matched text
                 std::string tmp;
                 try {
@@ -24,19 +24,19 @@ public:
                     std::cerr << e.what() << std::endl;
                     continue;
                 }
-                if(std::regex_match(tmp, match, std::regex(TIMEZONE_NAME_PATTERN, std::regex::icase))) {
-                    std::string tzAbbrev = utils::toUpperCase(match[1].str());
+                if (std::regex_match(tmp, match, std::regex(TIMEZONE_NAME_PATTERN, std::regex::icase)))
+                {
+                    const std::string tzAbbrev = utils::toUpperCase(match[1].str());
 
-                    if(utils::DEFAULT_TIMEZONE_ABBR_MAP.find(tzAbbrev) != utils::DEFAULT_TIMEZONE_ABBR_MAP.end()) {
+                    if (utils::DEFAULT_TIMEZONE_ABBR_MAP.find(tzAbbrev) != utils::DEFAULT_TIMEZONE_ABBR_MAP.end())
+                    {
                         int offset = utils::DEFAULT_TIMEZONE_ABBR_MAP[tzAbbrev];
 
-                        if(!res.startDate.isCertain("tzoffset")) {
+                        if (!res.startDate.isCertain("tzoffset"))
                             res.startDate.setTimeZoneOffset(offset);
-                        }
 
-                        if(res.end() and !res.endDate.isCertain("tzoffset")) {
+                        if (res.end() and !res.endDate.isCertain("tzoffset"))
                             res.startDate.setTimeZoneOffset(offset);
-                        }
 
                         res.setText(match[1].str());
                         res.setTag(utils::ExtractTimeZoneAbbreviation);

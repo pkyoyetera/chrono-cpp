@@ -31,7 +31,9 @@ std::shared_ptr<Parser>& Parser::chain(const std::shared_ptr<Parser>& next)
 }
 
 
-void Parser::execute(std::string& text, posix_time::ptime& ref, Result& results)
+void Parser::execute(std::string& text,
+                     posix_time::ptime& ref,
+                     parse::Result& results)
 {
     std::smatch match;
     unsigned long idx;

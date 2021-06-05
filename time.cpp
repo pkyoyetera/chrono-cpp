@@ -82,7 +82,7 @@ int main(int argc, char* argv[]) {
         t = posix_time::time_from_string(refDate);
     }
 
-    Result results;
+    parse::Result results;
     ctp->execute(str, t, results);
 
     std::sort(results.begin(), results.end(),

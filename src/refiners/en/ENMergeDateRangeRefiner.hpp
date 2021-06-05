@@ -15,13 +15,14 @@ public:
     parse::ParsedResult mergeResult(std::string,
             parse::ParsedResult, parse::ParsedResult);
 
-    Result refine(Result r, std::string t) override {
+    parse::Result refine(parse::Result r, std::string t) override
+    {
         if(r.size() < 2) {// can not merge less than two ParsdeResult items
             return r;
         }
 
         parse::ParsedResult prev, curr, tmp;
-        Result merged_result;
+        parse::Result merged_result;
 
         for(unsigned i=1; i<r.size(); i++) {
             curr = r[i];
@@ -76,7 +77,8 @@ parse::ParsedResult ENMergeDateRange::mergeResult(std::string text,
 }
 
 bool ENMergeDateRange::isAbleToMerge(std::string text,
-                                     parse::ParsedResult r1, parse::ParsedResult r2) {
+                                     parse::ParsedResult r1, parse::ParsedResult r2)
+{
     /**
      * @brief checks if the text between two ParsedResults indicates
      *        that they refer to a date range and can be merged together
