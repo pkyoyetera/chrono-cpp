@@ -1,6 +1,6 @@
 load("//:chrono.bzl", "copts", "linkopts")
 
-COPTS = copts()
+COPTS = copts(stdc="-std=c++17")
 LINKOPTS = linkopts()
 
 cc_library(
