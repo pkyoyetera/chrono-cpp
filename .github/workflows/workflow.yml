@@ -7,9 +7,10 @@ jobs:
   runs-on: ubuntu-latest
   steps:
     - uses: actions/checkout@v2
-      ref: pk/re2
+      with:
+        ref: pk/re2
 
     - name: run
       uses: ngalaiko/bazel-action/2.0.0@master
-        with: pkyoyetera/pk/re2
+      with: pk/re2
         args: build ...
