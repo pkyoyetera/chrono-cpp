@@ -31,7 +31,8 @@ TEST_F(ENCasualTimeTest, test1) {
     posix_time::ptime t( posix_time::second_clock::local_time() );
     anchor = posix_time::to_tm(t);
 
-    results = ps.execute(text1, t);
+    results.clear();
+    ps.execute(text1, t, results);
     r = results[0];
 
     EXPECT_EQ(r.getIndex(), 11);
@@ -41,22 +42,26 @@ TEST_F(ENCasualTimeTest, test1) {
     EXPECT_EQ(r.startDate.get_wDay(), t.date().day_of_week());
     ASSERT_EQ(r.startDate.getHour(), 06);
 
-    results = ps.execute(text2, t);
+    results.clear();
+    ps.execute(text2, t, results);
     r = results[0];
     EXPECT_EQ(r.getIndex(), 0);
     ASSERT_EQ(r.startDate.getHour(), 15);
 
-    results = ps.execute(text3, t);
+    results.clear();
+    ps.execute(text3, t, results);
     r = results[0];
     EXPECT_EQ(r.getIndex(), 3);
     ASSERT_EQ(r.startDate.getHour(), 20);
 
-    results = ps.execute(text4, t);
+    results.clear();
+    ps.execute(text4, t, results);
     r = results[0];
     EXPECT_EQ(r.getIndex(), 8);
     ASSERT_EQ(r.startDate.getHour(), 12);
 
-    results = ps.execute(text5, t);
+    results.clear();
+    ps.execute(text5, t, results);
     r = results[0];
     EXPECT_EQ(r.getIndex(), 14);
     ASSERT_EQ(r.startDate.getHour(), 20);
@@ -68,7 +73,8 @@ TEST_F(ENCasualTimeTest, test2) {
     posix_time::ptime t (posix_time::time_from_string(testRefDate));
     anchor = posix_time::to_tm(t);
 
-    results = ps.execute(text1, t);
+    results.clear();
+    ps.execute(text1, t, results);
     r = results[0];
 
     EXPECT_EQ(r.startDate.getYear(), t.date().year());
@@ -77,19 +83,23 @@ TEST_F(ENCasualTimeTest, test2) {
     EXPECT_EQ(r.startDate.get_wDay(), anchor.tm_wday);
     ASSERT_EQ(r.startDate.getHour(), 06);
 
-    results = ps.execute(text2, t);
+    results.clear();
+    ps.execute(text2, t, results);
     r = results[0];
     ASSERT_EQ(r.startDate.getHour(), 15);
 
-    results = ps.execute(text3, t);
+    results.clear();
+    ps.execute(text3, t, results);
     r = results[0];
     ASSERT_EQ(r.startDate.getHour(), 20);
 
-    results = ps.execute(text4, t);
+    results.clear();
+    ps.execute(text4, t, results);
     r = results[0];
     ASSERT_EQ(r.startDate.getHour(), 12);
 
-    results = ps.execute(text5, t);
+    results.clear();
+    ps.execute(text5, t, results);
     r = results[0];
     ASSERT_EQ(r.startDate.getHour(), 20);
 

@@ -23,7 +23,8 @@ public:
 
 TEST_F(ENTimeLaterTest, t1_later) {
     text = "2 days later";
-    results = laterParser.execute(text, t);
+    results.clear();
+    laterParser.execute(text, t, results);
     r = results.at(0);
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getYear(), 2019);
@@ -31,7 +32,8 @@ TEST_F(ENTimeLaterTest, t1_later) {
     EXPECT_EQ(r.startDate.get_mDay(), 23);
 
     text = "eight years later";
-    results = laterParser.execute(text, t);
+    results.clear();
+    laterParser.execute(text, t, results);
     r = results.at(0);
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getYear(), 2027);
@@ -39,7 +41,8 @@ TEST_F(ENTimeLaterTest, t1_later) {
     EXPECT_EQ(r.startDate.get_mDay(), 21);
 
     text = "39 minutes later";
-    results = laterParser.execute(text, t);
+    results.clear();
+    laterParser.execute(text, t, results);
     r = results.at(0);
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 01);
@@ -52,7 +55,8 @@ TEST_F(ENTimeLaterTest, t1_later) {
 /*
 TEST_F(ENTimeLaterTest, t2) {
     text = "4 weeks out";
-    results = laterParser.execute(text, t);
+    results.clear();
+    laterParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getYear(), 2019);

@@ -58,8 +58,19 @@ int main(int argc, char* argv[]) {
     shared_ptr<refiners::Refiner> mdt = make_shared<ENMergeDateAndTime>();
     shared_ptr<refiners::Refiner> mdr = make_shared<ENMergeDateRange>();
 
+    ctp->chain(dfp)
+       ->chain(dow)
+       ->chain(cdp)
+       ->chain(mme)
+       ->chain(tlp)
+       ->chain(mnp)
+       ->chain(tap)
+       ->chain(txp)
+       ->chain(iso)
+       ->chain(hol)
+       ->chain(wxp);
 
-    list<std::shared_ptr<parser::Parser> >  parsers  {ctp, dfp, dow, cdp, mme, tlp, mnp, tap, txp, iso, hol, wxp};
+    // list<std::shared_ptr<parser::Parser> >  parsers  {ctp, dfp, dow, cdp, mme, tlp, mnp, tap, txp, iso, hol, wxp};
     list<std::shared_ptr<refiners::Refiner> > refiners {olr, tza, mdt, mdr}; // NOTE: place mdt refiner before mdr refiner
 
     str = argv[1];
@@ -73,10 +84,8 @@ int main(int argc, char* argv[]) {
         t = posix_time::time_from_string(refDate);
     }
 
-    for(auto& parser: parsers) {
-        Result p_result = parser->execute(str, t);
-        results.insert(results.end(), p_result.begin(), p_result.end());
-    }
+    Result p_result;
+    ctp->execute(str, t, p_result);
 
     std::sort(results.begin(), results.end(),
             [&](parse::ParsedResult p1, parse::ParsedResult p2) {

@@ -22,22 +22,34 @@ std::regex Parser::getPattern() const {
 }
 */
 
-Result Parser::execute(std::string& text, posix_time::ptime& ref) {
-    Result results;
+
+const
+std::shared_ptr<Parser>& Parser::chain(const std::shared_ptr<Parser>& next)
+{
+    _next = next;
+    return next;
+}
+
+
+void Parser::execute(std::string& text, posix_time::ptime& ref, Result& results)
+{
     std::smatch match;
     unsigned long idx;
 
     text = utils::toLowerCase(text);
     std::string remainingText = text;
 
-    try {
+    try
+    {
         std::regex_search(remainingText, match, getPattern());
     } // only throws if the regex can not be built
-    catch (std::regex_error& err) {
-        std::cerr << err.what() << std::endl;
+    catch (std::regex_error& err)
+    {
+        std::cerr << err.what() << std::endl;  // fixme: use logging
     }
 
-    while(!match.empty()) {
+    while (! match.empty())
+    {
         // index of match on full text
         idx = match.position(0) + text.length() - remainingText.length();
 
@@ -54,13 +66,16 @@ Result Parser::execute(std::string& text, posix_time::ptime& ref) {
         // set remaining text to string immediately following the matched string
         remainingText = text.substr(idx + match.length(0));
 
-        try {
+        try
+        {
             std::regex_search(remainingText, match, getPattern());
-        } catch (std::regex_error& err) {
+        }
+        catch (std::regex_error& err)
+        {
             std::cerr << err.what() << std::endl;
-            return results;
         }
     }
 
-    return results;
+    if (_next)
+        _next->execute(text, ref, results);
 }

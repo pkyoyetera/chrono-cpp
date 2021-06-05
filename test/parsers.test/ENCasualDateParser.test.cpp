@@ -27,11 +27,12 @@ protected:
 
 
 TEST_F(ENCasualDateTest, construct) {
-    string testRefDate("2018-02-13 18:16:27");
+    const string testRefDate("2018-02-13 18:16:27");
     posix_time::ptime anchor (posix_time::time_from_string(testRefDate));
 
     // test 1: date corresponds to yesterday's
-    results = dateParser.execute(t1, anchor);
+    results.clear();
+    dateParser.execute(t1, anchor, results);
     r = results[0];
     EXPECT_EQ(r.getIndex(), 14);
     EXPECT_EQ(r.startDate.getYear(),  anchor.date().year());
@@ -40,7 +41,8 @@ TEST_F(ENCasualDateTest, construct) {
     EXPECT_EQ(r.startDate.getHour(), 0);
 
     /// test 2: date corresponds to tomorrow
-    results = dateParser.execute(t2, anchor);
+    results.clear();
+    dateParser.execute(t2, anchor, results);
     r = results[0];
     EXPECT_EQ(r.getIndex(), 4);
     EXPECT_EQ(r.startDate.getYear(),  anchor.date().year());
@@ -48,7 +50,8 @@ TEST_F(ENCasualDateTest, construct) {
     EXPECT_EQ(r.startDate.get_mDay(), anchor.date().day() + 1);
 
     // test 4: date should correspond to later today
-    results = dateParser.execute(t4, anchor);
+    results.clear();
+    dateParser.execute(t4, anchor, results);
     r = results[0];
     EXPECT_EQ(r.getIndex(), 6);
     EXPECT_EQ(r.startDate.getYear(),  anchor.date().year());
@@ -57,7 +60,8 @@ TEST_F(ENCasualDateTest, construct) {
     EXPECT_EQ(r.startDate.getHour(), 22);
 
     // test 5: corresponds to right this moment
-    results = dateParser.execute(t5, anchor);
+    results.clear();
+    dateParser.execute(t5, anchor, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(),  anchor.date().year());
     EXPECT_EQ(r.startDate.getMonth(), anchor.date().month());

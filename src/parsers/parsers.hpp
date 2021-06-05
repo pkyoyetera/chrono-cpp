@@ -3,30 +3,44 @@
 #include <regex>
 #include <string>
 #include <iostream>
+#include <string_view>
 
 #include "src/result.hpp"
 #include "src/utils/utils.hpp"
 
-namespace parser {
+namespace parser
+{
     static const unsigned short FULL_MATCH = 0;
 
-    class Parser {
+    class Parser
+    {
     protected:
         bool strictMode;
         std::regex pattern;
+
+        std::shared_ptr<Parser> _next;
 
     public:
         Parser();
 
         //Parser(bool, std::regex);       // strictMode, pattern
-        virtual std::regex getPattern() const { return std::regex(); };
+        virtual
+        std::regex getPattern() const { return std::regex(); };
 
-        virtual parse::ParsedResult extract(std::string &, const std::smatch &, const posix_time::ptime &, long) {
+        virtual
+        parse::ParsedResult extract(std::string&,
+                                    const std::smatch&,
+                                    const posix_time::ptime&,
+                                    long)
+        {
             parse::ParsedResult tmp{};
             return tmp;
         }
 
-        Result execute(std::string &, posix_time::ptime &);
+        void execute(std::string &, posix_time::ptime &, Result&);
+
+        const
+        std::shared_ptr<Parser>& chain(const std::shared_ptr<Parser>&);
 
         ~Parser();
     };

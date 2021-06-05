@@ -19,7 +19,8 @@ public:
 TEST_F (ENDeadlineFormatTest, test1) {
     string text{"I'll be home within six weeks!"};
     posix_time::ptime testTime{t + gregorian::weeks(6)};
-    results = dp.execute(text, t);
+    results.clear();
+    dp.execute(text, t, results);
     r = results[0];
 
     EXPECT_EQ(r.getIndex(), 13);
@@ -31,7 +32,8 @@ TEST_F (ENDeadlineFormatTest, test1) {
 TEST_F(ENDeadlineFormatTest, test2) {
     string text{"in a few years, the greedy will crumble"};
     posix_time::ptime testTime{t + gregorian::years(3)};
-    results = dp.execute(text, t);
+    results.clear();
+    dp.execute(text, t, results);
     r = results[0];
 
     EXPECT_EQ(r.getIndex(), 0);
@@ -43,7 +45,8 @@ TEST_F(ENDeadlineFormatTest, test2) {
 TEST_F(ENDeadlineFormatTest, test3) {
     string text{"closes in 5 minutes"};
     posix_time::ptime testTime{t + posix_time::minutes(5)};
-    results = dp.execute(text, t);
+    results.clear();
+    dp.execute(text, t, results);
     r = results[0];
 
     EXPECT_EQ(r.getIndex(), 7);
@@ -59,7 +62,8 @@ TEST_F(ENDeadlineFormatTest, test3) {
 TEST_F(ENDeadlineFormatTest, test4) {
     string text{"It shall be built in 3 months, be patient"};
     posix_time::ptime testTime{t + gregorian::months(3)};
-    results = dp.execute(text, t);
+    results.clear();
+    dp.execute(text, t, results);
     r = results[0];
 
     EXPECT_EQ(r.getIndex(), 18);
@@ -72,7 +76,8 @@ TEST_F(ENDeadlineFormatTest, test4) {
 TEST_F(ENDeadlineFormatTest, test5) {
     string text{"finish up in half an hour"};
     posix_time::ptime testTime{t + posix_time::minutes(30)};
-    results = dp.execute(text, t);
+    results.clear();
+    dp.execute(text, t, results);
     r = results[0];
 
     EXPECT_EQ(r.getIndex(), 10);
@@ -88,7 +93,8 @@ TEST_F(ENDeadlineFormatTest, test5) {
 TEST_F(ENDeadlineFormatTest, test6) {
     string text{"be back in half a day"};
     posix_time::ptime testTime{t + posix_time::hours(12)};
-    results = dp.execute(text, t);
+    results.clear();
+    dp.execute(text, t, results);
     r = results[0];
 
     EXPECT_EQ(r.getIndex(), 8);

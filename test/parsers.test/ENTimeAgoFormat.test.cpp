@@ -23,7 +23,8 @@ public:
 
 TEST_F(ENTimeAgoTest, t1_ago) {
     text = "2 days ago";
-    results = timeAgoParser.execute(text, t);
+    results.clear();
+    timeAgoParser.execute(text, t, results);
     r = results.at(0);
 
     EXPECT_EQ(r.getIndex(), 0);
@@ -32,7 +33,8 @@ TEST_F(ENTimeAgoTest, t1_ago) {
     EXPECT_EQ(r.startDate.get_mDay(), 19);
 
     text = "eight years ago";
-    results = timeAgoParser.execute(text, t);
+    results.clear();
+    timeAgoParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getYear(), 2011);
@@ -40,7 +42,8 @@ TEST_F(ENTimeAgoTest, t1_ago) {
     EXPECT_EQ(r.startDate.get_mDay(), 21);
 
     text = "39 minutes earlier";
-    results = timeAgoParser.execute(text, t);
+    results.clear();
+    timeAgoParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getYear(), 2019);
