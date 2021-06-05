@@ -9,7 +9,7 @@ using namespace std;
 class ENDayOfTheWeekTest : public ::testing::Test {
 public:
     parser::ENDayOfWeekParser dwp;
-    Result results;
+    parse::Result results;
     posix_time::ptime t;
     parse::ParsedResult r;
 

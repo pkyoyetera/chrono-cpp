@@ -1,8 +1,10 @@
 
 #include <iostream>
 
-#include "src/result.hpp"
+#include "src/parsed_result.hpp"
+
 #include "src/utils/utils.hpp"
+
 #include "gtest/gtest.h"
 
 using namespace std;

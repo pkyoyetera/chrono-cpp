@@ -8,7 +8,7 @@ using namespace std;
 class ENRelativeFormatTest : public ::testing::Test {
 public:
 	parser::ENRelativeDateFormatParser relativeDateFormatParser;
-	Result results;
+	parse::Result results;
 	parse::ParsedResult r;
 	posix_time::ptime t;
 

@@ -9,7 +9,7 @@ using namespace std;
 class ENMonthNameTest : public ::testing::Test {
 public:
     string text;
-    Result results;
+    parse::Result results;
     posix_time::ptime t;
     parse::ParsedResult r;
     parser::ENMonthNameParser monthParser;

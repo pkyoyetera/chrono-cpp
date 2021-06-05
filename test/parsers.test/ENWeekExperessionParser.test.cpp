@@ -7,7 +7,7 @@ using namespace std;
 class ENWeekExpressionTest : public ::testing::Test {
 public:
     string text;
-    Result results;
+    parse::Result results;
     posix_time::ptime t;
     parse::ParsedResult r;
     parser::ENWeekExpressionParser weekExpressionParser;

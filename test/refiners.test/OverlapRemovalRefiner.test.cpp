@@ -4,7 +4,7 @@
 
 
 TEST(OverlapRemove, test1) {
-    Result test_result;
+    parse::Result test_result;
     std::string _long{"this text is longer than any other"},
                 _short{"this text is long"};
     posix_time::ptime t{posix_time::second_clock::local_time()};
@@ -15,7 +15,7 @@ TEST(OverlapRemove, test1) {
     test_result.push_back(r2);
 
     refiners::Refiner* ovr = new OverlapRemover();
-    Result new_result = ovr->refine(test_result, _long);
+    parse::Result new_result = ovr->refine(test_result, _long);
 
     EXPECT_EQ(new_result.size(), 1);
     for(auto res : new_result){

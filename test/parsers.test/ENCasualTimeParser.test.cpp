@@ -12,7 +12,7 @@ public:
     parser::ENCasualTimeParser ps;
     tm anchor;
     string text1, text2, text3, text4, text5;
-    Result results;
+    parse::Result results;
     parse::ParsedResult r;
 
     ENCasualTimeTest() {

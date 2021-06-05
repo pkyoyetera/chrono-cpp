@@ -10,7 +10,7 @@ class ExtractTimeZone : public ::testing::Test {
 public:
     parser::ENTimeExpressionParser parser;
     ExtractTimeZoneAbbreviation extractor;
-    Result res;
+    parse::Result res;
     posix_time::ptime t;
     parse::ParsedResult r;
     string text;

@@ -8,7 +8,7 @@ using namespace std;
 class ENDeadlineFormatTest : public ::testing::Test {
 public:
     parser::ENDeadlineFormatParser dp;
-    Result results;
+    parse::Result results;
     parse::ParsedResult r;
     posix_time::ptime t;
     ENDeadlineFormatTest() : t{posix_time::second_clock::local_time()} { }

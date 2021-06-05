@@ -8,7 +8,7 @@ using namespace std;
 class ENTimeLaterTest : public ::testing::Test {
 public:
     string text;
-    Result results;
+    parse::Result results;
     posix_time::ptime t;
     parse::ParsedResult r;
     parser::ENTimeLaterParser laterParser;

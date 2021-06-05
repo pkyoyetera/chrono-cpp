@@ -9,7 +9,7 @@ class ENTimeExpTest : public ::testing::Test {
 protected:
 
     string text;
-    Result results;
+    parse::Result results;
     posix_time::ptime t;
     parse::ParsedResult r;
     parser::ENTimeExpressionParser timeExpressionParser;

@@ -10,7 +10,7 @@ protected:
 
     ENCasualDateParser dateParser;
     string t1, t2, t3, t4, t5;
-    Result results;
+    parse::Result results;
     parse::ParsedResult r;
 
     ENCasualDateTest() {
