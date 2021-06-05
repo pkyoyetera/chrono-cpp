@@ -12,5 +12,5 @@ jobs:
 
     - name: run
       uses: ngalaiko/bazel-action/2.0.0@master
-      with: pk/re2
+      with:
         args: build //...
