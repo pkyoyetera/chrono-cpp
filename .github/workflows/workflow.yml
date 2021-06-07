@@ -13,4 +13,7 @@ jobs:
       - name: run
         uses: ngalaiko/bazel-action/2.0.0@master
         with:
+          env:
+            CC: gcc-8
+            CXX: g++-8
           args: build //...

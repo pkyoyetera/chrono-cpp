@@ -4,5 +4,5 @@
 * Add easier configuration for debug and optimized build options
 * Added changelog 
 * Added simple makefile for github actions
-* set up build github action for the repository
+* set up build github workflow for the repository
  
