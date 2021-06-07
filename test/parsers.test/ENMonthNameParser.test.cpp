@@ -9,7 +9,7 @@ using namespace std;
 class ENMonthNameTest : public ::testing::Test {
 public:
     string text;
-    Result results;
+    parse::Result results;
     posix_time::ptime t;
     parse::ParsedResult r;
     parser::ENMonthNameParser monthParser;
@@ -24,7 +24,8 @@ public:
 
 TEST_F(ENMonthNameTest, t1) {
     text = "September 2025";
-    results = monthParser.execute(text, t);
+    results.clear();
+    monthParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getYear(), 2025);
@@ -32,7 +33,8 @@ TEST_F(ENMonthNameTest, t1) {
     EXPECT_EQ(r.startDate.get_mDay(), 1);
 
     text = "Sep 2025";
-    results = monthParser.execute(text, t);
+    results.clear();
+    monthParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getYear(), 2025);
@@ -40,7 +42,8 @@ TEST_F(ENMonthNameTest, t1) {
     EXPECT_EQ(r.startDate.get_mDay(), 1);
 
     text = "September, 2025";
-    results = monthParser.execute(text, t);
+    results.clear();
+    monthParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getYear(), 2025);
@@ -48,7 +51,8 @@ TEST_F(ENMonthNameTest, t1) {
     EXPECT_EQ(r.startDate.get_mDay(), 1);
 
     text = "Sept-2025";
-    results = monthParser.execute(text, t);
+    results.clear();
+    monthParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getYear(), 2025);
@@ -56,7 +60,8 @@ TEST_F(ENMonthNameTest, t1) {
     EXPECT_EQ(r.startDate.get_mDay(), 1);
 
     text = "Sept. 2025";
-    results = monthParser.execute(text, t);
+    results.clear();
+    monthParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getYear(), 2025);
@@ -66,7 +71,8 @@ TEST_F(ENMonthNameTest, t1) {
 
 TEST_F(ENMonthNameTest, t2) {
     text = "1200 BC";
-    results = monthParser.execute(text, t);
+    results.clear();
+    monthParser.execute(text, t, results);
 
     // todo: complete BC/AD tests
 

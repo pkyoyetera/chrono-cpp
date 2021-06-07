@@ -9,7 +9,7 @@ class ENTimeExpTest : public ::testing::Test {
 protected:
 
     string text;
-    Result results;
+    parse::Result results;
     posix_time::ptime t;
     parse::ParsedResult r;
     parser::ENTimeExpressionParser timeExpressionParser;
@@ -24,7 +24,8 @@ protected:
 
 TEST_F(ENTimeExpTest, time_words) {
     text = "at noon";
-    results = timeExpressionParser.execute(text, t);
+    results.clear();
+    timeExpressionParser.execute(text, t, results);
     r = results[0];
 
     EXPECT_EQ(r.getIndex(), 0);
@@ -36,7 +37,8 @@ TEST_F(ENTimeExpTest, time_words) {
     EXPECT_EQ(r.startDate.getMinute(), 0);
 
     text = "let's get together around midnight.";
-    results = timeExpressionParser.execute(text, t);
+    results.clear();
+    timeExpressionParser.execute(text, t, results);
     r = results[0];
 
     EXPECT_EQ(r.getIndex(), 25);
@@ -50,21 +52,25 @@ TEST_F(ENTimeExpTest, time_words) {
 
 TEST_F(ENTimeExpTest, failures) {
     text = "25:12";
-    results = timeExpressionParser.execute(text, t);
+    results.clear();
+    timeExpressionParser.execute(text, t, results);
     EXPECT_EQ(results.size(), 0);
 
     text = "02:69";
-    results = timeExpressionParser.execute(text, t);
+    results.clear();
+    timeExpressionParser.execute(text, t, results);
     EXPECT_EQ(results.size(), 0);
 
     text = "14:12 p.m";
-    results = timeExpressionParser.execute(text, t);
+    results.clear();
+    timeExpressionParser.execute(text, t, results);
     EXPECT_EQ(results.size(), 0);
 }
 
 TEST_F(ENTimeExpTest, using_from) {
     text = "it'll be running from 4:12 p.m";
-    results = timeExpressionParser.execute(text, t);
+    results.clear();
+    timeExpressionParser.execute(text, t, results);
     EXPECT_EQ(results.size(), 1);
 
     r = results[0];
@@ -76,7 +82,8 @@ TEST_F(ENTimeExpTest, using_from) {
 
 TEST_F(ENTimeExpTest, ampm) {
     text = "starting at 4:57 p.m";
-    results = timeExpressionParser.execute(text, t);
+    results.clear();
+    timeExpressionParser.execute(text, t, results);
     EXPECT_EQ(results.size(), 1);
 
     r = results[0];
@@ -85,49 +92,56 @@ TEST_F(ENTimeExpTest, ampm) {
     EXPECT_EQ(r.startDate.getMinute(), 57);
 
     text = "11am";
-    results = timeExpressionParser.execute(text, t);
+    results.clear();
+    timeExpressionParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getHour(), 11);
     EXPECT_EQ(r.startDate.getMinute(), 0);
 
     text = "11 am";
-    results = timeExpressionParser.execute(text, t);
+    results.clear();
+    timeExpressionParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getHour(), 11);
     EXPECT_EQ(r.startDate.getMinute(), 0);
 
     text = "11 a.m";
-    results = timeExpressionParser.execute(text, t);
+    results.clear();
+    timeExpressionParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getHour(), 11);
     EXPECT_EQ(r.startDate.getMinute(), 0);
 
     text = "11a.m.";
-    results = timeExpressionParser.execute(text, t);
+    results.clear();
+    timeExpressionParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getHour(), 11);
     EXPECT_EQ(r.startDate.getMinute(), 0);
 
     text = "8 o'clock";
-    results = timeExpressionParser.execute(text, t);
+    results.clear();
+    timeExpressionParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getHour(), 8);
     EXPECT_EQ(r.startDate.getMinute(), 0);
 
     text = "6:00 p.m";
-    results = timeExpressionParser.execute(text, t);
+    results.clear();
+    timeExpressionParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getHour(), 18);
     EXPECT_EQ(r.startDate.getMinute(), 0);
 
     text = "9:11 p.m.";
-    results = timeExpressionParser.execute(text, t);
+    results.clear();
+    timeExpressionParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getHour(), 21);
@@ -137,7 +151,8 @@ TEST_F(ENTimeExpTest, ampm) {
 
 TEST_F(ENTimeExpTest, range_expression) {
     text = "from 4:57 p.m to 6:50 p.m.";
-    results = timeExpressionParser.execute(text, t);
+    results.clear();
+    timeExpressionParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(results.size(), 1);
     EXPECT_TRUE(r.end());
@@ -145,7 +160,8 @@ TEST_F(ENTimeExpTest, range_expression) {
     EXPECT_EQ(r.endDate.getMinute(), 50);
 
     text = "from 4:57am - 6:50am";
-    results = timeExpressionParser.execute(text, t);
+    results.clear();
+    timeExpressionParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(results.size(), 1);
     EXPECT_TRUE(r.end());
@@ -158,7 +174,8 @@ TEST_F(ENTimeExpTest, range_expression) {
 
 TEST_F(ENTimeExpTest, implied_meridiem) {
     text = "from 4:57 p.m to 6:50";
-    results = timeExpressionParser.execute(text, t);
+    results.clear();
+    timeExpressionParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getHour(), 16);
@@ -170,7 +187,8 @@ TEST_F(ENTimeExpTest, implied_meridiem) {
 
 TEST_F(ENTimeExpTest, implied_meridiem_part2) {
     text = "from 4:57 to 6:50 p.m";
-    results = timeExpressionParser.execute(text, t);
+    results.clear();
+    timeExpressionParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getHour(), 16);

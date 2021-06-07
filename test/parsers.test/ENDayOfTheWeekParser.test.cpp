@@ -1,5 +1,7 @@
 #include <iostream>
+
 #include "gtest/gtest.h"
+
 #include "src/parsers/en/ENDayOfTheWeekParser.hpp"
 
 using namespace std;
@@ -7,7 +9,7 @@ using namespace std;
 class ENDayOfTheWeekTest : public ::testing::Test {
 public:
     parser::ENDayOfWeekParser dwp;
-    Result results;
+    parse::Result results;
     posix_time::ptime t;
     parse::ParsedResult r;
 
@@ -21,7 +23,8 @@ public:
 
 TEST_F(ENDayOfTheWeekTest, test1) {
     string text{"Monday"};
-    results = dwp.execute(text, t);
+    results.clear();
+    dwp.execute(text, t, results);
     r = results.at(0);
     EXPECT_EQ(r.getIndex(), 0);
     EXPECT_EQ(r.startDate.getYear(), 2019);
@@ -29,14 +32,16 @@ TEST_F(ENDayOfTheWeekTest, test1) {
     EXPECT_EQ(r.startDate.get_mDay(), 21);
 
     text = "Friday";
-    results = dwp.execute(text, t);
+    results.clear();
+    dwp.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 1);
     EXPECT_EQ(r.startDate.get_mDay(), 25);
 
     text = "Sunday";
-    results = dwp.execute(text, t);
+    results.clear();
+    dwp.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 1);
@@ -45,14 +50,16 @@ TEST_F(ENDayOfTheWeekTest, test1) {
 
 TEST_F(ENDayOfTheWeekTest, test2) {
     string text{"this Tuesday"};
-    results = dwp.execute(text, t);
+    results.clear();
+    dwp.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 1);
     EXPECT_EQ(r.startDate.get_mDay(), 22);
 
     text = "this Sat";
-    results = dwp.execute(text, t);
+    results.clear();
+    dwp.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 1);
@@ -61,14 +68,16 @@ TEST_F(ENDayOfTheWeekTest, test2) {
 
 TEST_F(ENDayOfTheWeekTest, test3) {
     string text{"next thursday"};
-    results = dwp.execute(text, t);
+    results.clear();
+    dwp.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 1);
     EXPECT_EQ(r.startDate.get_mDay(), 31);
 
     text = "next Monday";
-    results = dwp.execute(text, t);
+    results.clear();
+    dwp.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 1);
@@ -79,21 +88,24 @@ TEST_F(ENDayOfTheWeekTest, test3) {
 // works with first day of the week being a saturday
 TEST_F(ENDayOfTheWeekTest, test4) {
     string text{"last thursday"};
-    results = dwp.execute(text, t);
+    results.clear();
+    dwp.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 1);
     EXPECT_EQ(r.startDate.get_mDay(), 17);
 
     text = "last Sunday";
-    results = dwp.execute(text, t);
+    results.clear();
+    dwp.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 1);
     EXPECT_EQ(r.startDate.get_mDay(), 13);
 
     text = "last mon";
-    results = dwp.execute(text, t);
+    results.clear();
+    dwp.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 1);
@@ -102,21 +114,24 @@ TEST_F(ENDayOfTheWeekTest, test4) {
 
 TEST_F(ENDayOfTheWeekTest, test5) {
     string text{"Sunday next week"};
-    results = dwp.execute(text, t);
+    results.clear();
+    dwp.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 1);
     EXPECT_EQ(r.startDate.get_mDay(), 27);
 
     text = "friday last week";
-    results = dwp.execute(text, t);
+    results.clear();
+    dwp.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 1);
     EXPECT_EQ(r.startDate.get_mDay(), 18);
 
     text = "earlier last friday";
-    results = dwp.execute(text, t);
+    results.clear();
+    dwp.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 1);
@@ -124,7 +139,8 @@ TEST_F(ENDayOfTheWeekTest, test5) {
     EXPECT_EQ(r.startDate.getHour(), 6);
 
     text = "late last friday";
-    results = dwp.execute(text, t);
+    results.clear();
+    dwp.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 1);

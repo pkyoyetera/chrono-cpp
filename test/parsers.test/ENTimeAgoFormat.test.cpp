@@ -8,7 +8,7 @@ using namespace std;
 class ENTimeAgoTest : public ::testing::Test {
 public:
     string text;
-    Result results;
+    parse::Result results;
     posix_time::ptime t;
     parse::ParsedResult r;
     parser::ENTimeAgoFormatParser timeAgoParser;
@@ -22,18 +22,19 @@ public:
 
 
 TEST_F(ENTimeAgoTest, t1_ago) {
-    text = "they left 2 days ago";
-    results = timeAgoParser.execute(text, t);
-    r = results[0];
+    text = "2 days ago";
+    results.clear();
+    timeAgoParser.execute(text, t, results);
+    r = results.at(0);
 
-    EXPECT_EQ(r.getIndex(), 9);
-    EXPECT_EQ(results.size(), 1);
+    EXPECT_EQ(r.getIndex(), 0);
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 1);
     EXPECT_EQ(r.startDate.get_mDay(), 19);
 
     text = "eight years ago";
-    results = timeAgoParser.execute(text, t);
+    results.clear();
+    timeAgoParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getYear(), 2011);
@@ -41,7 +42,8 @@ TEST_F(ENTimeAgoTest, t1_ago) {
     EXPECT_EQ(r.startDate.get_mDay(), 21);
 
     text = "39 minutes earlier";
-    results = timeAgoParser.execute(text, t);
+    results.clear();
+    timeAgoParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getYear(), 2019);

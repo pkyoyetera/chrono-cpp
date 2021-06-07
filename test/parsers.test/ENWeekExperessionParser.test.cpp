@@ -7,7 +7,7 @@ using namespace std;
 class ENWeekExpressionTest : public ::testing::Test {
 public:
     string text;
-    Result results;
+    parse::Result results;
     posix_time::ptime t;
     parse::ParsedResult r;
     parser::ENWeekExpressionParser weekExpressionParser;
@@ -22,35 +22,40 @@ public:
 
 TEST_F(ENWeekExpressionTest , t1) {
     text = "next two weeks are crucial";
-    results = weekExpressionParser.execute(text, t);
+    results.clear();
+    weekExpressionParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2019);
-    EXPECT_EQ(r.startDate.getMonth(), 2);   // kunjani, muli mutya abeeyo
+    EXPECT_EQ(r.startDate.getMonth(), 2);
     EXPECT_EQ(r.startDate.get_mDay(), 11);
 
-    text = "the last two weeks have been a slugger"; // wiiki ikumi n'andala
-    results = weekExpressionParser.execute(text, t);
+    text = "the last two weeks have been a slugger";
+    results.clear();
+    weekExpressionParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 1);
     EXPECT_EQ(r.startDate.get_mDay(), 14);
 
     text = "next 2 weeks are crucial";
-    results = weekExpressionParser.execute(text, t);
+    results.clear();
+    weekExpressionParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 2);
     EXPECT_EQ(r.startDate.get_mDay(), 11);
 
     text = "the last 2 weeks have been a slugger";
-    results = weekExpressionParser.execute(text, t);
+    results.clear();
+    weekExpressionParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 1);
     EXPECT_EQ(r.startDate.get_mDay(), 14);
 
     text = "Meet next week then?";
-    results = weekExpressionParser.execute(text, t);
+    results.clear();
+    weekExpressionParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 2);

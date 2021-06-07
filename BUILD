@@ -1,24 +1,8 @@
 load("//:boost.bzl", "boost")
+load("//:chrono.bzl", "copts", "linkopts")
 
-cc_binary(
-    name = "time",
-    srcs = glob(
-        [
-            "time.cpp",
-            "src/**/*.hpp",
-            "src/**/*.cpp",
-        ],
-    ),
-    copts = [
-        "-std=c++17",
-        "-g",
-        "-O0",
-    ],
-    includes = ["src"],
-    deps = [
-        "@boost//:date_time",
-    ],
-)
+COPTS = copts(stdc="-std=c++17")
+LINKOPTS = linkopts()
 
 cc_library(
     name = "libtime",
@@ -28,14 +12,21 @@ cc_library(
     hdrs = glob(
         ["src/**/*.hpp"],
     ),
-    copts = [
-        "-std=c++17",
-        "-g",
-        "-O0",
-    ],
-    #includes = ["src"],
+    copts = COPTS,
     visibility = ["//visibility:public"],
     deps = [
+        "@boost//:algorithm",
         "@boost//:date_time",
+    ],
+)
+
+cc_binary(
+    name = "time",
+    srcs = glob([
+        "time.cpp",
+    ]),
+    copts = COPTS,
+    deps = [
+        "//:libtime",
     ],
 )

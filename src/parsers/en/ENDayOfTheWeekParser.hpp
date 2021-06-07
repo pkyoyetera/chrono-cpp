@@ -3,12 +3,14 @@
 #include "src/parsers/parsers.hpp"
 
 
- namespace parser {
+namespace parser
+{
     /**
      * @brief: relative day_of_week pattern parser
      * Works with first day of the week being Monday
      */
-    class ENDayOfWeekParser : public Parser {
+    class ENDayOfWeekParser : public Parser
+    {
     private:
         static const unsigned short TIMING_GROUP  = 2,
                                     PREFIX_GROUP  = 3,
@@ -19,22 +21,28 @@
     public:
         ENDayOfWeekParser() = default;
 
-        std::regex getPattern() const override {
-            static const std::regex PATTERN {
+        std::regex getPattern() const override
+        {
+            static
+            const std::regex PATTERN {
                 R"((\b))"
                     R"((earl(?:ier|y)|late)?)"
-                        R"((?:\s*(this|last|next)\s*)?))"
-                            R"((Sun(?:day)?|Mon(?:day)?|Tue(?:s(?:day)?)?|Wed(?:nesday)?|Thu(?:r(?:s(?:day)?)?)?|Fri(?:day)?|Sat(?:urday)?))"
-                                R"((?:\s*(this|last|next)\s*)?(?:(week)\s*)?)"
-                R"((\b)", /* part of pattern (on\s*)?*/
+                    R"((?:\s*(this|last|next)\s*)?)"
+                        R"((Sun(?:day)?|Mon(?:day)?|Tue(?:s(?:day)?)?|Wed(?:nesday)?|Thu(?:r(?:s(?:day)?)?)?|Fri(?:day)?|Sat(?:urday)?))"
+                        R"((?:\s*(this|last|next)\s*)?)"
+                        R"((?:(week)\s*)?)"
+                R"((\b))", /* part of pattern (on\s*)?*/
             std::regex::icase};
 
             return PATTERN;
         }
 
-        parse::ParsedResult updateParsedComponent(parse::ParsedResult res, const posix_time::ptime& ref,
-                              const short unsigned& offset, const std::string& modifier, const std::string& timing) {
-
+        parse::ParsedResult updateParsedComponent(parse::ParsedResult res,
+                                                  const posix_time::ptime& ref,
+                                                  const short unsigned& offset,
+                                                  const std::string& modifier,
+                                                  const std::string& timing)
+        {
             gregorian::date resOffset, start{ref.date()};
             bool start_fixed{false};
             gregorian::first_day_of_the_week_before fdbf{offset};
@@ -124,7 +132,7 @@
             return res;
         }
 
-        parse::ParsedResult extract(std::string& tx, const std::smatch& match, const posix_time::ptime& ref, long idx)
+        parse::ParsedResult extract(std::string&, const std::smatch& match, const posix_time::ptime& ref, long idx)
         override {
             std::string text      = match.str(FULL_MATCH),
                         timing    = match.str(TIMING_GROUP),
@@ -137,8 +145,8 @@
 
             parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
 
-            short unsigned offset = utils::WEEKDAY_OFFSET[dayOfWeek];
-            if (offset < 0 or offset > 6) {
+            const short unsigned offset = utils::WEEKDAY_OFFSET[dayOfWeek];
+            if (offset > 6) {
                 return result;
             }
 

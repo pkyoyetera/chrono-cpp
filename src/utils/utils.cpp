@@ -16,7 +16,7 @@ unsigned utils::argToOrdinalValue(const std::string &arg) {
     value = std::regex_replace(value, std::regex("^ +| +$|( ) +"), "$1");
     std::transform(value.begin(), value.end(), value.begin(), ::tolower);
     return utils::ORDINAL_WORDS[value];
-};
+}
 
 std::string utils::keysToString(std::map<std::string, unsigned> arg) {
     std::string result;
@@ -31,8 +31,9 @@ std::string utils::keysToString(std::map<std::string, unsigned> arg) {
     return result;
 }
 
-std::map<std::string, float> utils::extractDateTimeUnitFragments(std::string timeunitText) {
-    std::map<std::string, float> fragments;// = {};
+std::map<utils::Units, float> utils::extractDateTimeUnitFragments(const std::string& timeunitText)
+{
+    std::map<Units, float> fragments;
     std::string remainingText{timeunitText};
     std::smatch match;
 
@@ -44,10 +45,12 @@ std::map<std::string, float> utils::extractDateTimeUnitFragments(std::string tim
         res = std::regex_search(remainingText, match, utils::PATTERN_TIME_UNIT);
     }
     return fragments;
-};
+}
 
-std::map<std::string, float> utils::collectDateTimeFragment(std::smatch match, std::map<std::string, float>& fragments) {
-    std::string _num = utils::toLowerCase(match[1].str());
+std::map<utils::Units, float> utils::collectDateTimeFragment(std::smatch match,
+                                                             std::map<Units, float>& fragments)
+{
+    const std::string _num = utils::toLowerCase(match[1].str());
     float num;
 
     if (utils::INTEGER_WORDS.count(_num) > 0) {
@@ -62,21 +65,21 @@ std::map<std::string, float> utils::collectDateTimeFragment(std::smatch match, s
         num = std::stoi(_num);
     }
 
-    std::string element{match[2].str()};
-    if(std::regex_search(element, std::regex("hour", std::regex::icase)))
-        fragments["hour"] = num;
-    else if(std::regex_search(element, std::regex("min", std::regex::icase)))
-        fragments["minute"] = num;
-    else if(std::regex_search(element, std::regex("sec", std::regex::icase)))
-        fragments["second"] = num;
-    else if(std::regex_search(element, std::regex("week", std::regex::icase)))
-        fragments["week"] = num;
-    else if(std::regex_search(element, std::regex("day", std::regex::icase)))
-        fragments["day"] = num;
-    else if(std::regex_search(element, std::regex("month", std::regex::icase)))
-        fragments["month"] = num;
-    else if(std::regex_search(element, std::regex("year", std::regex::icase)))
-        fragments["year"] = num;
+    const std::string_view _unit = match.str(2);
+    if (boost::algorithm::contains(_unit, "hour"))
+        fragments[HOUR] = num;
+    else if (boost::algorithm::contains(_unit, "min"))
+        fragments[MINUTE] = num;
+    else if (boost::algorithm::contains(_unit, "sec"))
+        fragments[SECOND] = num;
+    else if (boost::algorithm::contains(_unit, "week"))
+        fragments[WEEK] = num;
+    else if (boost::algorithm::contains(_unit, "day"))
+        fragments[DAY] = num;
+    else if (boost::algorithm::contains(_unit, "month"))
+        fragments[MONTH] = num;
+    else if (boost::algorithm::contains(_unit, "year"))
+        fragments[YEAR] = num;
 
     return fragments;
 }

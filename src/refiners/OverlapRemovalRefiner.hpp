@@ -3,21 +3,19 @@
 #include "refiner.hpp"
 
 
-class OverlapRemover : public refiners::Refiner {
-protected:
-    // Result results;
-    // std::string text;
+class OverlapRemover : public refiners::Refiner
+{
+
 public:
     OverlapRemover()  = default;
-    ~OverlapRemover() = default;
 
-    Result refine(Result r, std::string t) override {
+    parse::Result refine(parse::Result r, std::string) override {
         // can't have overlaps in 1 result
         if(r.size() < 2) {
             return r;
         }
 
-        Result filteredResults;
+        parse::Result filteredResults;
         parse::ParsedResult prevResult{r[0]};
 
         for(unsigned i=1; i<r.size(); i++) {

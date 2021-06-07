@@ -36,30 +36,39 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
-    Result results;
     posix_time::ptime t;
     string str;
 
-    shared_ptr<parser::Parser> ctp = make_shared<parser::ENCasualTimeParser>();
-    shared_ptr<parser::Parser> dfp = make_shared<parser::ENDeadlineFormatParser>();
-    shared_ptr<parser::Parser> cdp = make_shared<parser::ENCasualDateParser>();
-    shared_ptr<parser::Parser> dow = make_shared<parser::ENDayOfWeekParser>();
-    shared_ptr<parser::Parser> mme = make_shared<parser::ENMonthNameMiddleEndianParser>();
-    shared_ptr<parser::Parser> tlp = make_shared<parser::ENTimeLaterParser>();
-    shared_ptr<parser::Parser> mnp = make_shared<parser::ENMonthNameParser>();
-    shared_ptr<parser::Parser> tap = make_shared<parser::ENTimeAgoFormatParser>();
-    shared_ptr<parser::Parser> iso = make_shared<parser::ENISOFormatParser>();
-    shared_ptr<parser::Parser> hol = make_shared<parser::ENHolidayParser>();
-    shared_ptr<parser::Parser> wxp = make_shared<parser::ENWeekExpressionParser>();
-    shared_ptr<parser::Parser> txp = make_shared<parser::ENTimeExpressionParser>();
+    auto ctp = make_shared<parser::ENCasualTimeParser>();
+    auto dfp = make_shared<parser::ENDeadlineFormatParser>();
+    auto cdp = make_shared<parser::ENCasualDateParser>();
+    auto dow = make_shared<parser::ENDayOfWeekParser>();
+    auto mme = make_shared<parser::ENMonthNameMiddleEndianParser>();
+    auto tlp = make_shared<parser::ENTimeLaterParser>();
+    auto mnp = make_shared<parser::ENMonthNameParser>();
+    auto tap = make_shared<parser::ENTimeAgoFormatParser>();
+    auto iso = make_shared<parser::ENISOFormatParser>();
+    auto hol = make_shared<parser::ENHolidayParser>();
+    auto wxp = make_shared<parser::ENWeekExpressionParser>();
+    auto txp = make_shared<parser::ENTimeExpressionParser>();
 
-    shared_ptr<refiners::Refiner> olr = make_shared<OverlapRemover>();
-    shared_ptr<refiners::Refiner> tza = make_shared<ExtractTimeZoneAbbreviation>();
-    shared_ptr<refiners::Refiner> mdt = make_shared<ENMergeDateAndTime>();
-    shared_ptr<refiners::Refiner> mdr = make_shared<ENMergeDateRange>();
+    auto olr = make_shared<OverlapRemover>();
+    auto tza = make_shared<ExtractTimeZoneAbbreviation>();
+    auto mdt = make_shared<ENMergeDateAndTime>();
+    auto mdr = make_shared<ENMergeDateRange>();
 
+    ctp->chain(dfp)
+       ->chain(dow)
+       ->chain(cdp)
+       ->chain(mme)
+       ->chain(tlp)
+       ->chain(mnp)
+       ->chain(tap)
+       ->chain(txp)
+       ->chain(iso)
+       ->chain(hol)
+       ->chain(wxp);
 
-    list<std::shared_ptr<parser::Parser> >  parsers  {ctp, dfp, dow, cdp, mme, tlp, mnp, tap, txp, iso, hol, wxp};
     list<std::shared_ptr<refiners::Refiner> > refiners {olr, tza, mdt, mdr}; // NOTE: place mdt refiner before mdr refiner
 
     str = argv[1];
@@ -73,10 +82,8 @@ int main(int argc, char* argv[]) {
         t = posix_time::time_from_string(refDate);
     }
 
-    for(auto& parser: parsers) {
-        Result p_result = parser->execute(str, t);
-        results.insert(results.end(), p_result.begin(), p_result.end());
-    }
+    parse::Result results;
+    ctp->execute(str, t, results);
 
     std::sort(results.begin(), results.end(),
             [&](parse::ParsedResult p1, parse::ParsedResult p2) {

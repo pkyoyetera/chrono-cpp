@@ -7,21 +7,22 @@
 
 #include "src/parsers/parsers.hpp"
 
- namespace parser {
+namespace parser {
 
     class ENMonthNameMiddleEndianParser : public Parser {
     private:
 
-        static const unsigned short WEEKDAY__GROUP    = 2,
-                                    MONTH_NAME_GROUP  = 3,
-                                    DATE_GROUP        = 4,
-                                    DATE_NUM_GROUP    = 5,
-                                    DATE_TO_GROUP     = 6,
-                                    DATE_TO_NUM_GROUP = 7,
-                                    YEAR_GROUP        = 8,
-                                    YEAR_BE_GROUP     = 9,
-                                    YEAR_GROUP2       = 10,
-                                    YEAR_BE_GROUP2    = 11;
+        static
+        const unsigned short WEEKDAY__GROUP    = 2,
+                             MONTH_NAME_GROUP  = 3,
+                             DATE_GROUP        = 4,
+                             DATE_NUM_GROUP    = 5,
+                             DATE_TO_GROUP     = 6,
+                             DATE_TO_NUM_GROUP = 7,
+                             YEAR_GROUP        = 8,
+                             YEAR_BE_GROUP     = 9,
+                             YEAR_GROUP2       = 10,
+                             YEAR_BE_GROUP2    = 11;
 
     public:
         ENMonthNameMiddleEndianParser() = default;
@@ -42,7 +43,7 @@
                                             R"(|thirty[ -]first)"
                                         R"())"
                                         R"((?!\s*)"
-                                        R"((?:am|pm))\s+)"
+                                        R"((?:am|pm))\s*)"
                             R"((?:)"
                                 R"((?:to|\-)\s*)"
                                     R"((([0-9]{1,2}))"
@@ -53,7 +54,7 @@
                                             R"(thirtieth|thirty[ -]first)\s*)"
                                         R"()?)"
                                         R"((?:)"
-                                            R"((?:-|\/|\s*,?\s*)(?:([0-9]{4})\s*(BE|AD|BC)?|([0-9]{1,4})\s*(AD|BC))\s+)"
+                                            R"((?:-|\/|\s*,?\s*)(?:([0-9]{4})\s*(BE|AD|BC)?|([0-9]{1,4})\s*(AD|BC))\s*)"
                                         R"()?)"
                                     R"((\b)(?!\:\d))" , std::regex::icase};
             return PATTERN;

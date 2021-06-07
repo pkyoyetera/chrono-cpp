@@ -7,7 +7,7 @@ using namespace std;
 class ENMiddleEndianTest : public ::testing::Test {
 public:
     string text;
-    Result results;
+    parse::Result results;
     posix_time::ptime t;
     parse::ParsedResult r;
     parser::ENMonthNameMiddleEndianParser middleEndianParser;
@@ -21,13 +21,15 @@ public:
 
 TEST_F(ENMiddleEndianTest, t1_month_name_and_date) {
     text = "Jan 12";
-    results = middleEndianParser.execute(text, t);
+    results.clear();
+    middleEndianParser.execute(text, t, results);
     EXPECT_EQ(results[0].startDate.getYear(), 2019);
     EXPECT_EQ(results[0].startDate.getMonth(), 01);
     EXPECT_EQ(results[0].startDate.get_mDay(), 12);
 
     text = "November, 3rd";
-    results = middleEndianParser.execute(text, t);
+    results.clear();
+    middleEndianParser.execute(text, t, results);
     EXPECT_EQ(results[0].startDate.getYear(), 2018);
     EXPECT_EQ(results[0].startDate.getMonth(), 11);
     EXPECT_EQ(results[0].startDate.get_mDay(), 3);
@@ -38,7 +40,8 @@ TEST_F(ENMiddleEndianTest, t1_month_name_and_date) {
 // start here
 TEST_F(ENMiddleEndianTest, t2_full_and_separators) {
     text = "Tue, Aug. 22, 1934!";
-    results = middleEndianParser.execute(text, t);
+    results.clear();
+    middleEndianParser.execute(text, t, results);
     r = results[0];
 
     EXPECT_EQ(r.startDate.getYear(), 1934);
@@ -49,7 +52,8 @@ TEST_F(ENMiddleEndianTest, t2_full_and_separators) {
 
 TEST_F(ENMiddleEndianTest, t3_full_date) {
     text = "Sunday, March 6th, 2020";
-    results = middleEndianParser.execute(text, t);
+    results.clear();
+    middleEndianParser.execute(text, t, results);
     r = results[0];
 
     EXPECT_EQ(r.startDate.getYear(), 2020);
@@ -61,7 +65,8 @@ TEST_F(ENMiddleEndianTest, t3_full_date) {
 
 TEST_F(ENMiddleEndianTest, t4_separators) {
     text = "March/6/2020";
-    results = middleEndianParser.execute(text, t);
+    results.clear();
+    middleEndianParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2020);
     EXPECT_EQ(r.startDate.getMonth(), 03);
@@ -69,7 +74,8 @@ TEST_F(ENMiddleEndianTest, t4_separators) {
     // EXPECT_EQ(r.startDate.get_wDay(), 0);
 
     text = "Apr-12-2018";
-    results = middleEndianParser.execute(text, t);
+    results.clear();
+    middleEndianParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2018);
     EXPECT_EQ(r.startDate.getMonth(), 4);
@@ -77,7 +83,8 @@ TEST_F(ENMiddleEndianTest, t4_separators) {
     //EXPECT_EQ(r.startDate.get_wDay(), 4);
 
     text = "Apr-2 2018";
-    results = middleEndianParser.execute(text, t);
+    results.clear();
+    middleEndianParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2018);
     EXPECT_EQ(r.startDate.getMonth(), 4);
@@ -87,7 +94,8 @@ TEST_F(ENMiddleEndianTest, t4_separators) {
 
 TEST_F(ENMiddleEndianTest, t5_range_date) {
     text = "July 24 - 27";
-    results = middleEndianParser.execute(text, t);
+    results.clear();
+    middleEndianParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2018);
     EXPECT_EQ(r.startDate.getMonth(), 7);
@@ -98,7 +106,8 @@ TEST_F(ENMiddleEndianTest, t5_range_date) {
     EXPECT_EQ(r.endDate.get_mDay(), 27);
 
     text = "Feb. 18th - 22nd, 2005";
-    results = middleEndianParser.execute(text, t);
+    results.clear();
+    middleEndianParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(r.startDate.getYear(), 2005);
     EXPECT_EQ(r.startDate.getMonth(), 2);

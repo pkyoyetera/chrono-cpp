@@ -9,7 +9,7 @@ using namespace std;
 class ENISOFormatTest : public ::testing::Test {
 public:
     string text;
-    Result results;
+    parse::Result results;
     posix_time::ptime t;
     parse::ParsedResult r;
     parser::ENISOFormatParser isoParser;
@@ -24,7 +24,8 @@ public:
 
 TEST_F(ENISOFormatTest, t1) {
     text = "2016-11-17";
-    results = isoParser.execute(text, t);
+    results.clear();
+    isoParser.execute(text, t, results);
     r = results[0];
 
     EXPECT_EQ(r.getIndex(), 0);
@@ -34,7 +35,8 @@ TEST_F(ENISOFormatTest, t1) {
     EXPECT_EQ(r.startDate.get_mDay(), 17);
 
     text = "2022-12-01T08:15:30";
-    results = isoParser.execute(text, t);
+    results.clear();
+    isoParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getYear(), 2022);
@@ -45,7 +47,8 @@ TEST_F(ENISOFormatTest, t1) {
     EXPECT_EQ(r.startDate.getSeconds(), 30);
 
     text = "1994-11-05T13:15:30Z";
-    results = isoParser.execute(text, t);
+    results.clear();
+    isoParser.execute(text, t, results);
     r = results[0];
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getYear(), 1994);

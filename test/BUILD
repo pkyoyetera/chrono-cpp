@@ -1,12 +1,14 @@
+load("//:chrono.bzl", "copts", "linkopts")
+
+COPTS = copts(stdc="-std=c++17")
+LINKOPTS = linkopts()
+
 cc_library(
     name = "test-common",
     srcs = [
         "gtest_main.cc",
     ],
-    copts = [
-        "-std=c++17",
-        "-O2",
-    ],
+    copts = COPTS,
     deps = [
         "//:libtime",
         "@googletest//:gtest_main",

@@ -10,7 +10,7 @@ class ExtractTimeZone : public ::testing::Test {
 public:
     parser::ENTimeExpressionParser parser;
     ExtractTimeZoneAbbreviation extractor;
-    Result res;
+    parse::Result res;
     posix_time::ptime t;
     parse::ParsedResult r;
     string text;
@@ -25,7 +25,8 @@ public:
 
 TEST_F(ExtractTimeZone, test1) {
     text = "16:59 EST";
-    res = extractor.refine(parser.execute(text, t), text);
+    parser.execute(text, t, res);
+    res = extractor.refine(res, text);
     parse::ParsedResult r = res[0];
 
     EXPECT_TRUE(r.getTag(utils::ExtractTimeZoneAbbreviation));
@@ -36,7 +37,7 @@ TEST_F(ExtractTimeZone, test1) {
     // EXPECT_STREQ(text.substr(6, 9), )
 
     /*text = "16:59 EST";
-    res = extractor.refine(parser.execute(text, t), text);
+    res = extractor.refine(parser.execute(text, t, results), text);
     parse::ParsedResult r = res[0];
 
     EXPECT_TRUE(r.getTag(utils::ExtractTimeZoneAbbreviation));
