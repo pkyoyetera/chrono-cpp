@@ -8,7 +8,7 @@ namespace parser {
 
 class ENISOFormatParser : public Parser {
 private:
-    static const unsigned short YEAR_NUMBER_GROUP        = 2,
+    static constexpr unsigned short YEAR_NUMBER_GROUP        = 2,
                                     MONTH_NUMBER_GROUP       = 3,
                                     DATE_NUMBER_GROUP        = 4,
                                     HOUR_NUMBER_GROUP        = 5,
