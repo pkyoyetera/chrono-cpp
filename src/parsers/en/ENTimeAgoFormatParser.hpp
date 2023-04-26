@@ -2,7 +2,7 @@
 
 #include "src/parsers/parsers.hpp"
 
- namespace parser {
+namespace parser {
 
     class ENTimeAgoFormatParser : public Parser {
 
@@ -10,7 +10,8 @@
         ENTimeAgoFormatParser() = default;
 
         std::regex getPattern() const override {
-            static const std::regex PATTERN = std::regex(
+            static
+            const std::regex PATTERN = std::regex(
                     R"((\b)(?:within\s*)?((?:((?:one|two|three|four|five|six|seven|eight|nine|)"
                     R"(ten|eleven|twelve)|[0-9]+|an?(?:\s*few)?|half(?:\s*an?)?)\s*(sec(?:onds?)?|)"
                     R"(min(?:ute)?s?|hours?|weeks?|days?|months?|years?)\s*)+)(?:ago|before|earlier))"
@@ -33,7 +34,7 @@
             gregorian::date date{ref.date()};
             posix_time::ptime date_t{ref};
 
-            // subtract each of the elements in fragments to the date/ptinme object
+            // subtract each of the elements in fragments to the date/ptime object
             for(const auto& a : fragments) {
                 try {
                     if(a.first == "year")
