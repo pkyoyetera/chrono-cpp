@@ -7,14 +7,13 @@ private:
     const std::regex to{R"(\s*(and|to|through|\-)\s*)"};
 
 public:
-    ENMergeDateRange() = default;
-    ~ENMergeDateRange() = default;
+    bool isAbleToMerge(const std::string&, const parse::ParsedResult&, const parse::ParsedResult&);
 
     static
     parse::ParsedResult mergeResult(const std::string&, parse::ParsedResult, parse::ParsedResult);
 
     Result refine(Result r, std::string t) override {
-        if(r.size() < 2) {// can not merge less than two ParsdeResult items
+        if(r.size() < 2) {// can not merge less than two ParsedResult items
             return r;
         }
 
