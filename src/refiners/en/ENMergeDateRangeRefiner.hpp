@@ -39,7 +39,8 @@ public:
     }
 };
 
-parse::ParsedResult ENMergeDateRange::mergeResult(std::string text,
+
+parse::ParsedResult ENMergeDateRange::mergeResult(const std::string& text,
         parse::ParsedResult fromResult, parse::ParsedResult toResult) {
     /**
      * @brief Merges two results, of the form <date> to <date>
