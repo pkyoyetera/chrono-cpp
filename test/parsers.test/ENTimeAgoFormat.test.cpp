@@ -17,16 +17,17 @@ public:
         string date{"2019-01-21 23:59:00.00"};
         t = posix_time::time_from_string(date);
     }
-    ~ENTimeAgoTest() { }
 };
 
 
 TEST_F(ENTimeAgoTest, t1_ago) {
     text = "they left 2 days ago";
     results = timeAgoParser.execute(text, t);
+    ASSERT_FALSE(results.empty());
+
     r = results[0];
 
-    EXPECT_EQ(r.getIndex(), 9);
+    EXPECT_EQ(r.getIndex(), 10);
     EXPECT_EQ(results.size(), 1);
     EXPECT_EQ(r.startDate.getYear(), 2019);
     EXPECT_EQ(r.startDate.getMonth(), 1);

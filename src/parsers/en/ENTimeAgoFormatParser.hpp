@@ -12,9 +12,11 @@ namespace parser {
         std::regex getPattern() const override {
             static
             const std::regex PATTERN = std::regex(
-                    R"((\b)(?:within\s*)?((?:((?:one|two|three|four|five|six|seven|eight|nine|)"
-                    R"(ten|eleven|twelve)|[0-9]+|an?(?:\s*few)?|half(?:\s*an?)?)\s*(sec(?:onds?)?|)"
-                    R"(min(?:ute)?s?|hours?|weeks?|days?|months?|years?)\s*)+)(?:ago|before|earlier))"
+                R"((\b))"
+                     R"((?:within\s*)?)"
+                       R"(((?:((?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)|[0-9]+|an?(?:\s*few)?|half(?:\s*an?)?)\s*)"
+                       R"((sec(?:onds?)?|min(?:ute)?s?|hours?|weeks?|days?|months?|years?)\s*)+))"
+                       R"((?:ago|before|earlier))"
                     R"((\b))", std::regex::icase);
             return PATTERN;
         }
@@ -25,7 +27,7 @@ namespace parser {
             std::string text = match.str(FULL_MATCH);
             parse::ParsedResult result = parse::ParsedResult(ref, idx, text);
 
-            if(match.position(0) > 0 and std::regex_match(text.substr(match.position(0) - 1), std::regex("\\w"))) {
+            if(match.position(0) > 0 and std::regex_match(text.substr(match.position(0)), std::regex("\\w"))) {
                 return result;
             }
 
