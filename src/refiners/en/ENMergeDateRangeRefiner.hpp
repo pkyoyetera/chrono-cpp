@@ -4,16 +4,14 @@
 class ENMergeDateRange : public refiners::Refiner {
 private:
     // std::regex to{R"(^\s*(and|to|\-)\s*$)"};
-    std::regex to{R"(\s*(and|to|through|\-)\s*)"};
+    const std::regex to{R"(\s*(and|to|through|\-)\s*)"};
 
 public:
     ENMergeDateRange() = default;
     ~ENMergeDateRange() = default;
 
-    bool isAbleToMerge(std::string,
-            parse::ParsedResult, parse::ParsedResult);
-    parse::ParsedResult mergeResult(std::string,
-            parse::ParsedResult, parse::ParsedResult);
+    static
+    parse::ParsedResult mergeResult(const std::string&, parse::ParsedResult, parse::ParsedResult);
 
     Result refine(Result r, std::string t) override {
         if(r.size() < 2) {// can not merge less than two ParsdeResult items
